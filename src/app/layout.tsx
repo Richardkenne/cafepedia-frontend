@@ -1,9 +1,35 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
+const SITE_URL = "https://cafepedia.id";
+
 export const metadata: Metadata = {
-  title: "Cafepedia — Bandung Cafe Guide",
-  description: "Discover the best cafes in Bandung. Search, filter, and find your perfect cafe.",
+  title: {
+    default: "Cafepedia — Bandung Cafe Guide",
+    template: "%s",
+  },
+  description: "Discover the best cafes in Bandung. Search by vibe, area, or let AI pick for you. 600+ cafes with photos, hours, and directions.",
+  metadataBase: new URL(SITE_URL),
+  alternates: {
+    canonical: SITE_URL,
+  },
+  openGraph: {
+    title: "Cafepedia — Bandung Cafe Guide",
+    description: "Discover the best cafes in Bandung. Search by vibe, area, or let AI pick for you.",
+    url: SITE_URL,
+    siteName: "Cafepedia",
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary",
+    title: "Cafepedia — Bandung Cafe Guide",
+    description: "Discover the best cafes in Bandung. Search by vibe, area, or let AI pick for you.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export const viewport: Viewport = {
@@ -19,7 +45,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en-ID">
       <body className="antialiased min-h-dvh">
         {children}
       </body>
