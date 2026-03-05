@@ -93,9 +93,9 @@ function SearchContent() {
         setNearActive(true);
       },
       (err) => {
-        if (err.code === 1) alert("Location access denied. Enable it in your browser settings.");
-        else if (err.code === 3) alert("Location timed out. Try again.");
-        else alert("Could not get your location.");
+        if (err.code === 1) alert(t("alert.location_denied"));
+        else if (err.code === 3) alert(t("alert.location_timeout"));
+        else alert(t("alert.location_error_short"));
       },
       { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 }
     );
