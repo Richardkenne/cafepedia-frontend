@@ -131,7 +131,7 @@ function PickContent() {
         {!loading && top3.length > 0 && (
           <>
             <p className="text-[11px] uppercase tracking-wider text-[var(--muted2)] font-semibold mt-5 mb-3">
-              Top picks for you
+              {t("pick.top_picks")}
             </p>
             {top3.map(c => (
               <AICard key={c.id} cafe={c} featured />
@@ -142,7 +142,7 @@ function PickContent() {
         {!loading && more.length > 0 && (
           <>
             <p className="text-[11px] uppercase tracking-wider text-[var(--muted2)] font-semibold mt-6 mb-3">
-              Also worth checking
+              {t("pick.also_worth")}
             </p>
             {more.map(c => (
               <AICard key={c.id} cafe={c} />
@@ -152,7 +152,7 @@ function PickContent() {
 
         {!loading && top3.length === 0 && (
           <div className="text-center py-20 text-[var(--muted2)] text-sm">
-            <p>Couldn&apos;t find matching cafes. Try a different description.</p>
+            <p>{t("pick.no_match")}</p>
           </div>
         )}
       </main>
