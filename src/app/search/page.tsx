@@ -40,7 +40,7 @@ function SearchContent() {
       const params: Parameters<typeof searchCafes>[0] = { q: q || "*" };
       if (lat && lng) {
         params.near = { lat, lng };
-        params.radius_km = 3;
+        params.radius_km = 50;
       }
       const data = await searchCafes(params);
       setResults(data.results || []);
