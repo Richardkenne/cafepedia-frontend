@@ -118,6 +118,7 @@ function SearchContent() {
               value={query}
               onChange={setQuery}
               onSubmit={(q) => doSearch(q, nearActive ? userLat : null, nearActive ? userLng : null)}
+              placeholder={t("search.placeholder")}
               autoFocus
             />
           </div>
