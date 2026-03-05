@@ -124,7 +124,7 @@ function PickContent() {
         {loading && (
           <div className="text-center py-20 text-[var(--muted2)]">
             <div className="text-4xl mb-4 animate-pulse">☕</div>
-            <p className="text-sm">Finding the best cafes for you...</p>
+            <p className="text-sm">{t("pick.finding")}</p>
           </div>
         )}
 
