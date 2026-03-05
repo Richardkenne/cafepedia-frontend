@@ -168,9 +168,19 @@ export default function CafeDetail() {
                 )}
                 {cafe.phone && (
                   <Section label="Phone">
-                    <a href={`tel:${cafe.phone}`} className="text-blue-600">
-                      {cafe.phone}
-                    </a>
+                    <div className="flex items-center gap-3">
+                      <a href={`tel:${cafe.phone}`} className="text-blue-600">
+                        {cafe.phone}
+                      </a>
+                      <a
+                        href={`https://wa.me/${cafe.phone.replace(/[^0-9+]/g, "").replace(/^\+/, "")}`}
+                        target="_blank"
+                        rel="noopener"
+                        className="text-[12px] px-2.5 py-1 rounded-full bg-green-100 text-green-700 font-medium"
+                      >
+                        WhatsApp
+                      </a>
+                    </div>
                   </Section>
                 )}
                 {cafe.instagram && (
