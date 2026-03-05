@@ -10,6 +10,12 @@ export const metadata: Metadata = {
   },
   description: "Discover the best cafes in Bandung. Search by vibe, area, or let AI pick for you. 600+ cafes with photos, hours, and directions.",
   metadataBase: new URL(SITE_URL),
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Cafepedia",
+  },
   alternates: {
     canonical: SITE_URL,
   },
@@ -25,6 +31,9 @@ export const metadata: Metadata = {
     card: "summary",
     title: "Cafepedia — Bandung Cafe Guide",
     description: "Discover the best cafes in Bandung. Search by vibe, area, or let AI pick for you.",
+  },
+  icons: {
+    apple: "/icon-192.png",
   },
   robots: {
     index: true,
