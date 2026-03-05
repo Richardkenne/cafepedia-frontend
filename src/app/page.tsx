@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import SearchBar from "@/components/SearchBar";
 
@@ -18,8 +18,33 @@ const SUGGESTIONS = [
 export default function Home() {
   const [query, setQuery] = useState("");
   const [shake, setShake] = useState(false);
+  const [installPrompt, setInstallPrompt] = useState<Event | null>(null);
+  const [showInstall, setShowInstall] = useState(false);
   const router = useRouter();
   const searchRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handler = (e: Event) => {
+      e.preventDefault();
+      setInstallPrompt(e);
+      const dismissed = sessionStorage.getItem("pwa-dismissed");
+      if (!dismissed) setShowInstall(true);
+    };
+    window.addEventListener("beforeinstallprompt", handler);
+    return () => window.removeEventListener("beforeinstallprompt", handler);
+  }, []);
+
+  async function handleInstall() {
+    if (!installPrompt) return;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (installPrompt as any).prompt();
+    setShowInstall(false);
+  }
+
+  function dismissInstall() {
+    setShowInstall(false);
+    sessionStorage.setItem("pwa-dismissed", "1");
+  }
 
   function go(q: string) {
     if (!q.trim()) return;
@@ -109,6 +134,29 @@ export default function Home() {
       <p className="text-xs text-[var(--muted2)] mt-2">
         Describe what you want — AI finds it
       </p>
+
+      {/* Install banner */}
+      {showInstall && (
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-[var(--border)] px-6 py-4 flex items-center justify-between gap-4 z-50 shadow-lg">
+          <p className="text-[13px] text-[var(--muted)]">
+            Add Cafepedia to your home screen
+          </p>
+          <div className="flex gap-2 flex-shrink-0">
+            <button
+              onClick={dismissInstall}
+              className="text-[13px] text-[var(--muted2)] px-3 py-2 min-h-[44px]"
+            >
+              Later
+            </button>
+            <button
+              onClick={handleInstall}
+              className="text-[13px] font-semibold bg-[var(--foreground)] text-white px-4 py-2 rounded-lg min-h-[44px]"
+            >
+              Install
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Footer */}
       <footer className="absolute bottom-4 text-[11px] text-[var(--muted2)] flex items-center gap-2">

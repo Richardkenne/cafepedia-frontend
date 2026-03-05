@@ -14,6 +14,20 @@ function formatTag(tag: string) {
   return tag.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
 }
 
+const VIBE_TAGS: Record<string, string> = {
+  cozy: "Cozy", chill: "Chill", romantic: "Romantic", lively: "Lively",
+  quiet: "Quiet", elegant: "Elegant", rustic: "Rustic", modern: "Modern",
+  minimalist: "Minimalist", industrial: "Industrial", tropical: "Tropical",
+  vintage: "Vintage", aesthetic: "Aesthetic", artsy: "Artsy", bookish: "Bookish",
+}
+
+function getVibeSummary(tags: string[], environment?: string): string | null {
+  const vibes = tags.filter(t => t in VIBE_TAGS).map(t => VIBE_TAGS[t])
+  if (vibes.length > 0) return vibes.slice(0, 4).join(" · ")
+  if (environment && environment !== "Casual") return environment
+  return null
+}
+
 function Section({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="py-3 border-b border-[var(--surface)]">
@@ -157,8 +171,8 @@ export default function CafeDetail() {
                 {cafe.type && (
                   <Section label="Type">{cafe.type}</Section>
                 )}
-                {cafe.environment && (
-                  <Section label="Vibe">{cafe.environment}</Section>
+                {getVibeSummary(cafe.tags || [], cafe.environment) && (
+                  <Section label="Vibe">{getVibeSummary(cafe.tags || [], cafe.environment)}</Section>
                 )}
                 {cafe.hours && formatHoursCompact(cafe.hours) && (
                   <Section label="Hours">
