@@ -57,7 +57,9 @@ export default function RootLayout({
   return (
     <html lang="en-ID">
       <body className="antialiased min-h-dvh">
+        <I18nProvider>
         {children}
+        </I18nProvider>
         <script
           dangerouslySetInnerHTML={{
             __html: `
