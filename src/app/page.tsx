@@ -52,12 +52,20 @@ export default function Home() {
   }
 
   function goNear() {
+    if (!("geolocation" in navigator)) {
+      alert("Location not supported on this browser");
+      return;
+    }
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         router.push(`/search?q=&near=${pos.coords.latitude},${pos.coords.longitude}`);
       },
-      () => {},
-      { enableHighAccuracy: true, timeout: 8000 }
+      (err) => {
+        if (err.code === 1) alert("Location access denied. Enable it in your browser settings.");
+        else if (err.code === 3) alert("Location timed out. Try again.");
+        else alert("Could not get your location. Try searching instead.");
+      },
+      { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 }
     );
   }
 
