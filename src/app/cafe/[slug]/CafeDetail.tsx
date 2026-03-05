@@ -166,7 +166,7 @@ export default function CafeDetail() {
               {/* Info sections */}
               <div className="mt-6">
                 {cafe.price_range && (
-                  <Section label="Price">{cafe.price_range}</Section>
+                  <Section label="Price">{(cafe.price_range as string).replace(/★/g, "$")}</Section>
                 )}
                 {cafe.type && (
                   <Section label="Type">{cafe.type}</Section>
