@@ -111,8 +111,10 @@ export default function Home() {
       </p>
 
       {/* Footer */}
-      <footer className="absolute bottom-4 text-[11px] text-[var(--muted2)]">
+      <footer className="absolute bottom-4 text-[11px] text-[var(--muted2)] flex items-center gap-2">
         cafepedia.id — Bandung, Indonesia
+        <span>·</span>
+        <a href="/blog" className="underline hover:text-[var(--foreground)] transition-colors">Blog</a>
       </footer>
     </main>
   );

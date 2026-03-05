@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { makeSlug } from "@/lib/api";
+import { blogPosts } from "@/lib/blog";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "https://api.cafepedia.id";
 const SITE_URL = "https://cafepedia.id";
@@ -13,7 +14,21 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "daily",
       priority: 1,
     },
+    {
+      url: `${SITE_URL}/blog`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
   ];
+
+  // Blog pages
+  const blogPages: MetadataRoute.Sitemap = blogPosts.map(post => ({
+    url: `${SITE_URL}/blog/${post.slug}`,
+    lastModified: new Date(post.date),
+    changeFrequency: "monthly" as const,
+    priority: 0.7,
+  }));
 
   // Fetch all cafes (paginate if needed)
   const cafePages: MetadataRoute.Sitemap = [];
@@ -42,5 +57,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // If API fails, return static pages only
   }
 
-  return [...staticPages, ...cafePages];
+  return [...staticPages, ...blogPages, ...cafePages];
 }

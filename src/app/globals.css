@@ -54,3 +54,56 @@ input[type="text"] {
 .animate-shake {
   animation: shake 0.4s ease-in-out;
 }
+
+/* Blog article typography */
+.prose-cafepedia {
+  color: var(--foreground);
+  line-height: 1.75;
+  font-size: 16px;
+}
+.prose-cafepedia p {
+  margin-bottom: 1.25em;
+}
+.prose-cafepedia h2 {
+  font-size: 1.5em;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-top: 2.5em;
+  margin-bottom: 0.75em;
+  color: var(--foreground);
+}
+.prose-cafepedia h3 {
+  font-size: 1.2em;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-top: 1.75em;
+  margin-bottom: 0.5em;
+  color: var(--foreground);
+}
+.prose-cafepedia h4 {
+  font-size: 1.05em;
+  font-weight: 600;
+  margin-top: 1.5em;
+  margin-bottom: 0.4em;
+  color: var(--foreground);
+}
+.prose-cafepedia a {
+  color: var(--orange);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: opacity 0.15s;
+}
+.prose-cafepedia a:hover {
+  opacity: 0.75;
+}
+.prose-cafepedia ul {
+  list-style-type: disc;
+  padding-left: 1.5em;
+  margin-bottom: 1.25em;
+}
+.prose-cafepedia li {
+  margin-bottom: 0.5em;
+}
+.prose-cafepedia strong {
+  font-weight: 600;
+}
