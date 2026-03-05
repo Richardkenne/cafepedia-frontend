@@ -15,6 +15,7 @@ function SearchContent() {
   const searchParams = useSearchParams();
   const initialQ = searchParams.get("q") || "";
   const nearParam = searchParams.get("near") || "";
+  const { t } = useTranslation();
 
   const PAGE_SIZE = 15;
   const [query, setQuery] = useState(initialQ);
