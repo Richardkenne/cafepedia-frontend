@@ -81,14 +81,17 @@ export default function CafeDetail() {
               <div className="relative">
                 <div className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide gap-1">
                   {cafe.photos.map((url, i) => (
-                    <img
-                      key={i}
-                      src={url}
-                      alt={`${cafe.name} photo ${i + 1}`}
-                      className="w-full sm:w-4/5 h-56 sm:h-72 object-cover flex-shrink-0 snap-start first:rounded-none"
-                      loading={i === 0 ? "eager" : "lazy"}
-                      onLoad={() => i === 0 && setPhotoIndex(0)}
-                    />
+                    <div key={i} className="relative w-full sm:w-4/5 h-56 sm:h-72 flex-shrink-0 snap-start">
+                      <Image
+                        src={url}
+                        alt={`${cafe.name} photo ${i + 1}`}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 640px) 100vw, 80vw"
+                        priority={i === 0}
+                        loading={i === 0 ? "eager" : "lazy"}
+                      />
+                    </div>
                   ))}
                 </div>
                 {cafe.photos.length > 1 && (
