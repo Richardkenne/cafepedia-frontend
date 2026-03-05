@@ -14,6 +14,12 @@ function formatDistance(km?: number) {
   return km < 1 ? `${Math.round(km * 1000)}m` : `${km.toFixed(1)}km`;
 }
 
+function formatPrice(price?: string) {
+  if (!price) return null;
+  const count = (price.match(/★/g) || []).length;
+  return count > 0 ? "$".repeat(count) : price;
+}
+
 export default function CafeCard({ cafe }: { cafe: Cafe }) {
   const tags = (cafe.tags || []).filter(t => DISPLAY_TAGS.has(t)).slice(0, 3);
   const dist = formatDistance(cafe.distance_km);
