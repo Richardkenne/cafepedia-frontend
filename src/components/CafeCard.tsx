@@ -61,7 +61,7 @@ export default function CafeCard({ cafe }: { cafe: Cafe }) {
 
         <p className="text-[13px] text-[var(--muted)] mt-0.5 truncate">
           {cafe.neighborhood || cafe.area}
-          {cafe.price_level && ` · ${cafe.price_level}`}
+          {cafe.price_level && ` · ${formatPrice(cafe.price_level)}`}
         </p>
 
         {cafe.rating && (
