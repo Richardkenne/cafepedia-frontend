@@ -1,30 +1,11 @@
-const CACHE_NAME = "cafepedia-v3"
-const OFFLINE_URL = "/offline.html"
-
-self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll([OFFLINE_URL]))
-  )
-  self.skipWaiting()
-})
-
+// v4 — self-destruct: unregister and clear all caches
+self.addEventListener("install", () => self.skipWaiting())
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
-    )
+    caches.keys().then((keys) => Promise.all(keys.map((k) => caches.delete(k))))
+      .then(() => self.registration.unregister())
+      .then(() => self.clients.matchAll()).then((clients) => {
+        clients.forEach((c) => c.navigate(c.url))
+      })
   )
-  self.clients.claim()
-})
-
-self.addEventListener("fetch", (event) => {
-  // Only intercept navigation requests for offline fallback
-  if (event.request.mode === "navigate") {
-    event.respondWith(
-      fetch(event.request).catch(() => caches.match(OFFLINE_URL))
-    )
-    return
-  }
-
-  // Everything else: pass through to network normally
 })
