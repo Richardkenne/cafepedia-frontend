@@ -145,8 +145,8 @@ function SearchContent() {
         {/* Meta */}
         {!loading && (
           <p className="text-xs text-[var(--muted2)] py-3">
-            {found > 0 ? `${found} cafe${found !== 1 ? "s" : ""} found` : ""}
-            {nearActive && found > 0 && " · sorted by distance"}
+            {found > 0 ? `${found} ${found !== 1 ? t("search.cafes_found") : t("search.cafe_found")}` : ""}
+            {nearActive && found > 0 && ` \u00b7 ${t("search.sorted_by_distance")}`}
           </p>
         )}
 
