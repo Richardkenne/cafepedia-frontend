@@ -114,7 +114,7 @@ function PickContent() {
             onClick={() => router.push("/")}
             className="text-[var(--muted)] text-sm font-medium p-2 -ml-2 min-w-[44px] min-h-[44px] flex items-center justify-center"
           >
-            ← Back
+            {t("pick.back")}
           </button>
           <p className="text-sm text-[var(--muted)] truncate flex-1">{query}</p>
         </div>
