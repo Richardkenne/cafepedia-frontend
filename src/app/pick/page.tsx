@@ -75,6 +75,7 @@ function PickContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const query = searchParams.get("q") || "";
+  const { t } = useTranslation();
 
   const [top3, setTop3] = useState<Cafe[]>([]);
   const [more, setMore] = useState<Cafe[]>([]);
