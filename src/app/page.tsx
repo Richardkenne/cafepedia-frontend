@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import SearchBar from "@/components/SearchBar";
 
@@ -11,11 +11,15 @@ const SUGGESTIONS = [
   { label: "Outdoor", q: "outdoor cafes" },
   { label: "Hidden Gems", q: "hidden gem" },
   { label: "View", q: "mountain view" },
+  { label: "Coffee", q: "coffee" },
+  { label: "Brunch", q: "brunch" },
 ];
 
 export default function Home() {
   const [query, setQuery] = useState("");
+  const [shake, setShake] = useState(false);
   const router = useRouter();
+  const searchRef = useRef<HTMLDivElement>(null);
 
   function go(q: string) {
     if (!q.trim()) return;
@@ -33,7 +37,12 @@ export default function Home() {
   }
 
   function goAI(q: string) {
-    if (!q.trim()) return;
+    if (!q.trim()) {
+      setShake(true);
+      searchRef.current?.querySelector("input")?.focus();
+      setTimeout(() => setShake(false), 500);
+      return;
+    }
     router.push(`/pick?q=${encodeURIComponent(q.trim())}`);
   }
 
@@ -43,12 +52,15 @@ export default function Home() {
       <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-1">
         Cafepedia
       </h1>
-      <p className="text-sm text-[var(--muted2)] mb-8">
+      <p className="text-sm text-[var(--muted2)] mb-1">
         Discover cafes in Bandung
+      </p>
+      <p className="text-xs text-[var(--muted2)] mb-8">
+        600+ cafes with photos, hours & directions
       </p>
 
       {/* Search + Near Me */}
-      <div className="w-full max-w-md flex gap-2">
+      <div className={`w-full max-w-md flex gap-2 ${shake ? "animate-shake" : ""}`} ref={searchRef}>
         <div className="flex-1">
           <SearchBar
             value={query}
@@ -88,9 +100,7 @@ export default function Home() {
 
       {/* AI Pick */}
       <button
-        onClick={() => {
-          if (query.trim()) goAI(query);
-        }}
+        onClick={() => goAI(query)}
         className="mt-8 px-8 py-3.5 rounded-xl bg-[var(--foreground)] text-white text-[15px] font-semibold
           hover:opacity-85 active:scale-95 transition-all min-h-[48px]"
       >
@@ -99,6 +109,11 @@ export default function Home() {
       <p className="text-xs text-[var(--muted2)] mt-2">
         Describe what you want — AI finds it
       </p>
+
+      {/* Footer */}
+      <footer className="absolute bottom-4 text-[11px] text-[var(--muted2)]">
+        cafepedia.id — Bandung, Indonesia
+      </footer>
     </main>
   );
 }
