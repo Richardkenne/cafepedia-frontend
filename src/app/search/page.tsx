@@ -7,6 +7,8 @@ import { Cafe } from "@/lib/types";
 import CafeCard from "@/components/CafeCard";
 import SearchBar from "@/components/SearchBar";
 import { CardSkeleton } from "@/components/Skeleton";
+import LangToggle from "@/components/LangToggle";
+import { useTranslation } from "@/lib/i18n";
 
 function SearchContent() {
   const router = useRouter();
