@@ -1,4 +1,4 @@
-const CACHE_NAME = "cafepedia-v2"
+const CACHE_NAME = "cafepedia-v3"
 const OFFLINE_URL = "/offline.html"
 
 self.addEventListener("install", (event) => {
