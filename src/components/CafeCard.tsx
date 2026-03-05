@@ -25,11 +25,14 @@ export default function CafeCard({ cafe }: { cafe: Cafe }) {
     >
       {/* Photo */}
       {cafe.hero_photo ? (
-        <img
+        <Image
           src={cafe.hero_photo}
           alt={cafe.name}
+          width={96}
+          height={96}
           className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl object-cover flex-shrink-0 bg-[var(--surface)]"
           loading="lazy"
+          sizes="(max-width: 640px) 80px, 96px"
         />
       ) : (
         <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl bg-[var(--surface)] flex-shrink-0 flex items-center justify-center text-[var(--muted2)] text-2xl">
