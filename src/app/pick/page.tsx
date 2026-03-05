@@ -20,12 +20,16 @@ function AICard({ cafe, featured }: { cafe: Cafe; featured?: boolean }) {
     <Link href={`/cafe/${makeSlug(cafe.id, cafe.name)}`} className="block active:opacity-70 transition-opacity">
       <div className={`bg-[var(--surface)] rounded-2xl overflow-hidden ${featured ? "mb-4" : "mb-3"}`}>
         {cafe.hero_photo && featured && (
-          <img
-            src={cafe.hero_photo}
-            alt={cafe.name}
-            className="w-full h-48 sm:h-56 object-cover"
-            loading="lazy"
-          />
+          <div className="relative w-full h-48 sm:h-56">
+            <Image
+              src={cafe.hero_photo}
+              alt={cafe.name}
+              fill
+              className="object-cover"
+              sizes="(max-width: 640px) 100vw, 672px"
+              loading="lazy"
+            />
+          </div>
         )}
         <div className="p-4">
           <h3 className={`font-bold ${featured ? "text-lg" : "text-[15px]"}`}>
