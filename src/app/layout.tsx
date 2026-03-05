@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import { I18nProvider } from "@/lib/i18n";
 
 const SITE_URL = "https://cafepedia.id";
 
