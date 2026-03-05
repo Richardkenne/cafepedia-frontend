@@ -181,8 +181,8 @@ function SearchContent() {
         {!loading && results.length === 0 && (
           <div className="text-center py-20 text-[var(--muted2)] text-sm">
             <p className="text-4xl mb-4">☕</p>
-            <p>No cafes found</p>
-            <p className="mt-1">Try a different search</p>
+            <p>{t("search.no_cafes")}</p>
+            <p className="mt-1">{t("search.try_different")}</p>
           </div>
         )}
       </main>
