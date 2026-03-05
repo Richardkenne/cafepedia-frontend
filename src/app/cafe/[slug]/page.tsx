@@ -71,6 +71,67 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function CafePage() {
-  return <CafeDetail />;
+function priceRangeToSymbol(pr?: string): string | undefined {
+  if (!pr) return undefined;
+  if (pr.includes("★★★★")) return "$$$$";
+  if (pr.includes("★★★")) return "$$$";
+  if (pr.includes("★★")) return "$$";
+  if (pr.includes("★")) return "$";
+  return undefined;
+}
+
+function buildJsonLd(cafe: Record<string, unknown>) {
+  const area = (cafe.area || cafe.neighborhood || "Bandung") as string;
+  const ld: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "CafeOrCoffeeShop",
+    "name": cafe.name,
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": area,
+      "addressRegion": "West Java",
+      "addressCountry": "ID",
+      ...(cafe.address ? { "streetAddress": cafe.address as string } : {}),
+    },
+    "url": `https://cafepedia.id/cafe/${(cafe as { id: number; name: string }).id}-${((cafe.name as string) || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`,
+  };
+  if (cafe.lat && cafe.lng) {
+    ld.geo = { "@type": "GeoCoordinates", latitude: cafe.lat, longitude: cafe.lng };
+  }
+  if (cafe.rating) {
+    ld.aggregateRating = {
+      "@type": "AggregateRating",
+      ratingValue: cafe.rating,
+      bestRating: 5,
+      ...(cafe.reviews || cafe.rating_count ? { reviewCount: cafe.reviews || cafe.rating_count } : {}),
+    };
+  }
+  const price = priceRangeToSymbol(cafe.price_range as string);
+  if (price) ld.priceRange = price;
+  if (cafe.phone) ld.telephone = cafe.phone;
+  if (cafe.website) ld.url = cafe.website;
+  if (cafe.instagram) ld.sameAs = [cafe.instagram];
+  const photo = (cafe.photos as string[])?.[0] || cafe.hero_photo;
+  if (photo) ld.image = photo;
+  if (cafe.google_maps_link) ld.hasMap = cafe.google_maps_link;
+  if (cafe.description) ld.description = (cafe.description as string).slice(0, 300);
+  return ld;
+}
+
+export default async function CafePage({ params }: Props) {
+  const { slug } = await params;
+  const id = parseSlug(slug);
+  const cafe = await fetchCafe(id);
+
+  return (
+    <>
+      {cafe && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(buildJsonLd(cafe)) }}
+        />
+      )}
+      <CafeDetail />
+    </>
+  );
 }
