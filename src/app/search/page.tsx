@@ -14,9 +14,11 @@ function SearchContent() {
   const initialQ = searchParams.get("q") || "";
   const nearParam = searchParams.get("near") || "";
 
+  const PAGE_SIZE = 15;
   const [query, setQuery] = useState(initialQ);
   const [results, setResults] = useState<Cafe[]>([]);
   const [found, setFound] = useState(0);
+  const [visible, setVisible] = useState(PAGE_SIZE);
   const [loading, setLoading] = useState(true);
   const [nearActive, setNearActive] = useState(!!nearParam);
   const [userLat, setUserLat] = useState<number | null>(null);
@@ -45,6 +47,7 @@ function SearchContent() {
       const data = await searchCafes(params);
       setResults(data.results || []);
       setFound(data.found || 0);
+      setVisible(PAGE_SIZE);
     } catch {
       setResults([]);
       setFound(0);
@@ -154,9 +157,18 @@ function SearchContent() {
         {/* Results list */}
         {!loading && results.length > 0 && (
           <div>
-            {results.map(cafe => (
+            {results.slice(0, visible).map(cafe => (
               <CafeCard key={cafe.id} cafe={cafe} />
             ))}
+            {visible < results.length && (
+              <button
+                onClick={() => setVisible(v => v + PAGE_SIZE)}
+                className="w-full py-4 mt-2 text-sm font-medium text-[var(--muted)] border border-[var(--border)] rounded-xl
+                  hover:bg-[var(--surface)] active:scale-[0.98] transition-all min-h-[48px]"
+              >
+                Show more ({results.length - visible} remaining)
+              </button>
+            )}
           </div>
         )}
 
