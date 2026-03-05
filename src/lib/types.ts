@@ -19,6 +19,7 @@ export interface Cafe {
   instagram?: string;
   hours?: string;
   google_maps_link?: string;
+  description?: string;
   hero_photo?: string;
   photos?: string[];
   distance_km?: number;

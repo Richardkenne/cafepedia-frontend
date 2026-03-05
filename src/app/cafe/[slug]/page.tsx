@@ -123,6 +123,13 @@ export default function CafeDetail() {
                 </div>
               )}
 
+              {/* Description */}
+              {cafe.description && (
+                <p className="mt-4 text-[14px] leading-relaxed text-[var(--muted)]">
+                  {cafe.description}
+                </p>
+              )}
+
               {/* Tags */}
               {cafe.tags && cafe.tags.length > 0 && (
                 <div className="flex gap-2 mt-4 flex-wrap">
