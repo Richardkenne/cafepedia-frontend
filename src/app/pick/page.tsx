@@ -6,6 +6,7 @@ import { decideCafe, makeSlug } from "@/lib/api";
 import { Cafe } from "@/lib/types";
 import Link from "next/link";
 import Image from "next/image";
+import { useTranslation } from "@/lib/i18n";
 
 const DISPLAY_TAGS = new Set(["coffee","tea","bakery","roastery","food","premium","work_friendly","outdoor","quiet","pet_friendly","budget","top_rated","aesthetic","specialty_coffee","cozy","modern","romantic","chill","western_food","korean_food","japanese_food","sundanese_food","mountain_view","hidden_gem","kid_friendly","breakfast","lunch_spot","dinner_spot","garden","dessert","rooftop_view"]);
 
