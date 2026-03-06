@@ -27,7 +27,7 @@ export default function SearchBar({ value, onChange, onSubmit, placeholder = "Se
         placeholder={placeholder}
         autoFocus={autoFocus}
         autoComplete="off"
-        className={`w-full bg-[var(--surface)] border border-[var(--border)] rounded-xl outline-none transition-all
+        className={`w-full bg-[var(--surface)] border border-[var(--border)] rounded-2xl shadow-sm outline-none transition-all
           placeholder:text-[var(--muted2)]
           focus:border-gray-300 focus:ring-2 focus:ring-black/5
           ${large ? "px-5 py-4 pr-14 text-[17px]" : "px-4 py-3 pr-12 text-[16px]"}`}

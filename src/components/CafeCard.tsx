@@ -27,7 +27,7 @@ export default function CafeCard({ cafe }: { cafe: Cafe }) {
   return (
     <Link
       href={`/cafe/${makeSlug(cafe.id, cafe.name)}`}
-      className="flex gap-4 py-4 border-b border-[var(--surface)] active:opacity-60 transition-opacity"
+      className="flex gap-4 py-5 border-b border-[var(--surface)] active:opacity-60 transition-opacity hover:bg-[var(--surface)] transition-colors"
     >
       {/* Photo */}
       {cafe.hero_photo ? (
@@ -36,12 +36,12 @@ export default function CafeCard({ cafe }: { cafe: Cafe }) {
           alt={cafe.name}
           width={96}
           height={96}
-          className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl object-cover flex-shrink-0 bg-[var(--surface)]"
+          className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl object-cover flex-shrink-0 bg-[var(--surface)]"
           loading="lazy"
-          sizes="(max-width: 640px) 80px, 96px"
+          sizes="(max-width: 640px) 96px, 112px"
         />
       ) : (
-        <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl bg-[var(--surface)] flex-shrink-0 flex items-center justify-center text-[var(--muted2)] text-2xl">
+        <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-[var(--surface)] flex-shrink-0 flex items-center justify-center text-[var(--muted2)] text-2xl">
           ☕
         </div>
       )}
@@ -49,7 +49,7 @@ export default function CafeCard({ cafe }: { cafe: Cafe }) {
       {/* Info */}
       <div className="flex-1 min-w-0 flex flex-col justify-center">
         <div className="flex items-start justify-between gap-2">
-          <h3 className="font-semibold text-[15px] sm:text-base leading-tight truncate">
+          <h3 className="font-semibold text-base sm:text-lg leading-tight truncate">
             {cafe.name}
           </h3>
           {dist && (
@@ -80,7 +80,7 @@ export default function CafeCard({ cafe }: { cafe: Cafe }) {
         {tags.length > 0 && (
           <div className="flex gap-1.5 mt-2 flex-wrap">
             {tags.map(t => (
-              <span key={t} className="text-[11px] px-2.5 py-0.5 rounded-full bg-[var(--surface)] text-[var(--muted)] font-medium">
+              <span key={t} className="text-xs px-2.5 py-0.5 rounded-full bg-[var(--surface)] text-[var(--muted)] font-medium">
                 {formatTag(t)}
               </span>
             ))}

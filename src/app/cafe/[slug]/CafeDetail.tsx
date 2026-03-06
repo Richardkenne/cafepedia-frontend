@@ -30,7 +30,7 @@ function getVibeSummary(tags: string[], environment?: string): string | null {
 
 function Section({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="py-3 border-b border-[var(--surface)]">
+    <div className="py-4 border-b border-[var(--surface)]">
       <div className="text-[11px] uppercase tracking-wider text-[var(--muted2)] font-medium mb-1">
         {label}
       </div>
@@ -100,7 +100,7 @@ export default function CafeDetail() {
     <div className="min-h-dvh">
       {/* Sticky header */}
       <header className="sticky top-0 z-20 bg-[var(--background)]/92 backdrop-blur-xl border-b border-[var(--border)]">
-        <div className="max-w-2xl mx-auto px-4 py-3 flex items-center gap-3">
+        <div className="max-w-3xl mx-auto px-4 py-3 flex items-center gap-3">
           <button
             onClick={() => router.back()}
             className="text-[var(--muted)] text-sm font-medium p-2 -ml-2 min-w-[44px] min-h-[44px] flex items-center justify-center gap-1"
@@ -115,7 +115,7 @@ export default function CafeDetail() {
         </div>
       </header>
 
-      <main className="max-w-2xl mx-auto pb-8">
+      <main className="max-w-3xl mx-auto pb-8">
         {loading && (
           <div className="px-4 pt-4">
             <DetailSkeleton />
@@ -135,7 +135,7 @@ export default function CafeDetail() {
               <div>
                 {/* Hero photo */}
                 <div
-                  className="relative w-full h-56 sm:h-80 cursor-pointer"
+                  className="relative w-full h-64 sm:h-96 cursor-pointer"
                   onClick={() => openLightbox(displayPhotos[0])}
                 >
                   <Image
@@ -239,7 +239,7 @@ export default function CafeDetail() {
             {/* Content */}
             <div className="px-4 pt-5">
               {/* Name + area */}
-              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight leading-tight">
+              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight leading-tight">
                 {cafe.name}
               </h2>
               <p className="text-[14px] text-[var(--muted)] mt-1 leading-relaxed">
@@ -341,7 +341,7 @@ export default function CafeDetail() {
                     href={cafe.google_maps_link}
                     target="_blank"
                     rel="noopener"
-                    className="flex-1 text-center py-3.5 rounded-xl bg-[var(--foreground)] text-white text-[14px] font-semibold
+                    className="flex-1 text-center py-3.5 rounded-2xl bg-[var(--foreground)] text-white text-[14px] font-semibold
                       active:scale-95 transition-transform min-h-[48px] flex items-center justify-center"
                   >
                     Buka di Maps
@@ -350,7 +350,7 @@ export default function CafeDetail() {
                 {cafe.phone && (
                   <a
                     href={`tel:${cafe.phone}`}
-                    className="flex-1 text-center py-3.5 rounded-xl border border-[var(--border)] text-[14px] font-semibold
+                    className="flex-1 text-center py-3.5 rounded-2xl border border-[var(--border)] text-[14px] font-semibold
                       active:scale-95 transition-transform min-h-[48px] flex items-center justify-center"
                   >
                     Telepon

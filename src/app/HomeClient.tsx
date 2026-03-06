@@ -92,7 +92,7 @@ export default function HomeClient({ discoveryLinks }: { discoveryLinks: ReactNo
         </div>
         <button
           onClick={goNear}
-          className="px-4 border border-[var(--border)] rounded-xl bg-[var(--surface)] text-[var(--muted)]
+          className="px-4 border border-[var(--border)] rounded-2xl bg-[var(--surface)] text-[var(--muted)]
             hover:bg-gray-100 active:scale-95 transition-all flex items-center justify-center min-w-[48px] min-h-[48px]"
           aria-label={t("home.near_me")}
           title={t("home.near_me")}
@@ -109,7 +109,7 @@ export default function HomeClient({ discoveryLinks }: { discoveryLinks: ReactNo
       {/* AI Pick */}
       <button
         onClick={() => goAI(query)}
-        className="mt-8 px-8 py-3.5 rounded-xl bg-[var(--accent)] text-white text-[15px] font-semibold
+        className="mt-10 px-8 py-4 rounded-2xl bg-[var(--accent)] text-white text-base font-semibold
           hover:opacity-85 active:scale-95 transition-all min-h-[48px]"
       >
         {t("home.pick_for_me")}

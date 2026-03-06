@@ -105,8 +105,8 @@ function SearchContent() {
   return (
     <div className="min-h-dvh">
       {/* Sticky header */}
-      <header className="sticky top-0 z-20 bg-[var(--background)]/92 backdrop-blur-xl border-b border-[var(--border)]">
-        <div className="max-w-2xl mx-auto px-4 py-3 flex items-center gap-2">
+      <header className="sticky top-0 z-20 bg-[var(--background)]/92 backdrop-blur-xl border-b border-[var(--border)] shadow-sm">
+        <div className="max-w-3xl mx-auto px-4 py-3 flex items-center gap-2">
           <button
             onClick={() => router.push("/")}
             className="text-[var(--muted)] text-lg p-2 -ml-2 min-w-[44px] min-h-[44px] flex items-center justify-center"
@@ -142,7 +142,7 @@ function SearchContent() {
       </header>
 
       {/* Results */}
-      <main className="max-w-2xl mx-auto px-4 pb-8">
+      <main className="max-w-3xl mx-auto px-4 pb-8">
         {/* Meta */}
         {!loading && (
           <p className="text-xs text-[var(--muted2)] py-3">
@@ -195,7 +195,7 @@ export default function SearchPage() {
   return (
     <Suspense fallback={
       <div className="min-h-dvh">
-        <div className="max-w-2xl mx-auto px-4 pt-6">
+        <div className="max-w-3xl mx-auto px-4 pt-6">
           {Array.from({ length: 6 }).map((_, i) => (
             <CardSkeleton key={i} />
           ))}
