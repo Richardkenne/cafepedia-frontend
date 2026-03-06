@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { getTrendingCafes, makeSlug } from "@/lib/api";
+import { searchCafes, makeSlug } from "@/lib/api";
 import { Cafe } from "@/lib/types";
 import SearchBar from "@/components/SearchBar";
 import LangToggle from "@/components/LangToggle";
@@ -83,7 +83,8 @@ export default function HomeClient() {
   const [aiQuery, setAiQuery] = useState("");
   const [shake, setShake] = useState(false);
   const [trending, setTrending] = useState<Cafe[]>([]);
-  const [heroImage, setHeroImage] = useState<string | null>(null);
+  const HERO_FALLBACK = "https://fkpxolnsqjfgcbkiqbld.supabase.co/storage/v1/object/public/cafe-photos/1_flash-coffee/hero.jpg";
+  const [heroImage, setHeroImage] = useState<string>(HERO_FALLBACK);
   const [installPrompt, setInstallPrompt] = useState<Event | null>(null);
   const [showInstall, setShowInstall] = useState(false);
   const router = useRouter();
@@ -91,11 +92,11 @@ export default function HomeClient() {
   const { t } = useTranslation();
 
   useEffect(() => {
-    getTrendingCafes().then(cafes => {
+    searchCafes({ q: "popular" }).then(data => {
+      const cafes = data.results || [];
       setTrending(cafes.slice(0, 9));
-      if (cafes.length > 0 && cafes[0].hero_photo) {
-        setHeroImage(cafes[0].hero_photo);
-      }
+      const withPhoto = cafes.find(c => c.hero_photo);
+      if (withPhoto?.hero_photo) setHeroImage(withPhoto.hero_photo);
     }).catch(() => {});
   }, []);
 
@@ -164,22 +165,26 @@ export default function HomeClient() {
 
       {/* HERO */}
       <section className="relative w-full h-[420px] sm:h-[480px] flex items-center justify-center overflow-hidden">
-        {heroImage ? (
-          <Image
-            src={heroImage}
-            alt="Cafe in Bandung"
-            fill
-            className="object-cover"
-            sizes="100vw"
-            priority
-          />
-        ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-amber-900 to-stone-800" />
-        )}
+        <Image
+          src={heroImage}
+          alt="Cafe in Bandung"
+          fill
+          className="object-cover"
+          sizes="100vw"
+          priority
+        />
         <div className="absolute inset-0 bg-black/45" />
 
         <div className="relative z-10 flex flex-col items-center px-6 w-full max-w-xl text-center">
-          <h1 className="text-3xl sm:text-[42px] font-bold text-white leading-tight tracking-tight">
+          {/* Brand */}
+          <div className="flex items-center gap-2.5 mb-4">
+            <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+              <path d="M16 2C10.48 2 6 6.48 6 12c0 7.5 10 18 10 18s10-10.5 10-18c0-5.52-4.48-10-10-10z" fill="var(--accent)"/>
+              <path d="M16 8.5l1.2 2.4 2.6.4-1.9 1.8.5 2.6L16 14.5l-2.4 1.2.5-2.6-1.9-1.8 2.6-.4L16 8.5z" fill="#fff"/>
+            </svg>
+            <span className="text-2xl sm:text-3xl font-bold text-white tracking-tight">Cafepedia</span>
+          </div>
+          <h1 className="text-2xl sm:text-[36px] font-bold text-white leading-tight tracking-tight">
             Find your next cafe in Bandung
           </h1>
           <p className="text-white/75 text-sm sm:text-base mt-3">
