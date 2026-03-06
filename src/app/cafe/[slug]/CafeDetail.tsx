@@ -291,7 +291,7 @@ export default function CafeDetail() {
                   <Section label="Tipe">{cafe.type}</Section>
                 )}
                 {getVibeSummary(cafe.tags || [], cafe.environment) && (
-                  <Section label="Vibe">{getVibeSummary(cafe.tags || [], cafe.environment)}</Section>
+                  <Section label="Suasana">{getVibeSummary(cafe.tags || [], cafe.environment)}</Section>
                 )}
                 {cafe.hours && formatHoursCompact(cafe.hours) && (
                   <Section label="Hours">
