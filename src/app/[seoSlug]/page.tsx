@@ -48,6 +48,35 @@ function formatPrice(price?: string) {
   return count > 0 ? "$".repeat(count) : null;
 }
 
+function getReasonForIntent(tags: string[], intent: string): string | null {
+  const reasons: Record<string, Record<string, string>> = {
+    "work_friendly": { work_friendly: "WiFi & colokan tersedia", quiet: "Suasana tenang untuk fokus", coworking: "Ruang coworking" },
+    "aesthetic": { aesthetic: "Desain interior estetik", instagrammable: "Spot foto Instagramable", modern: "Konsep modern & stylish" },
+    "budget": { budget: "Harga terjangkau", mid_range: "Harga menengah" },
+    "outdoor": { outdoor: "Area outdoor tersedia", garden: "Taman & area hijau", rooftop_view: "Pemandangan rooftop" },
+    "date_spot": { date_spot: "Cocok untuk kencan", romantic: "Suasana romantis", elegant: "Suasana elegan" },
+    "quiet": { quiet: "Suasana tenang", cozy: "Nyaman & cozy" },
+    "hidden_gem": { hidden_gem: "Tersembunyi & unik" },
+    "premium": { premium: "Kualitas premium", upscale: "Suasana upscale", elegant: "Desain elegan" },
+    "late_night": { late_night: "Buka sampai malam" },
+    "specialty_coffee": { specialty_coffee: "Kopi spesialti", roastery: "Roastery sendiri" },
+    "cozy": { cozy: "Nyaman & homey", rustic: "Nuansa rustic" },
+    "top_rated": { top_rated: "Rating tertinggi", popular: "Populer di Bandung" },
+  };
+
+  // Find matching intent from page tags
+  const intentKey = Object.keys(reasons).find(k =>
+    tags.some(t => reasons[k][t])
+  );
+  if (!intentKey) return null;
+
+  const matched = tags
+    .filter(t => reasons[intentKey]?.[t])
+    .map(t => reasons[intentKey][t])
+    .slice(0, 2);
+  return matched.length > 0 ? matched.join(" · ") : null;
+}
+
 function formatTag(tag: string) {
   return tag.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 }
@@ -179,6 +208,20 @@ export default async function SeoPage({
           {page.title}
         </h1>
 
+        {/* Hero image */}
+        {cafes.length > 0 && cafes[0].hero_photo && (
+          <div className="relative w-full h-48 sm:h-64 rounded-xl overflow-hidden mt-4">
+            <Image
+              src={cafes[0].hero_photo}
+              alt={page.title}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 672px"
+              priority
+            />
+          </div>
+        )}
+
         {/* Intro */}
         {page.intro_text && (
           <p className="mt-4 text-[15px] leading-relaxed text-[var(--muted)]">
@@ -188,7 +231,7 @@ export default async function SeoPage({
 
         {/* Cafe count */}
         <p className="mt-4 text-xs text-[var(--muted2)]">
-          {cafes.length} cafes found
+          {cafes.length} cafe ditemukan
         </p>
 
         {/* Cafe List */}
@@ -250,6 +293,15 @@ export default async function SeoPage({
                     {cafe.description}
                   </p>
                 )}
+                {/* Why this cafe fits */}
+                {(() => {
+                  const reason = getReasonForIntent(cafe.tags || [], page.intent);
+                  return reason ? (
+                    <p className="text-[11px] text-green-700 bg-green-50 px-2 py-0.5 rounded mt-1.5 inline-block">
+                      {reason}
+                    </p>
+                  ) : null;
+                })()}
               </div>
             </Link>
           ))}
@@ -259,7 +311,7 @@ export default async function SeoPage({
         {faq.length > 0 && (
           <section className="mt-10">
             <h2 className="text-lg font-bold mb-4">
-              Frequently Asked Questions
+              Pertanyaan Umum
             </h2>
             <div className="space-y-4">
               {faq.map((item: { q: string; a: string }, i: number) => (
@@ -282,7 +334,7 @@ export default async function SeoPage({
         {/* Related Pages */}
         {related.length > 0 && (
           <section className="mt-10">
-            <h2 className="text-lg font-bold mb-3">Explore More</h2>
+            <h2 className="text-lg font-bold mb-3">Jelajahi Lainnya</h2>
             <div className="flex flex-wrap gap-2">
               {related.map((r) => (
                 <Link
@@ -299,7 +351,7 @@ export default async function SeoPage({
 
         {/* Blog articles */}
         <section className="mt-8">
-          <h3 className="text-sm font-semibold text-[var(--muted)] mb-2">From the blog</h3>
+          <h3 className="text-sm font-semibold text-[var(--muted)] mb-2">Dari blog</h3>
           <div className="flex flex-col gap-1">
             <Link href="/blog/best-cafes-bandung-2026" className="text-[13px] text-[var(--muted2)] hover:text-[var(--foreground)] transition-colors">
               Best Cafes in Bandung 2026
@@ -385,7 +437,7 @@ export default async function SeoPage({
             href="/"
             className="text-[14px] text-[var(--muted)] hover:text-[var(--foreground)] transition-colors"
           >
-            ← Back to Cafepedia
+            ← Kembali ke Cafepedia
           </Link>
         </div>
       </main>
