@@ -378,21 +378,48 @@ export default async function SeoPage({
           </section>
         )}
 
-        {/* Blog articles */}
-        <section className="mt-8">
-          <h3 className="text-sm font-semibold text-[var(--muted)] mb-2">Dari blog</h3>
-          <div className="flex flex-col gap-1">
-            <Link href="/blog/best-cafes-bandung-2026" className="text-[13px] text-[var(--muted2)] hover:text-[var(--foreground)] transition-colors">
-              Best Cafes in Bandung 2026
-            </Link>
-            <Link href="/blog/work-friendly-cafes-bandung" className="text-[13px] text-[var(--muted2)] hover:text-[var(--foreground)] transition-colors">
-              Work-Friendly Cafes in Bandung
-            </Link>
-            <Link href="/blog/bandung-cafe-guide-by-area" className="text-[13px] text-[var(--muted2)] hover:text-[var(--foreground)] transition-colors">
-              Bandung Cafe Guide by Area
-            </Link>
-          </div>
-        </section>
+        {/* Blog articles — show relevant ones first based on page intent/tags */}
+        {(() => {
+          const allArticles = [
+            { href: "/blog/best-cafes-bandung-2026", label: "Best Cafes in Bandung 2026", keywords: ["best", "top_rated", "popular", "premium", "aesthetic", "hidden_gem", "date_spot"] },
+            { href: "/blog/work-friendly-cafes-bandung", label: "Work-Friendly Cafes in Bandung", keywords: ["work_friendly", "coworking", "quiet", "wifi", "budget"] },
+            { href: "/blog/bandung-cafe-guide-by-area", label: "Bandung Cafe Guide by Area", keywords: ["dago", "braga", "riau", "ciumbuleuit", "buah_batu", "pasir_kaliki", "area"] },
+          ];
+          const pageTags = page.tag_filters || [];
+          const pageIntent = (page.intent || "").toLowerCase();
+          const pageArea = (page.area_filter || "").toLowerCase();
+
+          // Score each article by relevance
+          const scored = allArticles.map((a) => {
+            let score = 0;
+            for (const kw of a.keywords) {
+              if (pageTags.includes(kw)) score += 2;
+              if (pageIntent.includes(kw)) score += 2;
+              if (pageArea.includes(kw)) score += 2;
+            }
+            return { ...a, score };
+          });
+
+          // Sort by score desc, take top 2 relevant + always show at least 1
+          scored.sort((a, b) => b.score - a.score);
+          // Show articles with score > 0 first, then fill up to 3
+          const relevant = scored.filter((a) => a.score > 0);
+          const rest = scored.filter((a) => a.score === 0);
+          const toShow = [...relevant, ...rest].slice(0, 3);
+
+          return (
+            <section className="mt-8">
+              <h3 className="text-sm font-semibold text-[var(--muted)] mb-2">Artikel Terkait</h3>
+              <div className="flex flex-col gap-1">
+                {toShow.map((a) => (
+                  <Link key={a.href} href={a.href} className="text-[13px] text-[var(--muted2)] hover:text-[var(--foreground)] transition-colors">
+                    {a.label}
+                  </Link>
+                ))}
+              </div>
+            </section>
+          );
+        })()}
 
         {/* Schema.org FAQ */}
         {faq.length > 0 && (
