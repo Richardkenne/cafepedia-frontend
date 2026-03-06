@@ -36,6 +36,7 @@ export default function SearchBar({ value, onChange, onSubmit, placeholder = "Se
         type="submit"
         className={`absolute right-2 top-1/2 -translate-y-1/2 rounded-lg bg-[var(--foreground)] text-white
           flex items-center justify-center transition-all active:scale-90
+          min-w-[44px] min-h-[44px]
           ${large ? "w-10 h-10" : "w-9 h-9"}`}
         aria-label="Search"
       >
