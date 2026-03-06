@@ -100,6 +100,15 @@ export const blogPosts: BlogPost[] = [
 <p>This guide barely scratches the surface. Bandung has nearly 600 cafes, and we've cataloged all of them on Cafepedia — complete with photos, hours, directions, and tags so you can filter by exactly what you're looking for.</p>
 
 <p><a href="/">Search all cafes on Cafepedia</a> or try our <a href="/search?q=hidden+gem">hidden gems</a>, <a href="/search?q=work+cafes">work-friendly spots</a>, or <a href="/search?q=mountain+view">mountain view cafes</a>.</p>
+
+<h3>Explore More</h3>
+<ul>
+  <li><a href="/best-cafes-bandung">Best Cafes in Bandung</a></li>
+  <li><a href="/aesthetic-cafes-bandung">Aesthetic Cafes in Bandung</a></li>
+  <li><a href="/cheap-cafes-bandung">Cheap Cafes in Bandung</a></li>
+  <li><a href="/cafes-dago-bandung">Cafes in Dago</a></li>
+  <li><a href="/cafes-braga-bandung">Cafes in Braga</a></li>
+</ul>
 `,
   },
   {
