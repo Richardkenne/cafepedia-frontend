@@ -328,6 +328,51 @@ export default async function SeoPage({
           />
         )}
 
+        {/* Schema.org ItemList */}
+        {cafes.length > 0 && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "ItemList",
+                name: page.title,
+                description: page.meta_description,
+                numberOfItems: cafes.length,
+                itemListElement: cafes.map((cafe, idx) => ({
+                  "@type": "ListItem",
+                  position: idx + 1,
+                  item: {
+                    "@type": "CafeOrCoffeeShop",
+                    name: cafe.name,
+                    url: `https://cafepedia.id/cafe/${makeSlug(cafe.id, cafe.name)}`,
+                    ...(cafe.area && { address: { "@type": "PostalAddress", addressLocality: cafe.area, addressRegion: "West Java", addressCountry: "ID" } }),
+                    ...(cafe.rating && { aggregateRating: { "@type": "AggregateRating", ratingValue: cafe.rating, bestRating: 5, ...(cafe.reviews && { reviewCount: cafe.reviews }) } }),
+                    ...(cafe.hero_photo && { image: cafe.hero_photo }),
+                    ...(cafe.description && { description: cafe.description }),
+                  },
+                })),
+              }),
+            }}
+          />
+        )}
+
+        {/* Schema.org BreadcrumbList */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                { "@type": "ListItem", position: 1, name: "Home", item: "https://cafepedia.id" },
+                { "@type": "ListItem", position: 2, name: page.city, item: `https://cafepedia.id/best-cafes-bandung` },
+                { "@type": "ListItem", position: 3, name: page.intent },
+              ],
+            }),
+          }}
+        />
+
         {/* Back to home */}
         <div className="mt-10 text-center">
           <Link
