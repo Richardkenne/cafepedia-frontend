@@ -173,8 +173,19 @@ export default async function SeoPage({
       </header>
 
       <main className="max-w-2xl mx-auto px-4 pb-12">
+        {/* Breadcrumb */}
+        <nav className="mt-4 text-[12px] text-[var(--muted2)]" aria-label="Breadcrumb">
+          <ol className="flex items-center gap-1">
+            <li><Link href="/" className="hover:text-[var(--foreground)] transition-colors">Home</Link></li>
+            <li>/</li>
+            <li><Link href="/best-cafes-bandung" className="hover:text-[var(--foreground)] transition-colors">{page.city}</Link></li>
+            <li>/</li>
+            <li className="text-[var(--muted)] font-medium">{page.intent}</li>
+          </ol>
+        </nav>
+
         {/* H1 */}
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight mt-6 leading-tight">
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight mt-3 leading-tight">
           {page.title}
         </h1>
 
