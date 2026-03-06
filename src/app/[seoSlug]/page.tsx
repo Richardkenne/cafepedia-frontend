@@ -103,21 +103,49 @@ async function getCafesForPage(page: SeoPage): Promise<Cafe[]> {
   // Build search query based on filters
   const tags = page.tag_filters || [];
   const area = page.area_filter;
+  const limit = page.cafe_limit || 20;
 
   const params = new URLSearchParams();
   params.set("q", area || "*");
   if (tags.length > 0) params.set("tags", tags.join(","));
-  params.set("limit", String(page.cafe_limit || 10));
+  // Fetch extra to allow filtering and still have enough results
+  params.set("limit", String(Math.max(limit * 2, 40)));
 
   const r = await fetch(`${API_BASE}/search?${params}`, {
     next: { revalidate: 3600 },
   });
   const data = await r.json();
 
-  // Sort by rating descending
-  const results = data.results || [];
-  results.sort((a: Cafe, b: Cafe) => (b.rating || 0) - (a.rating || 0));
-  return results.slice(0, page.cafe_limit || 10);
+  let results: Cafe[] = data.results || [];
+
+  // Filter: only rating >= 4.0 (keep unrated ones at bottom)
+  results = results.filter((c) => !c.rating || c.rating >= 4.0);
+
+  // Check if this is an aesthetic/visual intent — only show cafes with photos
+  const isVisualIntent = tags.some((t) =>
+    ["aesthetic", "instagrammable", "modern"].includes(t)
+  );
+  if (isVisualIntent) {
+    results = results.filter((c) => c.hero_photo);
+  }
+
+  // Sort: tag match count desc, then has photo, then rating desc
+  results.sort((a, b) => {
+    // Tag match score
+    const aTagScore = tags.filter((t) => (a.tags || []).includes(t)).length;
+    const bTagScore = tags.filter((t) => (b.tags || []).includes(t)).length;
+    if (bTagScore !== aTagScore) return bTagScore - aTagScore;
+
+    // Prefer cafes with photos
+    const aHasPhoto = a.hero_photo ? 1 : 0;
+    const bHasPhoto = b.hero_photo ? 1 : 0;
+    if (bHasPhoto !== aHasPhoto) return bHasPhoto - aHasPhoto;
+
+    // Then by rating
+    return (b.rating || 0) - (a.rating || 0);
+  });
+
+  return results.slice(0, limit);
 }
 
 async function getRelatedPages(slugs: string[]): Promise<SeoPage[]> {
