@@ -82,6 +82,25 @@ export default function Home() {
 
   return (
     <main className="relative flex flex-col items-center justify-center min-h-dvh px-6">
+      {/* JSON-LD Schema */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "Cafepedia",
+            "url": "https://cafepedia.id",
+            "description": "Temukan cafe terbaik di Bandung berdasarkan suasana, lokasi & harga",
+            "potentialAction": {
+              "@type": "SearchAction",
+              "target": "https://cafepedia.id/search?q={search_term_string}",
+              "query-input": "required name=search_term_string"
+            }
+          })
+        }}
+      />
+
       {/* Language toggle — top right */}
       <div className="absolute top-4 right-4 z-10">
         <LangToggle />
