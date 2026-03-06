@@ -309,6 +309,15 @@ export const blogPosts: BlogPost[] = [
 </ul>
 
 <p>Ready to explore? <a href="/">Search all 600+ cafes on Cafepedia</a> and filter by what matters to you — vibe, area, features, or just let our <a href="/search?q=hidden+gem">hidden gems search</a> surprise you.</p>
+
+<h3>Explore More</h3>
+<ul>
+  <li><a href="/cafes-dago-bandung">Cafes in Dago</a></li>
+  <li><a href="/cafes-braga-bandung">Cafes in Braga</a></li>
+  <li><a href="/cafes-riau-bandung">Cafes in Riau</a></li>
+  <li><a href="/cafes-ciumbuleuit-bandung">Cafes in Ciumbuleuit</a></li>
+  <li><a href="/best-cafes-bandung">Best Cafes in Bandung</a></li>
+</ul>
 `,
   },
 ]
