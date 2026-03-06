@@ -152,6 +152,31 @@ export default function Home() {
         {t("home.pick_description")}
       </p>
 
+      {/* Value Proposition */}
+      <section className="w-full max-w-md mt-10 grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="flex items-start gap-2.5 p-3 rounded-xl bg-[var(--surface)]">
+          <span className="text-base leading-none mt-0.5">{"\uD83C\uDFAF"}</span>
+          <div>
+            <p className="text-[13px] font-semibold text-[var(--foreground)]">Cari berdasarkan suasana</p>
+            <p className="text-[11px] text-[var(--muted)] mt-0.5 leading-relaxed">Ketik &quot;cafe tenang buat kerja&quot; atau &quot;tempat ngedate estetik&quot; — kami temukan yang cocok</p>
+          </div>
+        </div>
+        <div className="flex items-start gap-2.5 p-3 rounded-xl bg-[var(--surface)]">
+          <span className="text-base leading-none mt-0.5">{"\uD83E\uDD16"}</span>
+          <div>
+            <p className="text-[13px] font-semibold text-[var(--foreground)]">AI pilihkan untukmu</p>
+            <p className="text-[11px] text-[var(--muted)] mt-0.5 leading-relaxed">Bingung mau ke mana? AI kami pilihkan 3 cafe terbaik sesuai keinginanmu</p>
+          </div>
+        </div>
+        <div className="flex items-start gap-2.5 p-3 rounded-xl bg-[var(--surface)]">
+          <span className="text-base leading-none mt-0.5">{"\uD83D\uDCCD"}</span>
+          <div>
+            <p className="text-[13px] font-semibold text-[var(--foreground)]">600+ cafe di Bandung</p>
+            <p className="text-[11px] text-[var(--muted)] mt-0.5 leading-relaxed">Database terlengkap dengan foto, jam buka, harga & petunjuk arah</p>
+          </div>
+        </div>
+      </section>
+
       {/* Install banner */}
       {showInstall && (
         <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-[var(--border)] px-6 py-4 flex items-center justify-between gap-4 z-50 shadow-lg">
