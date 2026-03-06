@@ -161,7 +161,8 @@ async function getRelatedPages(slugs: string[]): Promise<SeoPage[]> {
   return r.json();
 }
 
-// Dynamic rendering — pages are rendered on-demand and cached via revalidate
+// ISR: regenerate pages every hour
+export const revalidate = 3600;
 export const dynamicParams = true;
 export async function generateStaticParams() {
   return [];
