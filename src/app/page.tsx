@@ -130,7 +130,7 @@ export default function Home() {
             <li key={item.href}>
               <Link
                 href={item.href}
-                className="flex items-center justify-between py-2 px-1 text-[13px] text-[var(--muted)] hover:text-[var(--foreground)] transition-colors group"
+                className="flex items-center justify-between py-3 px-1 text-[13px] text-[var(--muted)] hover:text-[var(--foreground)] transition-colors group"
               >
                 <span>{item.label}</span>
                 <span className="text-[var(--muted2)] group-hover:text-[var(--muted)] transition-colors text-[11px] ml-2">&rarr;</span>
