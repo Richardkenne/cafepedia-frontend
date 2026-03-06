@@ -104,20 +104,10 @@ async function getRelatedPages(slugs: string[]): Promise<SeoPage[]> {
   return r.json();
 }
 
+// Dynamic rendering — pages are rendered on-demand and cached via revalidate
+export const dynamicParams = true;
 export async function generateStaticParams() {
-  try {
-    const r = await fetch(
-      `${SUPABASE_URL}/rest/v1/seo_pages?is_published=eq.true&select=slug`,
-      {
-        headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
-      }
-    );
-    const pages = await r.json();
-    if (!Array.isArray(pages)) return [];
-    return pages.map((p: { slug: string }) => ({ seoSlug: p.slug }));
-  } catch {
-    return [];
-  }
+  return [];
 }
 
 export async function generateMetadata({
