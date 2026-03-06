@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { getCafe, parseSlug } from "@/lib/api";
 import { Cafe } from "@/lib/types";
@@ -46,7 +46,13 @@ export default function CafeDetail() {
 
   const [cafe, setCafe] = useState<Cafe | null>(null);
   const [loading, setLoading] = useState(true);
-  const [photoIndex, setPhotoIndex] = useState(0);
+
+  const displayPhotos = useMemo(() => {
+    if (!cafe?.photos || cafe.photos.length === 0) return [];
+    const count = Math.min(3 + Math.floor(Math.random() * 3), cafe.photos.length); // 3, 4, or 5
+    const shuffled = [...cafe.photos].sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, count);
+  }, [cafe?.photos]);
 
   useEffect(() => {
     if (!id) return;
@@ -91,12 +97,12 @@ export default function CafeDetail() {
 
         {!loading && cafe && (
           <>
-            {/* Photo gallery */}
-            {cafe.photos && cafe.photos.length > 0 && (
+            {/* Photo gallery — 3 random photos per visit */}
+            {displayPhotos.length > 0 && (
               <div className="relative">
                 <div className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide gap-1">
-                  {cafe.photos.map((url, i) => (
-                    <div key={i} className="relative w-full sm:w-4/5 h-56 sm:h-72 flex-shrink-0 snap-start">
+                  {displayPhotos.map((url, i) => (
+                    <div key={url} className="relative w-full sm:w-4/5 h-56 sm:h-72 flex-shrink-0 snap-start">
                       <Image
                         src={url}
                         alt={`${cafe.name} photo ${i + 1}`}
@@ -109,7 +115,7 @@ export default function CafeDetail() {
                     </div>
                   ))}
                 </div>
-                {cafe.photos.length > 1 && (
+                {cafe.photos && cafe.photos.length > 1 && (
                   <div className="absolute bottom-3 right-3 bg-black/60 text-white text-xs px-2.5 py-1 rounded-full">
                     {cafe.photos.length} photos
                   </div>
