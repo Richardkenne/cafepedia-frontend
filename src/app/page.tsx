@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import SearchBar from "@/components/SearchBar";
 import LangToggle from "@/components/LangToggle";
 import { useTranslation } from "@/lib/i18n";
@@ -15,15 +16,12 @@ export default function Home() {
   const searchRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
 
-  const SUGGESTIONS = [
-    { label: t("chip.work"), q: "work cafes" },
-    { label: t("chip.quiet"), q: "quiet cafes" },
-    { label: t("chip.premium"), q: "premium cafes" },
-    { label: t("chip.outdoor"), q: "outdoor cafes" },
-    { label: t("chip.hidden_gems"), q: "hidden gem" },
-    { label: t("chip.view"), q: "mountain view" },
-    { label: t("chip.coffee"), q: "coffee" },
-    { label: t("chip.brunch"), q: "brunch" },
+  const DISCOVERY_LISTS = [
+    { label: "Best Cafes in Bandung", href: "/best-cafes-bandung" },
+    { label: "Best Cafes to Work", href: "/best-cafes-to-work-bandung" },
+    { label: "Most Aesthetic Cafes", href: "/aesthetic-cafes-bandung" },
+    { label: "Best Cheap Coffee", href: "/cheap-cafes-bandung" },
+    { label: "Best Date Cafes", href: "/date-cafes-bandung" },
   ];
 
   useEffect(() => {
@@ -83,7 +81,12 @@ export default function Home() {
   }
 
   return (
-    <main className="flex flex-col items-center justify-center min-h-dvh px-6">
+    <main className="relative flex flex-col items-center justify-center min-h-dvh px-6">
+      {/* Language toggle — top right */}
+      <div className="absolute top-4 right-4 z-10">
+        <LangToggle />
+      </div>
+
       {/* Logo */}
       <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-1">
         Cafepedia
@@ -120,19 +123,22 @@ export default function Home() {
         </button>
       </div>
 
-      {/* Suggestions */}
-      <div className="flex gap-2 mt-5 flex-wrap justify-center">
-        {SUGGESTIONS.map(s => (
-          <button
-            key={s.q}
-            onClick={() => go(s.q)}
-            className="px-4 py-2 rounded-full text-[13px] font-medium border border-[var(--border)] text-[var(--muted)]
-              hover:bg-[var(--surface)] active:scale-95 transition-all min-h-[44px]"
-          >
-            {s.label}
-          </button>
-        ))}
-      </div>
+      {/* Discovery lists */}
+      <nav className="mt-6 w-full max-w-md">
+        <ul className="flex flex-col gap-1">
+          {DISCOVERY_LISTS.map(item => (
+            <li key={item.href}>
+              <Link
+                href={item.href}
+                className="flex items-center justify-between py-2 px-1 text-[13px] text-[var(--muted)] hover:text-[var(--foreground)] transition-colors group"
+              >
+                <span>{item.label}</span>
+                <span className="text-[var(--muted2)] group-hover:text-[var(--muted)] transition-colors text-[11px] ml-2">&rarr;</span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
 
       {/* AI Pick */}
       <button
@@ -174,8 +180,6 @@ export default function Home() {
         cafepedia.id — Bandung, Indonesia
         <span>·</span>
         <a href="/blog" className="underline hover:text-[var(--foreground)] transition-colors">{t("home.blog")}</a>
-        <span>·</span>
-        <LangToggle />
       </footer>
     </main>
   );

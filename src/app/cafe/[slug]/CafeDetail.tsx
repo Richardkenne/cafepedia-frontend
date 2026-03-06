@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { getCafe, parseSlug } from "@/lib/api";
 import { Cafe } from "@/lib/types";
@@ -46,6 +46,9 @@ export default function CafeDetail() {
 
   const [cafe, setCafe] = useState<Cafe | null>(null);
   const [loading, setLoading] = useState(true);
+  const [lightboxUrl, setLightboxUrl] = useState<string | null>(null);
+
+  const closeLightbox = useCallback(() => setLightboxUrl(null), []);
 
   const displayPhotos = useMemo(() => {
     if (!cafe?.photos || cafe.photos.length === 0) return [];
@@ -97,29 +100,76 @@ export default function CafeDetail() {
 
         {!loading && cafe && (
           <>
-            {/* Photo gallery — 3 random photos per visit */}
+            {/* Photo gallery — hero + thumbnail grid */}
             {displayPhotos.length > 0 && (
-              <div className="relative">
-                <div className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide gap-1">
-                  {displayPhotos.map((url, i) => (
-                    <div key={url} className="relative w-full sm:w-4/5 h-56 sm:h-72 flex-shrink-0 snap-start">
-                      <Image
-                        src={url}
-                        alt={`${cafe.name} photo ${i + 1}`}
-                        fill
-                        className="object-cover"
-                        sizes="(max-width: 640px) 100vw, 80vw"
-                        priority={i === 0}
-                        loading={i === 0 ? "eager" : "lazy"}
-                      />
+              <div>
+                {/* Hero photo */}
+                <div
+                  className="relative w-full h-56 sm:h-80 cursor-pointer"
+                  onClick={() => setLightboxUrl(displayPhotos[0])}
+                >
+                  <Image
+                    src={displayPhotos[0]}
+                    alt={`${cafe.name} photo 1`}
+                    fill
+                    className="object-cover"
+                    sizes="100vw"
+                    priority
+                  />
+                  {cafe.photos && cafe.photos.length > 1 && (
+                    <div className="absolute bottom-3 right-3 bg-black/60 text-white text-xs px-2.5 py-1 rounded-full">
+                      {cafe.photos.length} photos
                     </div>
-                  ))}
+                  )}
                 </div>
-                {cafe.photos && cafe.photos.length > 1 && (
-                  <div className="absolute bottom-3 right-3 bg-black/60 text-white text-xs px-2.5 py-1 rounded-full">
-                    {cafe.photos.length} photos
+
+                {/* Thumbnail grid */}
+                {displayPhotos.length > 1 && (
+                  <div className="grid grid-cols-2 gap-1.5 px-1.5 mt-1.5">
+                    {displayPhotos.slice(1).map((url, i) => (
+                      <div
+                        key={url}
+                        className="relative h-32 sm:h-40 rounded-lg overflow-hidden cursor-pointer active:opacity-80 transition-opacity"
+                        onClick={() => setLightboxUrl(url)}
+                      >
+                        <Image
+                          src={url}
+                          alt={`${cafe.name} photo ${i + 2}`}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 640px) 50vw, 320px"
+                          loading="lazy"
+                        />
+                      </div>
+                    ))}
                   </div>
                 )}
+              </div>
+            )}
+
+            {/* Fullscreen lightbox */}
+            {lightboxUrl && (
+              <div
+                className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center cursor-pointer"
+                onClick={closeLightbox}
+              >
+                <button
+                  onClick={closeLightbox}
+                  className="absolute top-4 right-4 text-white/70 hover:text-white text-2xl font-light z-10 w-11 h-11 flex items-center justify-center"
+                  aria-label="Close"
+                >
+                  &times;
+                </button>
+                <div className="relative w-full h-full max-w-4xl max-h-[85vh] mx-4">
+                  <Image
+                    src={lightboxUrl}
+                    alt={`${cafe.name} fullscreen`}
+                    fill
+                    className="object-contain"
+                    sizes="100vw"
+                    priority
+                  />
+                </div>
               </div>
             )}
 

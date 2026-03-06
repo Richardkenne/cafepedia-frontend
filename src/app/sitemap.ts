@@ -4,6 +4,8 @@ import { blogPosts } from "@/lib/blog";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "https://api.cafepedia.id";
 const SITE_URL = "https://cafepedia.id";
+const SUPABASE_URL = "https://fkpxolnsqjfgcbkiqbld.supabase.co";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZrcHhvbG5zcWpmZ2Nia2lxYmxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA0OTIzODAsImV4cCI6MjA1NjA2ODM4MH0.a1y8v4hFnEqJPGBJNG5-p0PYfU4iqhXqvN5VI4bfEeM";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Static pages
@@ -57,5 +59,31 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // If API fails, return static pages only
   }
 
-  return [...staticPages, ...blogPages, ...cafePages];
+  // SEO pages from Supabase
+  const seoPages: MetadataRoute.Sitemap = [];
+  try {
+    const r = await fetch(
+      `${SUPABASE_URL}/rest/v1/seo_pages?is_published=eq.true&select=slug`,
+      {
+        headers: {
+          apikey: SUPABASE_KEY,
+          Authorization: `Bearer ${SUPABASE_KEY}`,
+        },
+        next: { revalidate: 86400 },
+      }
+    );
+    const rows: { slug: string }[] = await r.json();
+    for (const row of rows) {
+      seoPages.push({
+        url: `${SITE_URL}/${row.slug}`,
+        lastModified: new Date(),
+        changeFrequency: "weekly",
+        priority: 0.8,
+      });
+    }
+  } catch {
+    // If Supabase fails, skip SEO pages
+  }
+
+  return [...staticPages, ...blogPages, ...cafePages, ...seoPages];
 }
