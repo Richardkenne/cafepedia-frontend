@@ -46,9 +46,39 @@ export default function CafeDetail() {
 
   const [cafe, setCafe] = useState<Cafe | null>(null);
   const [loading, setLoading] = useState(true);
-  const [lightboxUrl, setLightboxUrl] = useState<string | null>(null);
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
-  const closeLightbox = useCallback(() => setLightboxUrl(null), []);
+  const allPhotos = cafe?.photos || [];
+  const closeLightbox = useCallback(() => setLightboxIndex(null), []);
+  const prevPhoto = useCallback(() => setLightboxIndex(i => i !== null ? (i - 1 + allPhotos.length) % allPhotos.length : null), [allPhotos.length]);
+  const nextPhoto = useCallback(() => setLightboxIndex(i => i !== null ? (i + 1) % allPhotos.length : null), [allPhotos.length]);
+
+  const openLightbox = useCallback((url: string) => {
+    const idx = allPhotos.indexOf(url);
+    setLightboxIndex(idx >= 0 ? idx : 0);
+  }, [allPhotos]);
+
+  // Keyboard navigation
+  useEffect(() => {
+    if (lightboxIndex === null) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "ArrowLeft") prevPhoto();
+      else if (e.key === "ArrowRight") nextPhoto();
+      else if (e.key === "Escape") closeLightbox();
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [lightboxIndex, prevPhoto, nextPhoto, closeLightbox]);
+
+  // Touch swipe
+  const touchStartX = useCallback((e: React.TouchEvent) => {
+    (e.currentTarget as HTMLElement).dataset.startX = String(e.touches[0].clientX);
+  }, []);
+  const touchEndX = useCallback((e: React.TouchEvent) => {
+    const startX = Number((e.currentTarget as HTMLElement).dataset.startX || 0);
+    const diff = e.changedTouches[0].clientX - startX;
+    if (Math.abs(diff) > 50) { diff > 0 ? prevPhoto() : nextPhoto(); }
+  }, [prevPhoto, nextPhoto]);
 
   const displayPhotos = useMemo(() => {
     if (!cafe?.photos || cafe.photos.length === 0) return [];
@@ -106,7 +136,7 @@ export default function CafeDetail() {
                 {/* Hero photo */}
                 <div
                   className="relative w-full h-56 sm:h-80 cursor-pointer"
-                  onClick={() => setLightboxUrl(displayPhotos[0])}
+                  onClick={() => openLightbox(displayPhotos[0])}
                 >
                   <Image
                     src={displayPhotos[0]}
@@ -116,9 +146,9 @@ export default function CafeDetail() {
                     sizes="100vw"
                     priority
                   />
-                  {cafe.photos && cafe.photos.length > 1 && (
+                  {displayPhotos.length > 1 && (
                     <div className="absolute bottom-3 right-3 bg-black/60 text-white text-xs px-2.5 py-1 rounded-full">
-                      {cafe.photos.length} photos
+                      {displayPhotos.length} photos
                     </div>
                   )}
                 </div>
@@ -130,7 +160,7 @@ export default function CafeDetail() {
                       <div
                         key={url}
                         className="relative h-32 sm:h-40 rounded-lg overflow-hidden cursor-pointer active:opacity-80 transition-opacity"
-                        onClick={() => setLightboxUrl(url)}
+                        onClick={() => openLightbox(url)}
                       >
                         <Image
                           src={url}
@@ -147,12 +177,15 @@ export default function CafeDetail() {
               </div>
             )}
 
-            {/* Fullscreen lightbox */}
-            {lightboxUrl && (
+            {/* Fullscreen lightbox with navigation */}
+            {lightboxIndex !== null && allPhotos[lightboxIndex] && (
               <div
-                className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center cursor-pointer"
+                className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center"
                 onClick={closeLightbox}
+                onTouchStart={touchStartX}
+                onTouchEnd={touchEndX}
               >
+                {/* Close button */}
                 <button
                   onClick={closeLightbox}
                   className="absolute top-4 right-4 text-white/70 hover:text-white text-2xl font-light z-10 w-11 h-11 flex items-center justify-center"
@@ -160,16 +193,46 @@ export default function CafeDetail() {
                 >
                   &times;
                 </button>
-                <div className="relative w-full h-full max-w-4xl max-h-[85vh] mx-4">
+
+                {/* Counter */}
+                <div className="absolute top-4 left-4 text-white/70 text-sm z-10">
+                  {lightboxIndex + 1} / {allPhotos.length}
+                </div>
+
+                {/* Prev arrow */}
+                {allPhotos.length > 1 && (
+                  <button
+                    onClick={(e) => { e.stopPropagation(); prevPhoto(); }}
+                    className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 text-white/60 hover:text-white text-4xl z-10 w-12 h-12 flex items-center justify-center"
+                    aria-label="Previous"
+                  >
+                    ‹
+                  </button>
+                )}
+
+                {/* Photo */}
+                <div className="relative w-full h-full max-w-4xl max-h-[85vh] mx-12" onClick={(e) => e.stopPropagation()}>
                   <Image
-                    src={lightboxUrl}
-                    alt={`${cafe.name} fullscreen`}
+                    key={allPhotos[lightboxIndex]}
+                    src={allPhotos[lightboxIndex]}
+                    alt={`${cafe.name} photo ${lightboxIndex + 1}`}
                     fill
                     className="object-contain"
                     sizes="100vw"
                     priority
                   />
                 </div>
+
+                {/* Next arrow */}
+                {allPhotos.length > 1 && (
+                  <button
+                    onClick={(e) => { e.stopPropagation(); nextPhoto(); }}
+                    className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 text-white/60 hover:text-white text-4xl z-10 w-12 h-12 flex items-center justify-center"
+                    aria-label="Next"
+                  >
+                    ›
+                  </button>
+                )}
               </div>
             )}
 
