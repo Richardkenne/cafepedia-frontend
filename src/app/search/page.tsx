@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { searchCafes } from "@/lib/api";
+import { searchCafes, logSearch } from "@/lib/api";
 import { Cafe } from "@/lib/types";
 import CafeCard from "@/components/CafeCard";
 import SearchBar from "@/components/SearchBar";
@@ -51,6 +51,7 @@ function SearchContent() {
       setResults(data.results || []);
       setFound(data.found || 0);
       setVisible(PAGE_SIZE);
+      logSearch(q, data.found || 0);
     } catch {
       setResults([]);
       setFound(0);

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { I18nProvider } from "@/lib/i18n";
+import { PostHogProvider } from "./providers";
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -67,9 +68,11 @@ export default function RootLayout({
   return (
     <html lang="en-ID" className={plusJakarta.variable}>
       <body className="antialiased min-h-dvh font-sans">
+        <PostHogProvider>
         <I18nProvider>
         {children}
         </I18nProvider>
+        </PostHogProvider>
         <script
           dangerouslySetInnerHTML={{
             __html: `

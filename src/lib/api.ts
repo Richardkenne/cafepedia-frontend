@@ -33,6 +33,15 @@ export async function getCafe(id: number): Promise<Cafe> {
   return r.json();
 }
 
+export function logSearch(query: string, resultsCount: number, city?: string) {
+  if (!query || query === "*") return;
+  fetch(`${API_BASE}/log/search`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ query, results_count: resultsCount, city: city || "" }),
+  }).catch(() => {});
+}
+
 export async function decideCafe(query: string, lat?: number, lng?: number): Promise<DecideResponse> {
   const body: Record<string, unknown> = { query };
   if (lat && lng) { body.lat = lat; body.lng = lng; }
