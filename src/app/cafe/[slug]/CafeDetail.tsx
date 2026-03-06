@@ -301,7 +301,7 @@ export default function CafeDetail() {
                   </Section>
                 )}
                 {cafe.phone && (
-                  <Section label="Phone">
+                  <Section label="Telepon">
                     <div className="flex items-center gap-3">
                       <a href={`tel:${cafe.phone}`} className="text-blue-600">
                         {cafe.phone}
