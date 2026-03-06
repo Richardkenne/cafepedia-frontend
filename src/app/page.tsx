@@ -180,6 +180,8 @@ export default function Home() {
         cafepedia.id — Bandung, Indonesia
         <span>·</span>
         <a href="/blog" className="underline hover:text-[var(--foreground)] transition-colors">{t("home.blog")}</a>
+        <span>·</span>
+        <a href="/about" className="underline hover:text-[var(--foreground)] transition-colors">About</a>
       </footer>
     </main>
   );
