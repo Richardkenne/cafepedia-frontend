@@ -5,7 +5,7 @@ import Image from "next/image";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "";
 const SUPABASE_URL = "https://fkpxolnsqjfgcbkiqbld.supabase.co";
-const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZrcHhvbG5zcWpmZ2Nia2lxYmxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA0OTIzODAsImV4cCI6MjA1NjA2ODM4MH0.a1y8v4hFnEqJPGBJNG5-p0PYfU4iqhXqvN5VI4bfEeM";
+const SUPABASE_KEY = process.env.SUPABASE_ANON_KEY || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZrcHhvbG5zcWpmZ2Nia2lxYmxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI2NzM5MTMsImV4cCI6MjA4ODI0OTkxM30.zVk8B3AxLCWkgomZxxsoOCQkugAmVxphjtGtFwkCJdE";
 
 interface SeoPage {
   id: number;
