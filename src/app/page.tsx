@@ -226,6 +226,8 @@ export default function Home() {
         <a href="/blog" className="underline hover:text-[var(--foreground)] transition-colors">{t("home.blog")}</a>
         <span>·</span>
         <a href="/about" className="underline hover:text-[var(--foreground)] transition-colors">About</a>
+        <span>·</span>
+        <a href="/suggest" className="underline hover:text-[var(--foreground)] transition-colors">Sarankan Cafe</a>
       </footer>
     </main>
   );
