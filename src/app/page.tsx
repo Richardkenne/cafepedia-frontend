@@ -139,10 +139,6 @@ export default function Home() {
           ))}
         </ul>
       </nav>
-            </li>
-          ))}
-        </ul>
-      </nav>
 
       {/* AI Pick */}
       <button
