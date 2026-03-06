@@ -105,7 +105,7 @@ export default function CafeDetail() {
             onClick={() => router.back()}
             className="text-[var(--muted)] text-sm font-medium p-2 -ml-2 min-w-[44px] min-h-[44px] flex items-center justify-center gap-1"
           >
-            ← Back
+            ← Kembali
           </button>
           {cafe && (
             <h1 className="text-sm font-semibold truncate flex-1">
