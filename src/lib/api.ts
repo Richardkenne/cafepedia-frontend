@@ -42,6 +42,12 @@ export function logSearch(query: string, resultsCount: number, city?: string) {
   }).catch(() => {});
 }
 
+export async function getTrendingCafes(): Promise<Cafe[]> {
+  const r = await fetch(`${API_BASE}/search?q=*&per_page=12`);
+  const data: SearchResponse = await r.json();
+  return (data.results || []).filter(c => c.hero_photo);
+}
+
 export async function decideCafe(query: string, lat?: number, lng?: number): Promise<DecideResponse> {
   const body: Record<string, unknown> = { query };
   if (lat && lng) { body.lat = lat; body.lng = lng; }
