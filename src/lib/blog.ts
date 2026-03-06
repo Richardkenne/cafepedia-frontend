@@ -185,6 +185,15 @@ export const blogPosts: BlogPost[] = [
 </ul>
 
 <p>Want to find more work-friendly cafes? <a href="/search?q=work+cafes">Search for work-friendly cafes on Cafepedia</a> or explore <a href="/search?q=coworking">coworking spaces</a> across Bandung.</p>
+
+<h3>Explore More</h3>
+<ul>
+  <li><a href="/best-cafes-to-work-bandung">Best Cafes to Work in Bandung</a></li>
+  <li><a href="/cafes-to-work-dago-bandung">Work Cafes in Dago</a></li>
+  <li><a href="/quiet-cafes-bandung">Quiet Cafes in Bandung</a></li>
+  <li><a href="/best-cafes-bandung">Best Cafes in Bandung</a></li>
+  <li><a href="/cheap-cafes-bandung">Cheap Cafes in Bandung</a></li>
+</ul>
 `,
   },
   {
