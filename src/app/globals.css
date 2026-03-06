@@ -1,19 +1,22 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #1a1a1a;
+  --background: #F7F3EE;
+  --foreground: #1F1F1F;
   --muted: #6b6b6b;
   --muted2: #999999;
-  --border: #e8e8e8;
-  --surface: #f5f5f5;
-  --orange: #e8830c;
+  --border: #e2ddd6;
+  --surface: #EFEBE5;
+  --primary: #2E1F1A;
+  --accent: #E76F51;
+  --accent-cool: #3A3D98;
+  --orange: #E76F51;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', system-ui, sans-serif;
+  font-family: var(--font-jakarta), 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
 }

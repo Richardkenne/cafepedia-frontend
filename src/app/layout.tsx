@@ -1,6 +1,13 @@
 import type { Metadata, Viewport } from "next";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { I18nProvider } from "@/lib/i18n";
+
+const plusJakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-jakarta",
+  display: "swap",
+});
 
 const SITE_URL = "https://cafepedia.id";
 
@@ -49,7 +56,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
-  themeColor: "#ffffff",
+  themeColor: "#F7F3EE",
 };
 
 export default function RootLayout({
@@ -58,8 +65,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en-ID">
-      <body className="antialiased min-h-dvh">
+    <html lang="en-ID" className={plusJakarta.variable}>
+      <body className="antialiased min-h-dvh font-sans">
         <I18nProvider>
         {children}
         </I18nProvider>

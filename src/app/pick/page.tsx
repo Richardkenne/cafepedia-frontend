@@ -53,7 +53,7 @@ function AICard({ cafe, featured }: { cafe: Cafe; featured?: boolean }) {
           {tags.length > 0 && (
             <div className="flex gap-1.5 mt-2 flex-wrap">
               {tags.map(t => (
-                <span key={t} className="text-[11px] px-2.5 py-0.5 rounded-full bg-white text-[var(--muted)] font-medium">
+                <span key={t} className="text-[11px] px-2.5 py-0.5 rounded-full bg-[var(--surface)] text-[var(--muted)] font-medium">
                   {formatTag(t)}
                 </span>
               ))}
@@ -61,7 +61,7 @@ function AICard({ cafe, featured }: { cafe: Cafe; featured?: boolean }) {
           )}
 
           {cafe.reason && featured && (
-            <p className="text-[13px] text-[var(--foreground)] leading-relaxed mt-3 p-3 bg-white rounded-xl">
+            <p className="text-[13px] text-[var(--foreground)] leading-relaxed mt-3 p-3 bg-[var(--surface)] rounded-xl">
               {cafe.reason}
             </p>
           )}
@@ -108,7 +108,7 @@ function PickContent() {
   return (
     <div className="min-h-dvh">
       {/* Header */}
-      <header className="sticky top-0 z-20 bg-white/92 backdrop-blur-xl border-b border-[var(--border)]">
+      <header className="sticky top-0 z-20 bg-[var(--background)]/92 backdrop-blur-xl border-b border-[var(--border)]">
         <div className="max-w-2xl mx-auto px-4 py-3 flex items-center gap-3">
           <button
             onClick={() => router.push("/")}

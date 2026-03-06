@@ -58,7 +58,7 @@ export default function SuggestPage() {
 
   return (
     <div className="min-h-dvh">
-      <header className="sticky top-0 z-20 bg-white/92 backdrop-blur-xl border-b border-[var(--border)]">
+      <header className="sticky top-0 z-20 bg-[var(--background)]/92 backdrop-blur-xl border-b border-[var(--border)]">
         <div className="max-w-lg mx-auto px-4 py-3 flex items-center gap-3">
           <Link href="/" className="text-[var(--muted)] text-sm font-medium p-2 -ml-2 min-w-[44px] min-h-[44px] flex items-center">
             &larr; Kembali
@@ -83,7 +83,7 @@ export default function SuggestPage() {
               onChange={(e) => setName(e.target.value)}
               placeholder="contoh: Kopi Kenangan Dago"
               required
-              className="mt-1 w-full px-3 py-3 rounded-xl border border-[var(--border)] text-[15px] bg-white focus:outline-none focus:ring-2 focus:ring-[var(--foreground)]/20"
+              className="mt-1 w-full px-3 py-3 rounded-xl border border-[var(--border)] text-[15px] bg-[var(--surface)] focus:outline-none focus:ring-2 focus:ring-[var(--foreground)]/20"
             />
           </div>
 
@@ -96,7 +96,7 @@ export default function SuggestPage() {
               value={area}
               onChange={(e) => setArea(e.target.value)}
               placeholder="contoh: Dago, Braga, Buah Batu"
-              className="mt-1 w-full px-3 py-3 rounded-xl border border-[var(--border)] text-[15px] bg-white focus:outline-none focus:ring-2 focus:ring-[var(--foreground)]/20"
+              className="mt-1 w-full px-3 py-3 rounded-xl border border-[var(--border)] text-[15px] bg-[var(--surface)] focus:outline-none focus:ring-2 focus:ring-[var(--foreground)]/20"
             />
           </div>
 
@@ -109,7 +109,7 @@ export default function SuggestPage() {
               value={gmaps}
               onChange={(e) => setGmaps(e.target.value)}
               placeholder="https://maps.google.com/..."
-              className="mt-1 w-full px-3 py-3 rounded-xl border border-[var(--border)] text-[15px] bg-white focus:outline-none focus:ring-2 focus:ring-[var(--foreground)]/20"
+              className="mt-1 w-full px-3 py-3 rounded-xl border border-[var(--border)] text-[15px] bg-[var(--surface)] focus:outline-none focus:ring-2 focus:ring-[var(--foreground)]/20"
             />
           </div>
 
@@ -122,7 +122,7 @@ export default function SuggestPage() {
               value={instagram}
               onChange={(e) => setInstagram(e.target.value)}
               placeholder="@namacafe"
-              className="mt-1 w-full px-3 py-3 rounded-xl border border-[var(--border)] text-[15px] bg-white focus:outline-none focus:ring-2 focus:ring-[var(--foreground)]/20"
+              className="mt-1 w-full px-3 py-3 rounded-xl border border-[var(--border)] text-[15px] bg-[var(--surface)] focus:outline-none focus:ring-2 focus:ring-[var(--foreground)]/20"
             />
           </div>
 
@@ -135,7 +135,7 @@ export default function SuggestPage() {
               onChange={(e) => setNotes(e.target.value)}
               placeholder="Kenapa cafe ini bagus? Apa yang spesial?"
               rows={3}
-              className="mt-1 w-full px-3 py-3 rounded-xl border border-[var(--border)] text-[15px] bg-white focus:outline-none focus:ring-2 focus:ring-[var(--foreground)]/20 resize-none"
+              className="mt-1 w-full px-3 py-3 rounded-xl border border-[var(--border)] text-[15px] bg-[var(--surface)] focus:outline-none focus:ring-2 focus:ring-[var(--foreground)]/20 resize-none"
             />
           </div>
 

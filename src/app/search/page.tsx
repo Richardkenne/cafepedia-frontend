@@ -104,7 +104,7 @@ function SearchContent() {
   return (
     <div className="min-h-dvh">
       {/* Sticky header */}
-      <header className="sticky top-0 z-20 bg-white/92 backdrop-blur-xl border-b border-[var(--border)]">
+      <header className="sticky top-0 z-20 bg-[var(--background)]/92 backdrop-blur-xl border-b border-[var(--border)]">
         <div className="max-w-2xl mx-auto px-4 py-3 flex items-center gap-2">
           <button
             onClick={() => router.push("/")}

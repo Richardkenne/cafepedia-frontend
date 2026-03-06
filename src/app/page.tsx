@@ -107,11 +107,17 @@ export default function Home() {
       </div>
 
       {/* Logo */}
-      <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-1">
-        Cafepedia
-      </h1>
-      <p className="text-sm text-[var(--muted2)] mb-1">
-        {t("home.subtitle")}
+      <div className="flex items-center gap-2.5 mb-1">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M16 2C10.48 2 6 6.48 6 12c0 7.5 10 18 10 18s10-10.5 10-18c0-5.52-4.48-10-10-10z" fill="var(--accent)"/>
+          <path d="M16 8.5l1.2 2.4 2.6.4-1.9 1.8.5 2.6L16 14.5l-2.4 1.2.5-2.6-1.9-1.8 2.6-.4L16 8.5z" fill="#fff"/>
+        </svg>
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight" style={{ color: 'var(--primary)' }}>
+          Cafepedia
+        </h1>
+      </div>
+      <p className="text-sm text-[var(--muted)] mb-1">
+        Discover great places.
       </p>
       <p className="text-xs text-[var(--muted2)] mb-8">
         {t("home.description")}
@@ -162,7 +168,7 @@ export default function Home() {
       {/* AI Pick */}
       <button
         onClick={() => goAI(query)}
-        className="mt-8 px-8 py-3.5 rounded-xl bg-[var(--foreground)] text-white text-[15px] font-semibold
+        className="mt-8 px-8 py-3.5 rounded-xl bg-[var(--accent)] text-white text-[15px] font-semibold
           hover:opacity-85 active:scale-95 transition-all min-h-[48px]"
       >
         {t("home.pick_for_me")}
@@ -198,7 +204,7 @@ export default function Home() {
 
       {/* Install banner */}
       {showInstall && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-[var(--border)] px-6 py-4 flex items-center justify-between gap-4 z-50 shadow-lg">
+        <div className="fixed bottom-0 left-0 right-0 bg-[var(--background)] border-t border-[var(--border)] px-6 py-4 flex items-center justify-between gap-4 z-50 shadow-lg">
           <p className="text-[13px] text-[var(--muted)]">
             {t("home.install_prompt")}
           </p>
@@ -220,14 +226,22 @@ export default function Home() {
       )}
 
       {/* Footer */}
-      <footer className="absolute bottom-4 text-[11px] text-[var(--muted2)] flex items-center gap-2">
-        cafepedia.id — Bandung, Indonesia
-        <span>·</span>
-        <a href="/blog" className="underline hover:text-[var(--foreground)] transition-colors">{t("home.blog")}</a>
-        <span>·</span>
-        <a href="/about" className="underline hover:text-[var(--foreground)] transition-colors">Tentang</a>
-        <span>·</span>
-        <a href="/suggest" className="underline hover:text-[var(--foreground)] transition-colors">Sarankan Cafe</a>
+      <footer className="w-full max-w-md mt-12 mb-6 text-center">
+        <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[11px] text-[var(--muted2)]">
+          <a href="/about" className="hover:text-[var(--foreground)] transition-colors">About</a>
+          <a href="/suggest" className="hover:text-[var(--foreground)] transition-colors">Submit a Cafe</a>
+          <a href="/contact" className="hover:text-[var(--foreground)] transition-colors">Contact</a>
+        </div>
+        <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[11px] text-[var(--muted2)] mt-1">
+          <a href="/blog" className="hover:text-[var(--foreground)] transition-colors">{t("home.blog")}</a>
+          <a href="/browse" className="hover:text-[var(--foreground)] transition-colors">Browse</a>
+          <a href="/claim" className="hover:text-[var(--foreground)] transition-colors">Claim your Cafe</a>
+        </div>
+        <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[10px] text-[var(--muted2)] mt-2">
+          <a href="/privacy" className="hover:text-[var(--foreground)] transition-colors">Privacy Policy</a>
+          <a href="/terms" className="hover:text-[var(--foreground)] transition-colors">Terms of Service</a>
+        </div>
+        <p className="text-[10px] text-[var(--muted2)] mt-2">cafepedia.id — Bandung, Indonesia</p>
       </footer>
     </main>
   );
