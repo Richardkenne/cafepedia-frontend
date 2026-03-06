@@ -326,7 +326,7 @@ export default function CafeDetail() {
                   </Section>
                 )}
                 {cafe.website && (
-                  <Section label="Website">
+                  <Section label="Situs Web">
                     <a href={cafe.website} target="_blank" rel="noopener" className="text-blue-600">
                       {(() => { try { return new URL(cafe.website).hostname; } catch { return cafe.website; } })()}
                     </a>
