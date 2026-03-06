@@ -255,7 +255,7 @@ export default function CafeDetail() {
                   </span>
                   {(cafe.reviews || cafe.rating_count) && (
                     <span className="text-sm text-[var(--muted2)]">
-                      {(cafe.reviews || cafe.rating_count)?.toLocaleString()} reviews
+                      {(cafe.reviews || cafe.rating_count)?.toLocaleString()} ulasan
                     </span>
                   )}
                 </div>
