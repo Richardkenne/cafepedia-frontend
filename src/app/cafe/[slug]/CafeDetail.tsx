@@ -288,7 +288,7 @@ export default function CafeDetail() {
                   <Section label="Harga">{(cafe.price_range as string).replace(/★/g, "$")}</Section>
                 )}
                 {cafe.type && (
-                  <Section label="Type">{cafe.type}</Section>
+                  <Section label="Tipe">{cafe.type}</Section>
                 )}
                 {getVibeSummary(cafe.tags || [], cafe.environment) && (
                   <Section label="Vibe">{getVibeSummary(cafe.tags || [], cafe.environment)}</Section>
