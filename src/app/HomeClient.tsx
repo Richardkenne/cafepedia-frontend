@@ -9,94 +9,206 @@ import LangToggle from "@/components/LangToggle";
 import { useTranslation } from "@/lib/i18n";
 import Image from "next/image";
 import Link from "next/link";
+import Logo from "@/components/Logo";
+import { motion, useInView, useScroll, useMotionValueEvent } from "framer-motion";
+import {
+  Laptop,
+  Heart,
+  Camera,
+  Building2,
+  Flame,
+  TreePine,
+  Coffee,
+  Moon,
+  PawPrint,
+  Gem,
+  Sparkles,
+  MapPin,
+  Star,
+  ChevronRight,
+  TrendingUp,
+  Search,
+} from "lucide-react";
 
-const DISCOVERY_LISTS = [
-  { label: "Best Cafes in Bandung", href: "/best-cafes-bandung" },
-  { label: "Best Cafes to Work", href: "/best-cafes-to-work-bandung" },
-  { label: "Most Aesthetic Cafes", href: "/aesthetic-cafes-bandung" },
-  { label: "Best Cheap Coffee", href: "/cheap-cafes-bandung" },
-  { label: "Best Date Cafes", href: "/date-cafes-bandung" },
+/* ─── Categories ─── */
+const CATEGORIES = [
+  { label: "Work", tag: "work_friendly", icon: Laptop, color: "#3B82F6" },
+  { label: "Date Night", tag: "date_spot", icon: Heart, color: "#EC4899" },
+  { label: "Aesthetic", tag: "aesthetic", icon: Camera, color: "#8B5CF6" },
+  { label: "Rooftop", tag: "rooftop_view", icon: Building2, color: "#06B6D4" },
+  { label: "Cozy", tag: "cozy", icon: Flame, color: "#F97316" },
+  { label: "Outdoor", tag: "outdoor", icon: TreePine, color: "#22C55E" },
+  { label: "Specialty", tag: "specialty_coffee", icon: Coffee, color: "#92400E" },
+  { label: "Late Night", tag: "late_night", icon: Moon, color: "#6366F1" },
+  { label: "Pet Friendly", tag: "pet_friendly", icon: PawPrint, color: "#F43F5E" },
+  { label: "Hidden Gem", tag: "hidden_gem", icon: Gem, color: "#D946EF" },
 ];
 
-function formatTag(tag: string) {
-  return tag.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
-}
+const POPULAR_AREAS = [
+  "Dago", "Braga", "Pasir Kaliki", "Buah Batu", "Setiabudhi",
+  "Cihampelas", "Riau", "Dipatiukur", "Ciumbuleuit", "Lembang",
+];
 
-function TrendingCard({ cafe }: { cafe: Cafe }) {
-  const tags = (cafe.tags || [])
-    .filter(t => ["cozy", "outdoor", "work_friendly", "aesthetic", "hidden_gem", "modern", "vintage", "quiet", "rooftop_view", "garden", "romantic", "specialty_coffee"].includes(t))
-    .slice(0, 2);
+const DISCOVERY_LISTS = [
+  { label: "Best Cafes in Bandung", desc: "Top-rated spots locals love", href: "/best-cafes-bandung" },
+  { label: "Best Cafes to Work From", desc: "WiFi, outlets, quiet vibes", href: "/best-cafes-to-work-bandung" },
+  { label: "Most Aesthetic Cafes", desc: "Instagram-worthy interiors", href: "/aesthetic-cafes-bandung" },
+  { label: "Best Cheap Coffee", desc: "Great coffee under 25K IDR", href: "/cheap-cafes-bandung" },
+  { label: "Best Date Cafes", desc: "Romantic & intimate settings", href: "/date-cafes-bandung" },
+];
+
+/* ─── Animation variants ─── */
+const staggerContainer = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.06 } },
+};
+
+const staggerItem = {
+  hidden: { opacity: 0, y: 16 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" as const } },
+};
+
+/* ─── Animated section wrapper ─── */
+function AnimatedSection({ children, className = "", delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-60px" });
 
   return (
-    <Link
-      href={`/cafe/${makeSlug(cafe.id, cafe.name)}`}
-      className="flex-shrink-0 w-[220px] sm:w-[260px] group"
+    <motion.section
+      ref={ref}
+      initial={{ opacity: 0, y: 30 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, delay, ease: "easeOut" }}
+      className={className}
     >
-      <div className="relative w-full h-[160px] sm:h-[180px] rounded-2xl overflow-hidden bg-[var(--surface)]">
-        {cafe.hero_photo ? (
-          <Image
-            src={cafe.hero_photo}
-            alt={cafe.name}
-            fill
-            className="object-cover group-hover:scale-105 transition-transform duration-300"
-            sizes="260px"
-            loading="lazy"
-          />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center text-4xl text-[var(--muted2)]">
-            ☕
-          </div>
-        )}
-      </div>
-      <div className="mt-2.5 px-0.5">
-        <h3 className="font-semibold text-[15px] leading-tight truncate">
-          {cafe.name}
-        </h3>
-        <div className="flex items-center gap-1.5 mt-1">
-          {cafe.rating && (
-            <span className="text-[13px] text-[var(--accent)] font-semibold">
-              ★ {cafe.rating}
-            </span>
-          )}
-          {cafe.rating_count && (
-            <span className="text-xs text-[var(--muted2)]">
-              {cafe.rating_count.toLocaleString()} reviews
-            </span>
-          )}
-        </div>
-        {tags.length > 0 && (
-          <div className="flex gap-1.5 mt-1.5">
-            {tags.map(t => (
-              <span key={t} className="text-[11px] px-2 py-0.5 rounded-full bg-[var(--surface)] text-[var(--muted)] font-medium">
-                {formatTag(t)}
-              </span>
-            ))}
-          </div>
-        )}
-      </div>
-    </Link>
+      {children}
+    </motion.section>
   );
 }
 
+/* ─── Star rating visual ─── */
+function StarRating({ rating, count }: { rating: number; count?: number }) {
+  const full = Math.floor(rating);
+  const half = rating % 1 >= 0.3;
+  return (
+    <div className="flex items-center gap-1">
+      <div className="flex gap-0.5">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <Star
+            key={i}
+            size={13}
+            className={
+              i < full
+                ? "fill-[var(--accent)] text-[var(--accent)]"
+                : i === full && half
+                ? "fill-[var(--accent)]/50 text-[var(--accent)]"
+                : "fill-none text-gray-300"
+            }
+          />
+        ))}
+      </div>
+      <span className="text-[13px] font-semibold text-[var(--foreground)] ml-0.5">{rating}</span>
+      {count != null && (
+        <span className="text-xs text-[var(--muted2)]">({count.toLocaleString()})</span>
+      )}
+    </div>
+  );
+}
+
+/* ─── Trending card ─── */
+function TrendingCard({ cafe, rank }: { cafe: Cafe; rank: number }) {
+  const vibes = (cafe.tags || [])
+    .filter(t => ["cozy", "outdoor", "work_friendly", "aesthetic", "hidden_gem", "modern", "vintage", "quiet", "rooftop_view", "garden", "romantic", "specialty_coffee"].includes(t))
+    .slice(0, 2)
+    .map(t => t.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase()));
+
+  return (
+    <motion.div variants={staggerItem}>
+      <Link
+        href={`/cafe/${makeSlug(cafe.id, cafe.name)}`}
+        className="group block"
+      >
+        <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-[var(--surface)]">
+          {cafe.hero_photo ? (
+            <Image
+              src={cafe.hero_photo}
+              alt={cafe.name}
+              fill
+              className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
+              sizes="(max-width: 640px) 50vw, 280px"
+              loading="lazy"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[var(--surface)] to-gray-100">
+              <Coffee size={32} className="text-[var(--muted2)]" />
+            </div>
+          )}
+          {/* Gradient overlay bottom */}
+          <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/50 to-transparent" />
+
+          {/* Rank badge */}
+          <div className="absolute top-3 left-3 w-7 h-7 rounded-lg bg-white shadow-md flex items-center justify-center">
+            <span className="text-xs font-bold text-[var(--foreground)]">{rank}</span>
+          </div>
+
+          {/* Area label on photo */}
+          {cafe.area && cafe.area !== "Bandung" && (
+            <div className="absolute bottom-3 left-3 flex items-center gap-1 text-white/90 text-[11px] font-medium">
+              <MapPin size={11} />
+              <span>{cafe.area}</span>
+            </div>
+          )}
+        </div>
+
+        <div className="mt-3 px-0.5">
+          <h3 className="font-bold text-[15px] sm:text-base leading-snug line-clamp-1 group-hover:text-[var(--accent)] transition-colors duration-200">
+            {cafe.name}
+          </h3>
+          {cafe.rating && (
+            <div className="mt-1">
+              <StarRating rating={cafe.rating} count={cafe.rating_count} />
+            </div>
+          )}
+          {vibes.length > 0 && (
+            <div className="flex gap-1.5 mt-2">
+              {vibes.map(v => (
+                <span key={v} className="text-[11px] px-2 py-0.5 rounded-md bg-[var(--surface)] text-[var(--muted)] font-medium">
+                  {v}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+      </Link>
+    </motion.div>
+  );
+}
+
+/* ─── Main component ─── */
 export default function HomeClient() {
   const [query, setQuery] = useState("");
   const [aiQuery, setAiQuery] = useState("");
   const [shake, setShake] = useState(false);
   const [trending, setTrending] = useState<Cafe[]>([]);
-  const HERO_FALLBACK = "https://fkpxolnsqjfgcbkiqbld.supabase.co/storage/v1/object/public/cafe-photos/1_flash-coffee/hero.jpg";
-  const [heroImage, setHeroImage] = useState<string>(HERO_FALLBACK);
+  // Curated high-quality hero: Kalpa Tree (2400px premium photo)
+  const HERO_IMAGE = "https://fkpxolnsqjfgcbkiqbld.supabase.co/storage/v1/object/public/cafe-photos/637_kalpa_tree/hero.jpg";
+  const [heroImage] = useState<string>(HERO_IMAGE);
   const [installPrompt, setInstallPrompt] = useState<Event | null>(null);
   const [showInstall, setShowInstall] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const router = useRouter();
   const aiRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
+  const { scrollY } = useScroll();
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    setScrolled(latest > 300);
+  });
 
   useEffect(() => {
     searchCafes({ q: "popular" }).then(data => {
       const cafes = data.results || [];
-      setTrending(cafes.slice(0, 9));
-      const withPhoto = cafes.find(c => c.hero_photo);
-      if (withPhoto?.hero_photo) setHeroImage(withPhoto.hero_photo);
+      setTrending(cafes.filter(c => c.hero_photo).slice(0, 8));
     }).catch(() => {});
   }, []);
 
@@ -113,8 +225,7 @@ export default function HomeClient() {
 
   async function handleInstall() {
     if (!installPrompt) return;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (installPrompt as any).prompt();
+    (installPrompt as unknown as { prompt: () => void }).prompt();
     setShowInstall(false);
   }
 
@@ -157,14 +268,72 @@ export default function HomeClient() {
   }
 
   return (
-    <main className="min-h-dvh">
-      {/* Language toggle */}
-      <div className="absolute top-4 right-4 z-30">
-        <LangToggle />
-      </div>
+    <main className="min-h-dvh bg-white">
+      {/* ━━━ NAVBAR — sticky, always visible ━━━ */}
+      <nav
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          scrolled
+            ? "bg-white/95 backdrop-blur-xl border-b border-gray-100 shadow-sm"
+            : "bg-transparent"
+        }`}
+      >
+        <div className="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
+          {/* Logo + Brand — always top-left */}
+          <Logo
+            size={36}
+            textClassName={`text-[22px] font-black tracking-tight transition-colors duration-300 ${
+              scrolled ? "text-[var(--foreground)]" : "text-white"
+            }`}
+          />
 
-      {/* HERO */}
-      <section className="relative w-full h-[420px] sm:h-[480px] flex items-center justify-center overflow-hidden">
+          {/* Center: compact search (only when scrolled) */}
+          {scrolled && (
+            <motion.div
+              initial={{ opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.2 }}
+              className="hidden sm:flex flex-1 max-w-md mx-8"
+            >
+              <button
+                onClick={() => {
+                  const el = document.querySelector<HTMLInputElement>('input[type="search"]');
+                  if (el) { el.scrollIntoView({ behavior: "smooth", block: "center" }); el.focus(); }
+                  else router.push("/search");
+                }}
+                className="w-full flex items-center gap-2.5 px-4 py-2.5 rounded-full border border-gray-200 bg-gray-50
+                  hover:bg-white hover:border-gray-300 hover:shadow-sm transition-all text-left"
+              >
+                <Search size={16} className="text-[var(--muted2)]" />
+                <span className="text-sm text-[var(--muted2)]">Search cafes, areas, vibes...</span>
+              </button>
+            </motion.div>
+          )}
+
+          {/* Right side */}
+          <div className="flex items-center gap-3">
+            <Link
+              href="/search?q=*"
+              className={`hidden sm:block text-sm font-bold transition-colors duration-300 ${
+                scrolled ? "text-[var(--muted)] hover:text-[var(--foreground)]" : "text-white/80 hover:text-white"
+              }`}
+            >
+              Explore
+            </Link>
+            <Link
+              href="/blog"
+              className={`hidden sm:block text-sm font-bold transition-colors duration-300 ${
+                scrolled ? "text-[var(--muted)] hover:text-[var(--foreground)]" : "text-white/80 hover:text-white"
+              }`}
+            >
+              Blog
+            </Link>
+            <LangToggle />
+          </div>
+        </div>
+      </nav>
+
+      {/* ━━━ HERO ━━━ */}
+      <section className="relative w-full h-[420px] sm:h-[480px] flex items-end justify-center overflow-hidden">
         <Image
           src={heroImage}
           alt="Cafe in Bandung"
@@ -173,25 +342,23 @@ export default function HomeClient() {
           sizes="100vw"
           priority
         />
-        <div className="absolute inset-0 bg-black/45" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/70" />
 
-        <div className="relative z-10 flex flex-col items-center px-6 w-full max-w-xl text-center">
-          {/* Brand */}
-          <div className="flex items-center gap-2.5 mb-4">
-            <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-              <path d="M16 2C10.48 2 6 6.48 6 12c0 7.5 10 18 10 18s10-10.5 10-18c0-5.52-4.48-10-10-10z" fill="var(--accent)"/>
-              <path d="M16 8.5l1.2 2.4 2.6.4-1.9 1.8.5 2.6L16 14.5l-2.4 1.2.5-2.6-1.9-1.8 2.6-.4L16 8.5z" fill="#fff"/>
-            </svg>
-            <span className="text-2xl sm:text-3xl font-bold text-white tracking-tight">Cafepedia</span>
-          </div>
-          <h1 className="text-2xl sm:text-[36px] font-bold text-white leading-tight tracking-tight">
-            Find your next cafe in Bandung
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.1, ease: "easeOut" }}
+          className="relative z-10 flex flex-col items-center px-6 w-full max-w-2xl text-center pb-20 sm:pb-24"
+        >
+          <h1 className="text-[32px] sm:text-[56px] font-black text-white leading-[1.05] tracking-tight">
+            Discover the best places<br className="hidden sm:block" /> in Bandung
           </h1>
-          <p className="text-white/75 text-sm sm:text-base mt-3">
-            Discover the best places to work, relax or hang out.
+          <p className="text-white/65 text-base sm:text-lg mt-3 font-semibold tracking-wide">
+            2,800+ cafes, bars, rooftops & coworking spaces
           </p>
 
-          <div className="w-full mt-6 flex gap-2">
+          {/* Search bar */}
+          <div className="w-full mt-6 flex gap-2 max-w-lg">
             <div className="flex-1">
               <SearchBar
                 value={query}
@@ -204,171 +371,242 @@ export default function HomeClient() {
             </div>
             <button
               onClick={goNear}
-              className="px-4 rounded-2xl bg-white/15 backdrop-blur-sm text-white border border-white/20
-                hover:bg-white/25 active:scale-95 transition-all flex items-center justify-center min-w-[48px] min-h-[48px]"
+              className="px-4 rounded-2xl bg-white/10 backdrop-blur-md text-white border border-white/15
+                hover:bg-white/20 active:scale-95 transition-all flex items-center justify-center min-w-[52px] min-h-[52px]"
               aria-label={t("home.near_me")}
               title={t("home.near_me")}
             >
-              <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current">
-                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-              </svg>
+              <MapPin size={20} />
             </button>
           </div>
-
-          <button
-            onClick={() => goAI(query)}
-            className="mt-4 px-6 py-2.5 rounded-full bg-[var(--accent)] text-white text-sm font-semibold
-              hover:opacity-90 active:scale-95 transition-all flex items-center gap-2"
-          >
-            <svg viewBox="0 0 20 20" className="w-4 h-4 fill-current">
-              <path d="M10 2l1.5 4.5L16 8l-4.5 1.5L10 14l-1.5-4.5L4 8l4.5-1.5L10 2z"/>
-            </svg>
-            Pick for me →
-          </button>
-          <p className="text-white/50 text-xs mt-2">AI match</p>
-        </div>
+        </motion.div>
       </section>
 
-      {/* TRENDING CAFES */}
+      {/* ━━━ CATEGORY BAR (floating over hero) ━━━ */}
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.3 }}
+        className="w-full max-w-5xl mx-auto px-4 -mt-10 relative z-10"
+      >
+        <div className="bg-white rounded-2xl shadow-[0_4px_40px_rgba(0,0,0,0.08)] border border-gray-100 px-3 py-4 sm:px-5 sm:py-5">
+          <div className="flex gap-1 sm:gap-2 overflow-x-auto scrollbar-hide pb-1">
+            {CATEGORIES.map(cat => {
+              const Icon = cat.icon;
+              return (
+                <Link
+                  key={cat.tag}
+                  href={`/search?q=${cat.tag}`}
+                  className="flex flex-col items-center gap-1.5 min-w-[68px] sm:min-w-[76px] py-1.5 rounded-xl
+                    hover:bg-gray-50 active:scale-95 transition-all group"
+                >
+                  <div
+                    className="w-11 h-11 rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110"
+                    style={{ backgroundColor: `${cat.color}12` }}
+                  >
+                    <Icon size={20} style={{ color: cat.color }} strokeWidth={1.8} />
+                  </div>
+                  <span className="text-[11px] font-bold text-[var(--muted)] group-hover:text-[var(--foreground)] transition-colors whitespace-nowrap">
+                    {cat.label}
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </motion.section>
+
+      {/* ━━━ TRENDING CAFES ━━━ */}
       {trending.length > 0 && (
-        <section className="w-full max-w-5xl mx-auto px-5 py-12 sm:py-16">
+        <AnimatedSection className="w-full max-w-5xl mx-auto px-5 pt-12 pb-6 sm:pt-16">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl sm:text-2xl font-bold flex items-center gap-2">
-              🔥 Trending cafes in Bandung
-            </h2>
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-[var(--accent-light)] flex items-center justify-center">
+                <TrendingUp size={16} className="text-[var(--accent)]" />
+              </div>
+              <div>
+                <h2 className="text-xl sm:text-2xl font-black tracking-tight">Trending Right Now</h2>
+                <p className="text-xs text-[var(--muted2)] mt-0.5">Most searched this week in Bandung</p>
+              </div>
+            </div>
             <Link
               href="/search?q=*"
-              className="text-sm text-[var(--accent)] font-medium hover:opacity-75 transition-opacity"
+              className="text-sm text-[var(--accent)] font-semibold hover:opacity-75 transition-opacity flex items-center gap-0.5"
             >
-              Explore all &rsaquo;
+              See all <ChevronRight size={16} />
             </Link>
           </div>
-          <div className="flex gap-5 overflow-x-auto scrollbar-hide pb-2 -mx-1 px-1">
-            {trending.map(cafe => (
-              <TrendingCard key={cafe.id} cafe={cafe} />
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-5"
+          >
+            {trending.map((cafe, i) => (
+              <TrendingCard key={cafe.id} cafe={cafe} rank={i + 1} />
             ))}
-          </div>
-        </section>
+          </motion.div>
+        </AnimatedSection>
       )}
 
-      {/* FEATURES */}
-      <section className="w-full max-w-4xl mx-auto px-5 py-12 sm:py-16">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-12 text-center">
-          <div className="flex flex-col items-center">
-            <div className="w-14 h-14 rounded-full bg-[var(--accent-light)] flex items-center justify-center mb-4">
-              <svg viewBox="0 0 24 24" className="w-6 h-6 text-[var(--accent)]" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="11" cy="11" r="7" />
-                <path d="M16.5 16.5L21 21" />
-              </svg>
-            </div>
-            <h3 className="font-bold text-base">Discover by vibe</h3>
-            <p className="text-sm text-[var(--muted)] mt-1.5 leading-relaxed">
-              Find cafes for work, dates<br />or quiet moments.
-            </p>
+      {/* ━━━ POPULAR AREAS ━━━ */}
+      <AnimatedSection className="w-full max-w-5xl mx-auto px-5 py-10">
+        <div className="flex items-center gap-2.5 mb-5">
+          <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center">
+            <MapPin size={16} className="text-blue-500" />
           </div>
-          <div className="flex flex-col items-center">
-            <div className="w-14 h-14 rounded-full bg-[var(--accent-light)] flex items-center justify-center mb-4">
-              <svg viewBox="0 0 20 20" className="w-6 h-6 text-[var(--accent)]" fill="currentColor">
-                <path d="M10 2l1.5 4.5L16 8l-4.5 1.5L10 14l-1.5-4.5L4 8l4.5-1.5L10 2z"/>
-              </svg>
-            </div>
-            <h3 className="font-bold text-base">AI picks for you</h3>
-            <p className="text-sm text-[var(--muted)] mt-1.5 leading-relaxed">
-              Tell us what you want and<br />get the best matches.
-            </p>
-          </div>
-          <div className="flex flex-col items-center">
-            <div className="w-14 h-14 rounded-full bg-[var(--accent-light)] flex items-center justify-center mb-4">
-              <svg viewBox="0 0 24 24" className="w-6 h-6 text-[var(--accent)]" fill="currentColor">
-                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-              </svg>
-            </div>
-            <h3 className="font-bold text-base">600+ cafes in Bandung</h3>
-            <p className="text-sm text-[var(--muted)] mt-1.5 leading-relaxed">
-              Photos, vibe, prices<br />and directions.
-            </p>
-          </div>
+          <h2 className="text-xl sm:text-2xl font-black tracking-tight">Popular Areas</h2>
         </div>
-      </section>
+        <div className="flex flex-wrap gap-2.5">
+          {POPULAR_AREAS.map(area => (
+            <Link
+              key={area}
+              href={`/search?q=${encodeURIComponent(area)}`}
+              className="px-5 py-2.5 rounded-full border border-gray-200 text-sm font-bold text-[var(--muted)]
+                hover:border-[var(--accent)] hover:text-[var(--accent)] hover:bg-[var(--accent-light)]
+                active:scale-95 transition-all duration-200"
+            >
+              {area}
+            </Link>
+          ))}
+        </div>
+      </AnimatedSection>
 
-      {/* DISCOVERY LINKS */}
-      <section className="w-full max-w-xl mx-auto px-5 py-8">
-        <nav>
-          <ul className="flex flex-col divide-y divide-[var(--border)]">
-            {DISCOVERY_LISTS.map(item => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  className="flex items-center justify-between py-3.5 text-sm text-[var(--muted)] hover:text-[var(--foreground)] transition-colors group"
-                >
-                  <span>{item.label}</span>
-                  <span className="text-[var(--muted2)] group-hover:text-[var(--muted)] transition-colors text-xs">&rarr;</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </section>
-
-      {/* AI PICK SECTION */}
-      <section className="w-full max-w-xl mx-auto px-5 py-12 sm:py-16 text-center">
-        <div className="flex justify-center mb-3">
-          <svg viewBox="0 0 20 20" className="w-7 h-7 text-[var(--accent)]" fill="currentColor">
-            <path d="M10 2l1.5 4.5L16 8l-4.5 1.5L10 14l-1.5-4.5L4 8l4.5-1.5L10 2z"/>
-          </svg>
-        </div>
-        <h2 className="text-xl sm:text-2xl font-bold">
-          Pick a cafe with AI
-        </h2>
-        <p className="text-sm text-[var(--muted)] mt-2 leading-relaxed">
-          Describe what kind of cafe you&apos;re looking for and<br />let AI find the best matches.
-        </p>
-        <div className={`mt-6 flex gap-2 max-w-md mx-auto ${shake ? "animate-shake" : ""}`} ref={aiRef}>
-          <div className="flex-1">
-            <SearchBar
-              value={aiQuery}
-              onChange={setAiQuery}
-              onSubmit={(q) => goAI(q)}
-              placeholder="quiet cafe to work near dago"
-            />
+      {/* ━━━ PICK FOR ME ━━━ */}
+      <AnimatedSection className="w-full max-w-5xl mx-auto px-5 py-8">
+        <div className="rounded-2xl border border-gray-100 bg-gray-50/50 px-6 py-8 sm:px-10 sm:py-10">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-6">
+            <div className="flex-1">
+              <h2 className="text-xl sm:text-2xl font-black tracking-tight">
+                Not sure where to go?
+              </h2>
+              <p className="text-sm sm:text-base text-[var(--muted)] mt-1.5 leading-relaxed">
+                Describe what you&apos;re looking for and we&apos;ll find the best matches.
+              </p>
+            </div>
+            <div className="sm:w-[320px] flex-shrink-0">
+              <div className={`flex gap-2 ${shake ? "animate-shake" : ""}`} ref={aiRef}>
+                <div className="flex-1">
+                  <SearchBar
+                    value={aiQuery}
+                    onChange={setAiQuery}
+                    onSubmit={(q) => goAI(q)}
+                    placeholder="quiet cafe to work near dago"
+                  />
+                </div>
+              </div>
+              <button
+                onClick={() => goAI(aiQuery)}
+                className="mt-3 w-full px-6 py-3 rounded-xl bg-[var(--foreground)] text-white text-sm font-semibold
+                  hover:opacity-90 active:scale-[0.97] transition-all duration-200
+                  flex items-center justify-center gap-2"
+              >
+                <Sparkles size={14} />
+                Pick for me
+              </button>
+            </div>
           </div>
         </div>
-        <button
-          onClick={() => goAI(aiQuery)}
-          className="mt-4 px-8 py-3 rounded-full bg-[var(--accent)] text-white text-sm font-semibold
-            hover:opacity-90 active:scale-95 transition-all"
+      </AnimatedSection>
+
+      {/* ━━━ DISCOVERY COLLECTIONS ━━━ */}
+      <AnimatedSection className="w-full max-w-5xl mx-auto px-5 py-8">
+        <h2 className="text-xl sm:text-2xl font-black tracking-tight mb-4">Explore Collections</h2>
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="grid grid-cols-1 sm:grid-cols-2 gap-3"
         >
-          Try AI picks
-        </button>
-      </section>
+          {DISCOVERY_LISTS.map(item => (
+            <motion.div key={item.href} variants={staggerItem}>
+              <Link
+                href={item.href}
+                className="flex items-center justify-between px-5 py-4 rounded-xl border border-gray-100 bg-gray-50/50
+                  hover:bg-white hover:border-gray-200 hover:shadow-sm
+                  active:scale-[0.98] transition-all duration-200 group"
+              >
+                <div>
+                  <span className="font-bold text-[15px] text-[var(--foreground)]">{item.label}</span>
+                  <p className="text-xs text-[var(--muted2)] mt-0.5">{item.desc}</p>
+                </div>
+                <ChevronRight size={18} className="text-[var(--muted2)] group-hover:text-[var(--accent)] group-hover:translate-x-0.5 transition-all" />
+              </Link>
+            </motion.div>
+          ))}
+        </motion.div>
+      </AnimatedSection>
 
-      {/* FOOTER */}
-      <footer className="w-full max-w-xl mx-auto px-5 pt-8 pb-8 text-center border-t border-[var(--border)]">
-        <div className="flex items-center justify-center gap-2 mb-4">
-          <svg width="20" height="20" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-            <path d="M16 2C10.48 2 6 6.48 6 12c0 7.5 10 18 10 18s10-10.5 10-18c0-5.52-4.48-10-10-10z" fill="var(--accent)"/>
-            <path d="M16 8.5l1.2 2.4 2.6.4-1.9 1.8.5 2.6L16 14.5l-2.4 1.2.5-2.6-1.9-1.8 2.6-.4L16 8.5z" fill="#fff"/>
-          </svg>
-          <span className="font-bold text-base">Cafepedia</span>
+      {/* ━━━ STATS BAR ━━━ */}
+      <AnimatedSection className="w-full max-w-5xl mx-auto px-5 py-8">
+        <div className="grid grid-cols-3 gap-4 text-center">
+          {[
+            { value: "2,800+", label: "Places" },
+            { value: "9", label: "Categories" },
+            { value: "10+", label: "Areas" },
+          ].map(stat => (
+            <div key={stat.label} className="py-4">
+              <div className="text-3xl sm:text-4xl font-black tracking-tight text-[var(--foreground)]">{stat.value}</div>
+              <div className="text-xs font-bold text-[var(--muted2)] uppercase tracking-wider mt-1">{stat.label}</div>
+            </div>
+          ))}
         </div>
-        <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1.5 text-xs text-[var(--muted)]">
-          <a href="/about" className="hover:text-[var(--foreground)] transition-colors">About</a>
-          <a href="/suggest" className="hover:text-[var(--foreground)] transition-colors">Submit a Cafe</a>
-          <a href="/contact" className="hover:text-[var(--foreground)] transition-colors">Contact</a>
-          <a href="/blog" className="hover:text-[var(--foreground)] transition-colors">Blog</a>
-          <a href="/browse" className="hover:text-[var(--foreground)] transition-colors">Browse</a>
-          <a href="/claim" className="hover:text-[var(--foreground)] transition-colors">Claim your Cafe</a>
+      </AnimatedSection>
+
+      {/* ━━━ FOOTER ━━━ */}
+      <footer className="w-full border-t border-gray-100 bg-gray-50/50 mt-4">
+        <div className="max-w-5xl mx-auto px-5 py-10 sm:py-14">
+          <div className="flex flex-col sm:flex-row sm:justify-between gap-8">
+            {/* Brand column */}
+            <div className="max-w-[260px]">
+              <div className="mb-3">
+                <Logo size={24} textClassName="text-base font-bold tracking-tight text-[var(--foreground)]" />
+              </div>
+              <p className="text-[13px] text-[var(--muted)] leading-relaxed">
+                The ultimate guide to cafes, bars, rooftops and coworking spaces in Bandung. Discover, decide, go.
+              </p>
+            </div>
+
+            {/* Link columns */}
+            <div className="flex gap-16 text-[13px]">
+              <div className="flex flex-col gap-3">
+                <span className="font-bold text-[11px] uppercase tracking-widest text-[var(--muted2)]">Discover</span>
+                <a href="/search?q=*" className="text-[var(--muted)] hover:text-[var(--foreground)] transition-colors">All places</a>
+                <a href="/browse" className="text-[var(--muted)] hover:text-[var(--foreground)] transition-colors">Browse</a>
+                <a href="/blog" className="text-[var(--muted)] hover:text-[var(--foreground)] transition-colors">Blog</a>
+                <a href="/pick" className="text-[var(--muted)] hover:text-[var(--foreground)] transition-colors">AI Picks</a>
+              </div>
+              <div className="flex flex-col gap-3">
+                <span className="font-bold text-[11px] uppercase tracking-widest text-[var(--muted2)]">Company</span>
+                <a href="/about" className="text-[var(--muted)] hover:text-[var(--foreground)] transition-colors">About</a>
+                <a href="/suggest" className="text-[var(--muted)] hover:text-[var(--foreground)] transition-colors">Submit a place</a>
+                <a href="/claim" className="text-[var(--muted)] hover:text-[var(--foreground)] transition-colors">Claim listing</a>
+                <a href="/contact" className="text-[var(--muted)] hover:text-[var(--foreground)] transition-colors">Contact</a>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom bar */}
+          <div className="flex flex-wrap items-center justify-between gap-4 text-[11px] text-[var(--muted2)] mt-10 pt-6 border-t border-gray-200">
+            <span>&copy; {new Date().getFullYear()} Cafepedia. Bandung, Indonesia.</span>
+            <div className="flex gap-4">
+              <a href="/privacy" className="hover:text-[var(--foreground)] transition-colors">Privacy</a>
+              <a href="/terms" className="hover:text-[var(--foreground)] transition-colors">Terms</a>
+            </div>
+          </div>
         </div>
-        <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[11px] text-[var(--muted2)] mt-3">
-          <a href="/privacy" className="hover:text-[var(--foreground)] transition-colors">Privacy Policy</a>
-          <a href="/terms" className="hover:text-[var(--foreground)] transition-colors">Terms of Service</a>
-        </div>
-        <p className="text-[11px] text-[var(--muted2)] mt-3">cafepedia.id — Bandung, Indonesia</p>
       </footer>
 
-      {/* Install banner */}
+      {/* ━━━ PWA Install banner ━━━ */}
       {showInstall && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-[var(--border)] px-6 py-4 flex items-center justify-between gap-4 z-50 shadow-lg">
+        <motion.div
+          initial={{ y: 100 }}
+          animate={{ y: 0 }}
+          transition={{ type: "spring", damping: 25, stiffness: 200 }}
+          className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-6 py-4 flex items-center justify-between gap-4 z-50 shadow-[0_-4px_30px_rgba(0,0,0,0.08)]"
+        >
           <p className="text-[13px] text-[var(--muted)]">
             {t("home.install_prompt")}
           </p>
@@ -381,12 +619,13 @@ export default function HomeClient() {
             </button>
             <button
               onClick={handleInstall}
-              className="text-[13px] font-semibold bg-[var(--foreground)] text-white px-4 py-2 rounded-lg min-h-[44px]"
+              className="text-[13px] font-bold bg-[var(--foreground)] text-white px-5 py-2 rounded-xl min-h-[44px]
+                hover:opacity-90 active:scale-95 transition-all"
             >
               {t("home.install")}
             </button>
           </div>
-        </div>
+        </motion.div>
       )}
     </main>
   );
