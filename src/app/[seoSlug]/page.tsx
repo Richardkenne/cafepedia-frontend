@@ -61,7 +61,13 @@ async function getSeoPage(slug: string): Promise<SeoPage | null> {
     }
   );
   const data = await r.json();
-  return data[0] || null;
+  if (!data[0]) return null;
+  const page = data[0];
+  // Parse JSON string fields from Supabase
+  if (typeof page.tag_filters === "string") page.tag_filters = JSON.parse(page.tag_filters);
+  if (typeof page.faq_json === "string") page.faq_json = JSON.parse(page.faq_json);
+  if (typeof page.related_slugs === "string") page.related_slugs = JSON.parse(page.related_slugs);
+  return page;
 }
 
 async function getCafesForPage(page: SeoPage): Promise<Cafe[]> {
