@@ -344,7 +344,7 @@ export default function CafeDetail() {
                     className="flex-1 text-center py-3.5 rounded-xl bg-[var(--foreground)] text-white text-[14px] font-semibold
                       active:scale-95 transition-transform min-h-[48px] flex items-center justify-center"
                   >
-                    Open in Maps
+                    Buka di Maps
                   </a>
                 )}
                 {cafe.phone && (
