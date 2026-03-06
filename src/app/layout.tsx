@@ -30,11 +30,11 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "Cafepedia — Bandung Cafe Guide",
-    description: "Discover the best cafes in Bandung. Search by vibe, area, or let AI pick for you.",
+    description: "Temukan cafe terbaik di Bandung. Cari berdasarkan suasana, lokasi, atau biarkan AI pilihkan untukmu.",
     url: SITE_URL,
     siteName: "Cafepedia",
     type: "website",
-    locale: "en_US",
+    locale: "id_ID",
   },
   twitter: {
     card: "summary",
@@ -67,7 +67,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en-ID" className={plusJakarta.variable}>
+    <html lang="id" className={plusJakarta.variable}>
       <body className="antialiased min-h-dvh font-sans">
         <PostHogProvider>
         <I18nProvider>

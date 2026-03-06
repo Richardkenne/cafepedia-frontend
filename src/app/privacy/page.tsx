@@ -100,11 +100,11 @@ export default function PrivacyPage() {
           </h2>
 
           <p>
-            We use <strong className="text-[var(--foreground)]">Vercel Analytics</strong>{" "}
-            and <strong className="text-[var(--foreground)]">Vercel Web Vitals</strong>{" "}
-            to measure site performance and usage. These tools may use cookies or
-            similar technologies to collect anonymized data. We do not use
-            advertising cookies or third-party ad trackers.
+            We use <strong className="text-[var(--foreground)]">PostHog</strong>{" "}
+            for product analytics, including page views, clicks, session recordings,
+            and heatmaps to understand how users interact with our site.
+            PostHog may use cookies or similar technologies to collect anonymized data.
+            We do not use advertising cookies or third-party ad trackers.
           </p>
 
           <p>
@@ -137,9 +137,13 @@ export default function PrivacyPage() {
             </li>
             <li>
               <strong className="text-[var(--foreground)]">Vercel</strong>{" "}
-              — hosts our frontend and provides analytics. Vercel may process
-              request metadata (IP address, user agent) for performance and
-              security purposes.
+              — hosts our frontend. Vercel may process request metadata
+              (IP address, user agent) for performance and security purposes.
+            </li>
+            <li>
+              <strong className="text-[var(--foreground)]">PostHog</strong>{" "}
+              — provides product analytics, session recordings, and heatmaps.
+              Data is processed in the US.
             </li>
             <li>
               <strong className="text-[var(--foreground)]">OpenAI</strong>{" "}
