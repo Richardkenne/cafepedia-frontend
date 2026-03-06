@@ -297,6 +297,22 @@ export default async function SeoPage({
           </section>
         )}
 
+        {/* Blog articles */}
+        <section className="mt-8">
+          <h3 className="text-sm font-semibold text-[var(--muted)] mb-2">From the blog</h3>
+          <div className="flex flex-col gap-1">
+            <Link href="/blog/best-cafes-bandung-2026" className="text-[13px] text-[var(--muted2)] hover:text-[var(--foreground)] transition-colors">
+              Best Cafes in Bandung 2026
+            </Link>
+            <Link href="/blog/work-friendly-cafes-bandung" className="text-[13px] text-[var(--muted2)] hover:text-[var(--foreground)] transition-colors">
+              Work-Friendly Cafes in Bandung
+            </Link>
+            <Link href="/blog/bandung-cafe-guide-by-area" className="text-[13px] text-[var(--muted2)] hover:text-[var(--foreground)] transition-colors">
+              Bandung Cafe Guide by Area
+            </Link>
+          </div>
+        </section>
+
         {/* Schema.org FAQ */}
         {faq.length > 0 && (
           <script
