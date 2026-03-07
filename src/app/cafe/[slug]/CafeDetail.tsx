@@ -342,6 +342,20 @@ export default function CafeDetail({ initialData }: CafeDetailProps = {}) {
                 </div>
               </div>
 
+              {/* ── Closed banner ── */}
+              {cafe.status === "closed" && (
+                <div className="mt-4 p-4 rounded-xl bg-red-50 border border-red-200">
+                  <p className="text-[14px] font-semibold text-red-700">Tempat ini sepertinya sudah tutup permanen</p>
+                  <p className="text-[12px] text-red-600/70 mt-1">Informasi di halaman ini mungkin tidak akurat lagi.</p>
+                </div>
+              )}
+              {cafe.status === "temporarily_closed" && (
+                <div className="mt-4 p-4 rounded-xl bg-amber-50 border border-amber-200">
+                  <p className="text-[14px] font-semibold text-amber-700">Tempat ini sementara tutup</p>
+                  <p className="text-[12px] text-amber-600/70 mt-1">Cek langsung ke tempatnya untuk informasi terbaru.</p>
+                </div>
+              )}
+
               {/* ── Rating + Vibe ── */}
               {cafe.rating && (
                 <div className="mt-6 flex items-stretch gap-4 p-5 rounded-2xl bg-[var(--surface)]">
