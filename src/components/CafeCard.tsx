@@ -21,98 +21,88 @@ function formatPrice(price?: string) {
   return count > 0 ? "$".repeat(count) : price;
 }
 
-function StarRating({ rating }: { rating: number }) {
-  const full = Math.floor(rating);
-  const half = rating % 1 >= 0.3;
-  return (
-    <div className="flex gap-0.5">
-      {Array.from({ length: 5 }).map((_, i) => (
-        <Star
-          key={i}
-          size={12}
-          className={
-            i < full
-              ? "fill-[var(--accent)] text-[var(--accent)]"
-              : i === full && half
-              ? "fill-[var(--accent)]/50 text-[var(--accent)]"
-              : "fill-none text-gray-200"
-          }
-        />
-      ))}
-    </div>
-  );
-}
-
 export default function CafeCard({ cafe }: { cafe: Cafe }) {
-  const tags = (cafe.tags || []).filter(t => DISPLAY_TAGS.has(t)).slice(0, 3);
+  const tags = (cafe.tags || []).filter(t => DISPLAY_TAGS.has(t)).slice(0, 2);
   const dist = formatDistance(cafe.distance_km);
+  const price = formatPrice(cafe.price_level);
 
   return (
     <Link
       href={`/cafe/${makeSlug(cafe.id, cafe.name)}`}
-      className="flex gap-4 py-4 border-b border-gray-100 group transition-colors hover:bg-gray-50/50 -mx-2 px-2 rounded-xl"
+      className="group block"
     >
       {/* Photo */}
-      <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-xl overflow-hidden flex-shrink-0 bg-[var(--surface)]">
+      <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden bg-[var(--surface)]">
         {cafe.hero_photo ? (
           <Image
             src={cafe.hero_photo}
             alt={cafe.name}
             fill
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
             loading="lazy"
-            sizes="(max-width: 640px) 96px, 112px"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-[var(--muted2)]">
-            <svg viewBox="0 0 24 24" className="w-7 h-7 fill-none stroke-current stroke-1.5">
-              <path d="M17 8h1a4 4 0 1 1 0 8h-1M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8zM6 2v4M10 2v4M14 2v4" />
+          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-teal-50 to-amber-50">
+            <svg viewBox="0 0 32 32" className="w-10 h-10 text-[var(--accent)] opacity-40">
+              <path fill="currentColor" d="M6 10h14v12a4 4 0 0 1-4 4H10a4 4 0 0 1-4-4V10z"/>
+              <path fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" d="M20 13h2a3 3 0 0 1 0 6h-2"/>
+              <path fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" d="M10 3c0 2 2 3 2 5M13 2c0 2 2 3 2 5M16 3c0 2 2 3 2 5"/>
             </svg>
           </div>
         )}
+
+        {/* Gradient overlay */}
+        <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/40 to-transparent" />
+
+        {/* Distance badge */}
         {dist && (
-          <div className="absolute bottom-1.5 left-1.5 flex items-center gap-0.5 px-1.5 py-0.5 rounded-md bg-black/60 backdrop-blur-sm text-[10px] text-white font-medium">
-            <MapPin size={9} />
+          <div className="absolute top-3 right-3 flex items-center gap-1 px-2 py-1 rounded-lg bg-white/90 backdrop-blur-sm text-[11px] font-semibold text-[var(--foreground)] shadow-sm">
+            <MapPin size={11} className="text-[var(--accent)]" />
             {dist}
+          </div>
+        )}
+
+        {/* Area on photo */}
+        {(cafe.neighborhood || cafe.area) && (cafe.neighborhood || cafe.area) !== "Bandung" && (
+          <div className="absolute bottom-3 left-3 flex items-center gap-1 text-white/90 text-[11px] font-medium">
+            <MapPin size={11} />
+            <span>{cafe.neighborhood || cafe.area}</span>
           </div>
         )}
       </div>
 
       {/* Info */}
-      <div className="flex-1 min-w-0 flex flex-col justify-center">
-        <h3 className="font-semibold text-[15px] sm:text-base leading-tight truncate group-hover:text-[var(--accent)] transition-colors">
-          {cafe.name}
-        </h3>
-
-        <p className="text-[13px] text-[var(--muted)] mt-0.5 truncate">
-          {cafe.neighborhood || cafe.area}
-          {cafe.price_level && ` · ${formatPrice(cafe.price_level)}`}
-        </p>
+      <div className="mt-3 px-0.5">
+        <div className="flex items-start justify-between gap-2">
+          <h3 className="font-bold text-[15px] leading-snug line-clamp-1 group-hover:text-[var(--accent)] transition-colors duration-200">
+            {cafe.name}
+          </h3>
+          {price && (
+            <span className="text-[12px] font-semibold text-[var(--muted)] flex-shrink-0 mt-0.5">{price}</span>
+          )}
+        </div>
 
         {cafe.rating && (
-          <div className="flex items-center gap-1.5 mt-1.5">
-            <StarRating rating={cafe.rating} />
-            <span className="text-[13px] font-semibold text-[var(--foreground)]">{cafe.rating}</span>
+          <div className="flex items-center gap-1.5 mt-1">
+            <div className="flex items-center gap-0.5">
+              <Star size={13} className="fill-[var(--accent)] text-[var(--accent)]" />
+              <span className="text-[13px] font-bold text-[var(--foreground)]">{cafe.rating}</span>
+            </div>
             {cafe.rating_count && (
-              <span className="text-xs text-[var(--muted2)]">({cafe.rating_count.toLocaleString()})</span>
+              <span className="text-[12px] text-[var(--muted2)]">({cafe.rating_count.toLocaleString()})</span>
             )}
           </div>
         )}
 
         {tags.length > 0 && (
-          <div className="flex gap-1.5 mt-2 flex-wrap">
+          <div className="flex gap-1.5 mt-2">
             {tags.map(t => (
-              <span key={t} className="text-[11px] px-2 py-0.5 rounded-md bg-gray-100 text-[var(--muted)] font-medium">
+              <span key={t} className="text-[11px] px-2 py-0.5 rounded-md bg-[var(--surface)] text-[var(--muted)] font-medium">
                 {formatTag(t)}
               </span>
             ))}
           </div>
-        )}
-
-        {cafe.description && (
-          <p className="text-xs text-[var(--muted2)] mt-1.5 line-clamp-1 leading-relaxed">
-            {cafe.description}
-          </p>
         )}
       </div>
     </Link>

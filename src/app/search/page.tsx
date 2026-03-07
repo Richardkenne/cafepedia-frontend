@@ -245,12 +245,14 @@ function SearchContent() {
           </div>
         )}
 
-        {/* Results list */}
+        {/* Results grid */}
         {!loading && results.length > 0 && (
           <div>
-            {results.slice(0, visible).map(cafe => (
-              <CafeCard key={cafe.id} cafe={cafe} />
-            ))}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {results.slice(0, visible).map(cafe => (
+                <CafeCard key={cafe.id} cafe={cafe} />
+              ))}
+            </div>
             {visible < results.length && (
               <button
                 onClick={() => setVisible(v => v + PAGE_SIZE)}

@@ -139,8 +139,12 @@ function TrendingCard({ cafe, rank }: { cafe: Cafe; rank: number }) {
               loading="lazy"
             />
           ) : (
-            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[var(--surface)] to-gray-100">
-              <Coffee size={32} className="text-[var(--muted2)]" />
+            <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-teal-50 to-amber-50">
+              <svg viewBox="0 0 32 32" className="w-10 h-10 text-[var(--accent)] opacity-40">
+                <path fill="currentColor" d="M6 10h14v12a4 4 0 0 1-4 4H10a4 4 0 0 1-4-4V10z"/>
+                <path fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" d="M20 13h2a3 3 0 0 1 0 6h-2"/>
+                <path fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" d="M10 3c0 2 2 3 2 5M13 2c0 2 2 3 2 5M16 3c0 2 2 3 2 5"/>
+              </svg>
             </div>
           )}
           {/* Gradient overlay bottom */}

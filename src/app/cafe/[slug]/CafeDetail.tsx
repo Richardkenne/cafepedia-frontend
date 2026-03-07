@@ -7,6 +7,10 @@ import { Cafe } from "@/lib/types";
 import { formatHoursCompact } from "@/lib/formatHours";
 import { DetailSkeleton } from "@/components/Skeleton";
 import Image from "next/image";
+import {
+  ArrowLeft, Star, MapPin, Clock, Phone, Globe, Instagram,
+  Navigation, Share2, ChevronLeft, ChevronRight, X,
+} from "lucide-react";
 
 const DISPLAY_TAGS = new Set(["coffee","tea","bakery","roastery","food","bar_lounge","bistro","premium","work_friendly","outdoor","vintage","quiet","artsy","pet_friendly","budget","mid_range","upscale","top_rated","popular","late_night","aesthetic","instagrammable","date_spot","specialty_coffee","live_music","restaurant","cozy","modern","minimalist","industrial","tropical","rustic","elegant","romantic","lively","chill","western_food","korean_food","japanese_food","sundanese_food","chinese_food","seafood","steak","cocktails","wine","matcha","city_view","mountain_view","hidden_gem","kid_friendly","student","couple","group_friendly","solo_friendly","breakfast","lunch_spot","dinner_spot","weekend_brunch","hillside","garden","dessert","coworking","rooftop_view","brunch","bookish"]);
 
@@ -19,24 +23,17 @@ const VIBE_TAGS: Record<string, string> = {
   quiet: "Quiet", elegant: "Elegant", rustic: "Rustic", modern: "Modern",
   minimalist: "Minimalist", industrial: "Industrial", tropical: "Tropical",
   vintage: "Vintage", aesthetic: "Aesthetic", artsy: "Artsy", bookish: "Bookish",
+};
+
+function getVibeSummary(tags: string[]): string | null {
+  const vibes = tags.filter(t => t in VIBE_TAGS).map(t => VIBE_TAGS[t]);
+  return vibes.length > 0 ? vibes.slice(0, 4).join(" · ") : null;
 }
 
-function getVibeSummary(tags: string[], environment?: string): string | null {
-  const vibes = tags.filter(t => t in VIBE_TAGS).map(t => VIBE_TAGS[t])
-  if (vibes.length > 0) return vibes.slice(0, 4).join(" · ")
-  if (environment && environment !== "Casual") return environment
-  return null
-}
-
-function Section({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <div className="py-4 border-b border-[var(--surface)]">
-      <div className="text-[11px] uppercase tracking-wider text-[var(--muted2)] font-medium mb-1">
-        {label}
-      </div>
-      <div className="text-[15px] leading-relaxed">{children}</div>
-    </div>
-  );
+function formatPrice(price?: string) {
+  if (!price) return null;
+  const count = (price.match(/★/g) || []).length;
+  return count > 0 ? "$".repeat(count) : price;
 }
 
 export default function CafeDetail() {
@@ -58,7 +55,6 @@ export default function CafeDetail() {
     setLightboxIndex(idx >= 0 ? idx : 0);
   }, [allPhotos]);
 
-  // Keyboard navigation
   useEffect(() => {
     if (lightboxIndex === null) return;
     const handler = (e: KeyboardEvent) => {
@@ -70,7 +66,6 @@ export default function CafeDetail() {
     return () => window.removeEventListener("keydown", handler);
   }, [lightboxIndex, prevPhoto, nextPhoto, closeLightbox]);
 
-  // Touch swipe
   const touchStartX = useCallback((e: React.TouchEvent) => {
     (e.currentTarget as HTMLElement).dataset.startX = String(e.touches[0].clientX);
   }, []);
@@ -82,9 +77,7 @@ export default function CafeDetail() {
 
   const displayPhotos = useMemo(() => {
     if (!cafe?.photos || cafe.photos.length === 0) return [];
-    const count = Math.min(3 + Math.floor(Math.random() * 3), cafe.photos.length); // 3, 4, or 5
-    const shuffled = [...cafe.photos].sort(() => Math.random() - 0.5);
-    return shuffled.slice(0, count);
+    return cafe.photos.slice(0, 5);
   }, [cafe?.photos]);
 
   useEffect(() => {
@@ -96,28 +89,46 @@ export default function CafeDetail() {
     }).catch(() => setLoading(false));
   }, [id]);
 
-  return (
-    <div className="min-h-dvh">
-      {/* Sticky header */}
-      <header className="sticky top-0 z-20 bg-[var(--background)]/92 backdrop-blur-xl border-b border-[var(--border)]">
-        <div className="max-w-3xl mx-auto px-4 py-3 flex items-center gap-3">
-          <button
-            onClick={() => router.back()}
-            className="text-[var(--muted)] text-sm font-medium p-2 -ml-2 min-w-[44px] min-h-[44px] flex items-center justify-center gap-1"
-          >
-            ← Kembali
-          </button>
-          {cafe && (
-            <h1 className="text-sm font-semibold truncate flex-1">
-              {cafe.name}
-            </h1>
-          )}
-        </div>
-      </header>
+  const vibeSummary = cafe ? getVibeSummary(cafe.tags || []) : null;
+  const price = cafe ? formatPrice(cafe.price_range as string) : null;
+  const hours = cafe?.hours ? formatHoursCompact(cafe.hours) : null;
 
-      <main className="max-w-3xl mx-auto pb-8">
+  async function handleShare() {
+    const url = window.location.href;
+    if (navigator.share) {
+      navigator.share({ title: cafe?.name, url });
+    } else {
+      await navigator.clipboard.writeText(url);
+    }
+  }
+
+  return (
+    <div className="min-h-dvh bg-white">
+      {/* Back button — floating over photo */}
+      <div className="fixed top-4 left-4 z-30 flex gap-2">
+        <button
+          onClick={() => router.back()}
+          className="w-10 h-10 rounded-full bg-white/90 backdrop-blur-md shadow-lg flex items-center justify-center
+            hover:bg-white transition-colors"
+          aria-label="Back"
+        >
+          <ArrowLeft size={18} />
+        </button>
+      </div>
+      <div className="fixed top-4 right-4 z-30">
+        <button
+          onClick={handleShare}
+          className="w-10 h-10 rounded-full bg-white/90 backdrop-blur-md shadow-lg flex items-center justify-center
+            hover:bg-white transition-colors"
+          aria-label="Share"
+        >
+          <Share2 size={16} />
+        </button>
+      </div>
+
+      <main className="max-w-4xl mx-auto pb-32">
         {loading && (
-          <div className="px-4 pt-4">
+          <div className="px-4 pt-16">
             <DetailSkeleton />
           </div>
         )}
@@ -130,54 +141,82 @@ export default function CafeDetail() {
 
         {!loading && cafe && (
           <>
-            {/* Photo gallery — hero + thumbnail grid */}
-            {displayPhotos.length > 0 && (
-              <div>
-                {/* Hero photo */}
-                <div
-                  className="relative w-full h-64 sm:h-96 cursor-pointer"
-                  onClick={() => openLightbox(displayPhotos[0])}
-                >
-                  <Image
-                    src={displayPhotos[0]}
-                    alt={`${cafe.name} photo 1`}
-                    fill
-                    className="object-cover"
-                    sizes="100vw"
-                    priority
-                  />
-                  {displayPhotos.length > 1 && (
-                    <div className="absolute bottom-3 right-3 bg-black/60 text-white text-xs px-2.5 py-1 rounded-full">
-                      {displayPhotos.length} photos
+            {/* ─── Photo Gallery ─── */}
+            {displayPhotos.length > 0 ? (
+              <div className="sm:px-6 sm:pt-6">
+                {/* Desktop: Airbnb-style grid */}
+                <div className="hidden sm:grid grid-cols-4 grid-rows-2 gap-2 rounded-2xl overflow-hidden h-[420px] cursor-pointer">
+                  {/* Hero — spans 2 cols, 2 rows */}
+                  <div
+                    className="col-span-2 row-span-2 relative group"
+                    onClick={() => openLightbox(displayPhotos[0])}
+                  >
+                    <Image
+                      src={displayPhotos[0]}
+                      alt={`${cafe.name}`}
+                      fill
+                      className="object-cover group-hover:brightness-90 transition-all duration-300"
+                      sizes="50vw"
+                      priority
+                    />
+                  </div>
+                  {/* Thumbnails */}
+                  {displayPhotos.slice(1, 5).map((url, i) => (
+                    <div
+                      key={url}
+                      className="relative group"
+                      onClick={() => openLightbox(url)}
+                    >
+                      <Image
+                        src={url}
+                        alt={`${cafe.name} photo ${i + 2}`}
+                        fill
+                        className="object-cover group-hover:brightness-90 transition-all duration-300"
+                        sizes="25vw"
+                        loading="lazy"
+                      />
+                      {/* "Show all" on last thumbnail */}
+                      {i === Math.min(3, displayPhotos.length - 2) && allPhotos.length > 5 && (
+                        <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                          <span className="text-white text-sm font-semibold">+{allPhotos.length - 5} foto</span>
+                        </div>
+                      )}
                     </div>
-                  )}
+                  ))}
                 </div>
 
-                {/* Thumbnail grid */}
-                {displayPhotos.length > 1 && (
-                  <div className="grid grid-cols-2 gap-1.5 px-1.5 mt-1.5">
-                    {displayPhotos.slice(1).map((url, i) => (
-                      <div
-                        key={url}
-                        className="relative h-32 sm:h-40 rounded-lg overflow-hidden cursor-pointer active:opacity-80 transition-opacity"
-                        onClick={() => openLightbox(url)}
-                      >
-                        <Image
-                          src={url}
-                          alt={`${cafe.name} photo ${i + 2}`}
-                          fill
-                          className="object-cover"
-                          sizes="(max-width: 640px) 50vw, 320px"
-                          loading="lazy"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                )}
+                {/* Mobile: horizontal scroll */}
+                <div className="sm:hidden flex gap-1 overflow-x-auto snap-x snap-mandatory scrollbar-hide">
+                  {displayPhotos.map((url, i) => (
+                    <div
+                      key={url}
+                      className="relative flex-shrink-0 w-[85vw] aspect-[4/3] snap-center first:ml-0"
+                      onClick={() => openLightbox(url)}
+                    >
+                      <Image
+                        src={url}
+                        alt={`${cafe.name} photo ${i + 1}`}
+                        fill
+                        className="object-cover"
+                        sizes="85vw"
+                        priority={i === 0}
+                        loading={i === 0 ? "eager" : "lazy"}
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className="w-full h-56 sm:h-72 flex items-center justify-center bg-gradient-to-br from-teal-50 to-amber-50 sm:mx-6 sm:mt-6 sm:rounded-2xl">
+                <svg viewBox="0 0 32 32" className="w-14 h-14 text-[var(--accent)] opacity-30">
+                  <path fill="currentColor" d="M6 10h14v12a4 4 0 0 1-4 4H10a4 4 0 0 1-4-4V10z"/>
+                  <path fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" d="M20 13h2a3 3 0 0 1 0 6h-2"/>
+                  <path fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" d="M10 3c0 2 2 3 2 5M13 2c0 2 2 3 2 5M16 3c0 2 2 3 2 5"/>
+                </svg>
               </div>
             )}
 
-            {/* Fullscreen lightbox with navigation */}
+            {/* ─── Lightbox ─── */}
             {lightboxIndex !== null && allPhotos[lightboxIndex] && (
               <div
                 className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center"
@@ -185,33 +224,35 @@ export default function CafeDetail() {
                 onTouchStart={touchStartX}
                 onTouchEnd={touchEndX}
               >
-                {/* Close button */}
                 <button
                   onClick={closeLightbox}
-                  className="absolute top-4 right-4 text-white/70 hover:text-white text-2xl font-light z-10 w-11 h-11 flex items-center justify-center"
+                  className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center z-10 transition-colors"
                   aria-label="Close"
                 >
-                  &times;
+                  <X size={20} />
                 </button>
-
-                {/* Counter */}
-                <div className="absolute top-4 left-4 text-white/70 text-sm z-10">
+                <div className="absolute top-5 left-1/2 -translate-x-1/2 text-white/70 text-sm z-10 font-medium">
                   {lightboxIndex + 1} / {allPhotos.length}
                 </div>
-
-                {/* Prev arrow */}
                 {allPhotos.length > 1 && (
-                  <button
-                    onClick={(e) => { e.stopPropagation(); prevPhoto(); }}
-                    className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 text-white/60 hover:text-white text-4xl z-10 w-12 h-12 flex items-center justify-center"
-                    aria-label="Previous"
-                  >
-                    ‹
-                  </button>
+                  <>
+                    <button
+                      onClick={(e) => { e.stopPropagation(); prevPhoto(); }}
+                      className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center z-10 transition-colors"
+                      aria-label="Previous"
+                    >
+                      <ChevronLeft size={22} />
+                    </button>
+                    <button
+                      onClick={(e) => { e.stopPropagation(); nextPhoto(); }}
+                      className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center z-10 transition-colors"
+                      aria-label="Next"
+                    >
+                      <ChevronRight size={22} />
+                    </button>
+                  </>
                 )}
-
-                {/* Photo */}
-                <div className="relative w-full h-full max-w-4xl max-h-[85vh] mx-12" onClick={(e) => e.stopPropagation()}>
+                <div className="relative w-full h-full max-w-5xl max-h-[85vh] mx-12" onClick={(e) => e.stopPropagation()}>
                   <Image
                     key={allPhotos[lightboxIndex]}
                     src={allPhotos[lightboxIndex]}
@@ -222,59 +263,78 @@ export default function CafeDetail() {
                     priority
                   />
                 </div>
-
-                {/* Next arrow */}
-                {allPhotos.length > 1 && (
-                  <button
-                    onClick={(e) => { e.stopPropagation(); nextPhoto(); }}
-                    className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 text-white/60 hover:text-white text-4xl z-10 w-12 h-12 flex items-center justify-center"
-                    aria-label="Next"
-                  >
-                    ›
-                  </button>
-                )}
               </div>
             )}
 
-            {/* Content */}
-            <div className="px-4 pt-5">
-              {/* Name + area */}
-              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight leading-tight">
-                {cafe.name}
-              </h2>
-              <p className="text-[14px] text-[var(--muted)] mt-1 leading-relaxed">
-                {cafe.area || cafe.neighborhood}
-                {cafe.address && ` · ${cafe.address}`}
-              </p>
+            {/* ─── Content ─── */}
+            <div className="px-5 sm:px-6 pt-6">
+              {/* Name + Category badge */}
+              <div className="flex items-start gap-3">
+                <div className="flex-1 min-w-0">
+                  <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight leading-tight text-[var(--foreground)]">
+                    {cafe.name}
+                  </h1>
+                  <div className="flex items-center gap-2 mt-1.5 text-[14px] text-[var(--muted)]">
+                    <MapPin size={14} className="text-[var(--accent)] flex-shrink-0" />
+                    <span>{cafe.area || cafe.neighborhood}</span>
+                    {price && <span className="text-[var(--muted2)]">· {price}</span>}
+                    {cafe.type && <span className="text-[var(--muted2)]">· {cafe.type}</span>}
+                  </div>
+                </div>
+              </div>
 
-              {/* Rating */}
+              {/* Rating card */}
               {cafe.rating && (
-                <div className="flex items-baseline gap-2 mt-4">
-                  <span className="text-3xl font-bold text-[var(--orange)]">
-                    ★ {cafe.rating}
-                  </span>
-                  {(cafe.reviews || cafe.rating_count) && (
-                    <span className="text-sm text-[var(--muted2)]">
-                      {(cafe.reviews || cafe.rating_count)?.toLocaleString()} ulasan
+                <div className="mt-5 flex items-center gap-4 p-4 rounded-2xl bg-[var(--surface)]">
+                  <div className="flex flex-col items-center px-3">
+                    <span className="text-3xl font-extrabold text-[var(--foreground)]">{cafe.rating}</span>
+                    <div className="flex gap-0.5 mt-1">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <Star
+                          key={i}
+                          size={14}
+                          className={
+                            i < Math.floor(cafe.rating!)
+                              ? "fill-[var(--accent)] text-[var(--accent)]"
+                              : i === Math.floor(cafe.rating!) && cafe.rating! % 1 >= 0.3
+                              ? "fill-[var(--accent)]/50 text-[var(--accent)]"
+                              : "fill-none text-gray-200"
+                          }
+                        />
+                      ))}
+                    </div>
+                  </div>
+                  <div className="h-10 w-px bg-gray-200" />
+                  <div>
+                    <span className="text-[15px] font-semibold text-[var(--foreground)]">
+                      {(cafe.reviews || cafe.rating_count)?.toLocaleString()}
                     </span>
-                  )}
+                    <span className="text-[13px] text-[var(--muted)] ml-1">ulasan</span>
+                    {vibeSummary && (
+                      <p className="text-[12px] text-[var(--accent)] font-medium mt-0.5">{vibeSummary}</p>
+                    )}
+                  </div>
                 </div>
               )}
 
               {/* Description */}
               {cafe.description && (
-                <p className="mt-4 text-[14px] leading-relaxed text-[var(--muted)]">
-                  {cafe.description}
-                </p>
+                <div className="mt-6">
+                  <h3 className="text-[13px] font-semibold text-[var(--foreground)] uppercase tracking-wider mb-2">Tentang</h3>
+                  <p className="text-[15px] leading-relaxed text-[var(--muted)]">
+                    {cafe.description}
+                  </p>
+                </div>
               )}
 
               {/* Tags */}
               {cafe.tags && cafe.tags.length > 0 && (
-                <div className="flex gap-2 mt-4 flex-wrap">
+                <div className="flex gap-2 mt-5 flex-wrap">
                   {cafe.tags.filter(t => DISPLAY_TAGS.has(t)).map(t => (
                     <span
                       key={t}
-                      className="text-[12px] px-3 py-1.5 rounded-full bg-[var(--surface)] text-[var(--muted)] font-medium"
+                      className="text-[12px] px-3 py-1.5 rounded-full border border-gray-200 text-[var(--muted)] font-medium
+                        hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors cursor-default"
                     >
                       {formatTag(t)}
                     </span>
@@ -282,78 +342,113 @@ export default function CafeDetail() {
                 </div>
               )}
 
-              {/* Info sections */}
-              <div className="mt-6">
-                {cafe.price_range && (
-                  <Section label="Harga">{(cafe.price_range as string).replace(/★/g, "$")}</Section>
-                )}
-                {cafe.type && (
-                  <Section label="Tipe">{cafe.type}</Section>
-                )}
-                {getVibeSummary(cafe.tags || [], cafe.environment) && (
-                  <Section label="Suasana">{getVibeSummary(cafe.tags || [], cafe.environment)}</Section>
-                )}
-                {cafe.hours && formatHoursCompact(cafe.hours) && (
-                  <Section label="Jam Buka">
-                    <div className="whitespace-pre-line">
-                      {formatHoursCompact(cafe.hours)}
+              {/* ─── Info Grid ─── */}
+              <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-px bg-gray-100 rounded-2xl overflow-hidden">
+                {hours && (
+                  <div className="bg-white p-4 flex gap-3">
+                    <div className="w-9 h-9 rounded-xl bg-teal-50 flex items-center justify-center flex-shrink-0">
+                      <Clock size={18} className="text-[var(--accent)]" />
                     </div>
-                  </Section>
+                    <div className="min-w-0">
+                      <p className="text-[11px] font-semibold text-[var(--muted2)] uppercase tracking-wider">Jam Buka</p>
+                      <div className="text-[14px] leading-relaxed mt-0.5 whitespace-pre-line">{hours}</div>
+                    </div>
+                  </div>
                 )}
+
                 {cafe.phone && (
-                  <Section label="Telepon">
-                    <div className="flex items-center gap-3">
-                      <a href={`tel:${cafe.phone}`} className="text-blue-600">
-                        {cafe.phone}
-                      </a>
-                      <a
-                        href={`https://wa.me/${cafe.phone.replace(/[^0-9+]/g, "").replace(/^\+/, "")}`}
-                        target="_blank"
-                        rel="noopener"
-                        className="text-[12px] px-2.5 py-1 rounded-full bg-green-100 text-green-700 font-medium"
-                      >
-                        WhatsApp
+                  <div className="bg-white p-4 flex gap-3">
+                    <div className="w-9 h-9 rounded-xl bg-teal-50 flex items-center justify-center flex-shrink-0">
+                      <Phone size={18} className="text-[var(--accent)]" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-[11px] font-semibold text-[var(--muted2)] uppercase tracking-wider">Telepon</p>
+                      <div className="flex items-center gap-3 mt-0.5">
+                        <a href={`tel:${cafe.phone}`} className="text-[14px] text-[var(--foreground)] font-medium">
+                          {cafe.phone}
+                        </a>
+                        <a
+                          href={`https://wa.me/${cafe.phone.replace(/[^0-9+]/g, "").replace(/^\+/, "")}`}
+                          target="_blank"
+                          rel="noopener"
+                          className="text-[11px] px-2.5 py-1 rounded-full bg-green-50 text-green-600 font-semibold border border-green-100"
+                        >
+                          WhatsApp
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {cafe.instagram && (
+                  <div className="bg-white p-4 flex gap-3">
+                    <div className="w-9 h-9 rounded-xl bg-pink-50 flex items-center justify-center flex-shrink-0">
+                      <Instagram size={18} className="text-pink-500" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-[11px] font-semibold text-[var(--muted2)] uppercase tracking-wider">Instagram</p>
+                      <a href={cafe.instagram} target="_blank" rel="noopener"
+                        className="text-[14px] text-pink-500 font-medium mt-0.5 block truncate">
+                        {cafe.instagram.replace("https://www.instagram.com/", "@").replace("https://instagram.com/", "@").replace(/\/$/, "")}
                       </a>
                     </div>
-                  </Section>
+                  </div>
                 )}
-                {cafe.instagram && (
-                  <Section label="Instagram">
-                    <a href={cafe.instagram} target="_blank" rel="noopener" className="inline-flex items-center gap-2 text-[#E4405F] font-medium">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-                      {cafe.instagram.replace("https://www.instagram.com/", "@").replace("https://instagram.com/", "@").replace(/\/$/, "")}
-                    </a>
-                  </Section>
-                )}
+
                 {cafe.website && (
-                  <Section label="Situs Web">
-                    <a href={cafe.website} target="_blank" rel="noopener" className="text-blue-600">
-                      {(() => { try { return new URL(cafe.website).hostname; } catch { return cafe.website; } })()}
-                    </a>
-                  </Section>
+                  <div className="bg-white p-4 flex gap-3">
+                    <div className="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
+                      <Globe size={18} className="text-blue-500" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-[11px] font-semibold text-[var(--muted2)] uppercase tracking-wider">Situs Web</p>
+                      <a href={cafe.website} target="_blank" rel="noopener"
+                        className="text-[14px] text-blue-500 font-medium mt-0.5 block truncate">
+                        {(() => { try { return new URL(cafe.website).hostname; } catch { return cafe.website; } })()}
+                      </a>
+                    </div>
+                  </div>
+                )}
+
+                {cafe.address && (
+                  <div className="bg-white p-4 flex gap-3 sm:col-span-2">
+                    <div className="w-9 h-9 rounded-xl bg-teal-50 flex items-center justify-center flex-shrink-0">
+                      <MapPin size={18} className="text-[var(--accent)]" />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-[11px] font-semibold text-[var(--muted2)] uppercase tracking-wider">Alamat</p>
+                      <p className="text-[14px] leading-relaxed mt-0.5">{cafe.address}</p>
+                    </div>
+                  </div>
                 )}
               </div>
+            </div>
 
-              {/* Action buttons */}
-              <div className="flex gap-3 mt-8 pb-safe">
+            {/* ─── Sticky bottom action bar ─── */}
+            <div className="fixed bottom-0 inset-x-0 z-20 bg-white/95 backdrop-blur-xl border-t border-gray-100 pb-safe">
+              <div className="max-w-4xl mx-auto px-5 py-3 flex gap-3">
                 {cafe.google_maps_link && (
                   <a
                     href={cafe.google_maps_link}
                     target="_blank"
                     rel="noopener"
-                    className="flex-1 text-center py-3.5 rounded-2xl bg-[var(--foreground)] text-white text-[14px] font-semibold
-                      active:scale-95 transition-transform min-h-[48px] flex items-center justify-center"
+                    className="flex-1 flex items-center justify-center gap-2 py-3.5 rounded-2xl bg-[var(--accent)] text-white text-[14px] font-bold
+                      active:scale-[0.97] transition-all shadow-lg shadow-[var(--accent)]/20 min-h-[48px]"
                   >
+                    <Navigation size={16} />
                     Buka di Maps
                   </a>
                 )}
                 {cafe.phone && (
                   <a
-                    href={`tel:${cafe.phone}`}
-                    className="flex-1 text-center py-3.5 rounded-2xl border border-[var(--border)] text-[14px] font-semibold
-                      active:scale-95 transition-transform min-h-[48px] flex items-center justify-center"
+                    href={`https://wa.me/${cafe.phone.replace(/[^0-9+]/g, "").replace(/^\+/, "")}`}
+                    target="_blank"
+                    rel="noopener"
+                    className="flex-1 flex items-center justify-center gap-2 py-3.5 rounded-2xl border-2 border-green-500 text-green-600 text-[14px] font-bold
+                      active:scale-[0.97] transition-all min-h-[48px]"
                   >
-                    Telepon
+                    <Phone size={16} />
+                    WhatsApp
                   </a>
                 )}
               </div>
