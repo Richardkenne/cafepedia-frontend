@@ -30,6 +30,7 @@ function SearchContent() {
   const searchParams = useSearchParams();
   const initialQ = searchParams.get("q") || "";
   const nearParam = searchParams.get("near") || "";
+  const categoryParam = searchParams.get("category") || "";
   const { t } = useTranslation();
 
   const PAGE_SIZE = 15;
@@ -42,6 +43,7 @@ function SearchContent() {
   const [userLat, setUserLat] = useState<number | null>(null);
   const [userLng, setUserLng] = useState<number | null>(null);
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
+  const [activeCategory, setActiveCategory] = useState(categoryParam);
   const [showFilters, setShowFilters] = useState(false);
 
   useEffect(() => {
@@ -64,11 +66,12 @@ function SearchContent() {
     }
   }, [initialQ]);
 
-  const doSearch = useCallback(async (q: string, lat?: number | null, lng?: number | null, filters?: string[]) => {
+  const doSearch = useCallback(async (q: string, lat?: number | null, lng?: number | null, filters?: string[], category?: string) => {
     setLoading(true);
     try {
       const searchQuery = filters?.length ? filters.join(" ") : q || "*";
       const params: Parameters<typeof searchCafes>[0] = { q: searchQuery };
+      if (category) params.category = category;
       if (lat && lng) {
         params.near = { lat, lng };
         params.radius_km = 50;
@@ -91,11 +94,11 @@ function SearchContent() {
     const matchingFilter = QUICK_FILTERS.find(f => f.tag === initialQ);
     if (nearParam) {
       const [lat, lng] = nearParam.split(",").map(Number);
-      doSearch(matchingFilter ? "" : initialQ, lat, lng, matchingFilter ? [matchingFilter.tag] : undefined);
+      doSearch(matchingFilter ? "" : initialQ, lat, lng, matchingFilter ? [matchingFilter.tag] : undefined, activeCategory || undefined);
     } else {
-      doSearch(matchingFilter ? "" : initialQ, null, null, matchingFilter ? [matchingFilter.tag] : undefined);
+      doSearch(matchingFilter ? "" : initialQ, null, null, matchingFilter ? [matchingFilter.tag] : undefined, activeCategory || undefined);
     }
-  }, [initialQ, nearParam, doSearch]);
+  }, [initialQ, nearParam, activeCategory, doSearch]);
 
   // Debounced search on typing
   useEffect(() => {
@@ -104,10 +107,10 @@ function SearchContent() {
         ? `/search?q=${encodeURIComponent(query)}${nearActive && userLat ? `&near=${userLat},${userLng}` : ""}`
         : `/search${nearActive && userLat ? `?near=${userLat},${userLng}` : ""}`;
       window.history.replaceState(null, "", url);
-      doSearch(query, nearActive ? userLat : null, nearActive ? userLng : null, activeFilters.length ? activeFilters : undefined);
+      doSearch(query, nearActive ? userLat : null, nearActive ? userLng : null, activeFilters.length ? activeFilters : undefined, activeCategory || undefined);
     }, 300);
     return () => clearTimeout(timer);
-  }, [query, doSearch, nearActive, userLat, userLng, activeFilters]);
+  }, [query, doSearch, nearActive, userLat, userLng, activeFilters, activeCategory]);
 
   function toggleNear() {
     if (nearActive) {
@@ -154,7 +157,7 @@ function SearchContent() {
             <SearchBar
               value={query}
               onChange={setQuery}
-              onSubmit={(q) => doSearch(q, nearActive ? userLat : null, nearActive ? userLng : null, activeFilters.length ? activeFilters : undefined)}
+              onSubmit={(q) => doSearch(q, nearActive ? userLat : null, nearActive ? userLng : null, activeFilters.length ? activeFilters : undefined, activeCategory || undefined)}
               placeholder={t("search.placeholder")}
               autoFocus
             />
@@ -226,6 +229,20 @@ function SearchContent() {
 
       {/* Results */}
       <main className="max-w-3xl mx-auto px-4 pb-8">
+        {/* Category banner */}
+        {activeCategory && (
+          <div className="flex items-center gap-2 py-3">
+            <span className="text-sm font-semibold text-[var(--foreground)] capitalize">
+              {activeCategory.replace(/_/g, " ")}
+            </span>
+            <button
+              onClick={() => { setActiveCategory(""); router.replace("/search"); }}
+              className="text-xs text-[var(--muted)] hover:text-red-500 transition-colors"
+            >
+              <X size={14} />
+            </button>
+          </div>
+        )}
         {/* Meta */}
         {!loading && (
           <div className="flex items-center justify-between py-3">
@@ -259,7 +276,7 @@ function SearchContent() {
                 className="w-full py-4 mt-4 text-sm font-semibold text-[var(--muted)] border border-gray-200 rounded-xl
                   hover:bg-gray-50 hover:border-gray-300 active:scale-[0.98] transition-all min-h-[48px]"
               >
-                Show more ({results.length - visible} remaining)
+                Tampilkan lagi ({results.length - visible} tersisa)
               </button>
             )}
           </div>

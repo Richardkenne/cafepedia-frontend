@@ -16,10 +16,12 @@ export async function searchCafes(params: {
   tags?: string[];
   near?: { lat: number; lng: number };
   radius_km?: number;
+  category?: string;
 }): Promise<SearchResponse> {
   const p = new URLSearchParams();
   p.set("q", params.q || "*");
   if (params.tags?.length) p.set("tags", params.tags.join(","));
+  if (params.category) p.set("category", params.category);
   if (params.near) {
     p.set("near", `${params.near.lat},${params.near.lng}`);
     if (params.radius_km) p.set("radius_km", String(params.radius_km));

@@ -550,33 +550,33 @@ export default function HomeClient() {
                 <Logo size={24} textClassName="text-base font-bold tracking-tight text-[var(--foreground)]" />
               </div>
               <p className="text-[13px] text-[var(--muted)] leading-relaxed">
-                The ultimate guide to cafes, bars, rooftops and coworking spaces in Bandung. Discover, decide, go.
+                Panduan lengkap cafe, bar, rooftop dan coworking di Bandung. Temukan, pilih, pergi.
               </p>
             </div>
 
             {/* Link columns */}
             <div className="flex gap-16 text-[13px]">
               <div className="flex flex-col gap-3">
-                <span className="font-bold text-[11px] uppercase tracking-widest text-[var(--muted2)]">Discover</span>
-                <a href="/search?q=*" className="text-[var(--muted)] hover:text-[var(--foreground)] transition-colors">All places</a>
-                <a href="/browse" className="text-[var(--muted)] hover:text-[var(--foreground)] transition-colors">Browse</a>
+                <span className="font-bold text-[11px] uppercase tracking-widest text-[var(--muted2)]">Jelajahi</span>
+                <a href="/search?q=*" className="text-[var(--muted)] hover:text-[var(--foreground)] transition-colors">Semua tempat</a>
+                <a href="/browse" className="text-[var(--muted)] hover:text-[var(--foreground)] transition-colors">Explore Bandung</a>
                 <a href="/blog" className="text-[var(--muted)] hover:text-[var(--foreground)] transition-colors">Blog</a>
-                <a href="/pick" className="text-[var(--muted)] hover:text-[var(--foreground)] transition-colors">AI Picks</a>
+                <a href="/pick" className="text-[var(--muted)] hover:text-[var(--foreground)] transition-colors">AI Pilihkan</a>
               </div>
               <div className="flex flex-col gap-3">
-                <span className="font-bold text-[11px] uppercase tracking-widest text-[var(--muted2)]">Company</span>
-                <a href="/about" className="text-[var(--muted)] hover:text-[var(--foreground)] transition-colors">About</a>
-                <a href="/suggest" className="text-[var(--muted)] hover:text-[var(--foreground)] transition-colors">Submit a place</a>
-                <a href="/claim" className="text-[var(--muted)] hover:text-[var(--foreground)] transition-colors">Claim listing</a>
-                <a href="/contact" className="text-[var(--muted)] hover:text-[var(--foreground)] transition-colors">Contact</a>
+                <span className="font-bold text-[11px] uppercase tracking-widest text-[var(--muted2)]">Lainnya</span>
+                <a href="/about" className="text-[var(--muted)] hover:text-[var(--foreground)] transition-colors">Tentang</a>
+                <a href="/suggest" className="text-[var(--muted)] hover:text-[var(--foreground)] transition-colors">Sarankan tempat</a>
+                <a href="/claim" className="text-[var(--muted)] hover:text-[var(--foreground)] transition-colors">Klaim listing</a>
+                <a href="/contact" className="text-[var(--muted)] hover:text-[var(--foreground)] transition-colors">Kontak</a>
               </div>
             </div>
           </div>
 
           {/* Newsletter / Contact */}
           <div className="mt-10 pt-8 border-t border-gray-200">
-            <p className="text-[13px] font-bold text-[var(--foreground)]">Stay in the loop</p>
-            <p className="text-[12px] text-[var(--muted)] mt-1">New cafes, hidden gems & guides — straight to your inbox.</p>
+            <p className="text-[13px] font-bold text-[var(--foreground)]">Tetap update</p>
+            <p className="text-[12px] text-[var(--muted)] mt-1">Cafe baru, hidden gem & panduan — langsung ke inbox kamu.</p>
             <form
               onSubmit={(e) => { e.preventDefault(); }}
               className="flex gap-2 mt-3 max-w-sm"
@@ -592,7 +592,7 @@ export default function HomeClient() {
                 className="px-5 py-2.5 rounded-xl bg-[var(--foreground)] text-white text-[13px] font-semibold
                   hover:opacity-90 active:scale-[0.97] transition-all"
               >
-                Subscribe
+                Langganan
               </button>
             </form>
           </div>
@@ -601,8 +601,8 @@ export default function HomeClient() {
           <div className="flex flex-wrap items-center justify-between gap-4 text-[11px] text-[var(--muted2)] mt-8 pt-6 border-t border-gray-200">
             <span>&copy; {new Date().getFullYear()} Cafepedia. Bandung, Indonesia.</span>
             <div className="flex gap-4">
-              <a href="/privacy" className="hover:text-[var(--foreground)] transition-colors">Privacy</a>
-              <a href="/terms" className="hover:text-[var(--foreground)] transition-colors">Terms</a>
+              <a href="/privacy" className="hover:text-[var(--foreground)] transition-colors">Privasi</a>
+              <a href="/terms" className="hover:text-[var(--foreground)] transition-colors">Ketentuan</a>
             </div>
           </div>
         </div>
