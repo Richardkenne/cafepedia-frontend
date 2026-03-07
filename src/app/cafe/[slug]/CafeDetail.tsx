@@ -451,7 +451,7 @@ export default function CafeDetail() {
               {amenityTags.length > 0 && (
                 <>
                   <div className="h-px bg-gray-100 mt-8 mb-7" />
-                  <h3 className="text-[13px] font-bold text-[var(--foreground)] uppercase tracking-wider mb-4">Amenities</h3>
+                  <h3 className="text-[13px] font-bold text-[var(--foreground)] uppercase tracking-wider mb-4">Fasilitas</h3>
                   <div className="flex gap-2 flex-wrap">
                     {amenityTags.map(t => (
                       <span
