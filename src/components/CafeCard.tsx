@@ -2,7 +2,7 @@ import { Cafe } from "@/lib/types";
 import { makeSlug } from "@/lib/api";
 import Link from "next/link";
 import Image from "next/image";
-import { MapPin, Star } from "lucide-react";
+import { MapPin, Star, Instagram } from "lucide-react";
 
 const DISPLAY_TAGS = new Set(["coffee","tea","bakery","roastery","food","bar_lounge","bistro","premium","work_friendly","outdoor","vintage","quiet","artsy","pet_friendly","budget","mid_range","upscale","top_rated","popular","late_night","aesthetic","instagrammable","date_spot","specialty_coffee","live_music","restaurant","cozy","modern","minimalist","industrial","tropical","rustic","elegant","romantic","lively","chill","western_food","korean_food","japanese_food","sundanese_food","chinese_food","seafood","steak","cocktails","wine","matcha","city_view","mountain_view","hidden_gem","kid_friendly","student","couple","group_friendly","solo_friendly","breakfast","lunch_spot","dinner_spot","weekend_brunch","hillside","garden","dessert","coworking","rooftop_view","brunch","bookish"]);
 
@@ -21,10 +21,17 @@ function formatPrice(price?: string) {
   return count > 0 ? "$".repeat(count) : price;
 }
 
+function extractIgHandle(ig?: string): string | null {
+  if (!ig) return null;
+  const clean = ig.replace(/https?:\/\/(www\.)?instagram\.com\//i, "").replace(/\/$/, "").trim();
+  return clean ? `@${clean.replace(/^@/, "")}` : null;
+}
+
 export default function CafeCard({ cafe }: { cafe: Cafe }) {
-  const tags = (cafe.tags || []).filter(t => DISPLAY_TAGS.has(t)).slice(0, 2);
+  const tags = (cafe.tags || []).filter(t => DISPLAY_TAGS.has(t)).slice(0, 3);
   const dist = formatDistance(cafe.distance_km);
   const price = formatPrice(cafe.price_level);
+  const igHandle = extractIgHandle(cafe.instagram);
 
   return (
     <Link
@@ -74,6 +81,7 @@ export default function CafeCard({ cafe }: { cafe: Cafe }) {
 
       {/* Info */}
       <div className="mt-3 px-0.5">
+        {/* Name + Price row */}
         <div className="flex items-start justify-between gap-2">
           <h3 className="font-bold text-[15px] leading-snug line-clamp-1 group-hover:text-[var(--accent)] transition-colors duration-200">
             {cafe.name}
@@ -83,6 +91,7 @@ export default function CafeCard({ cafe }: { cafe: Cafe }) {
           )}
         </div>
 
+        {/* Rating + Reviews */}
         {cafe.rating && (
           <div className="flex items-center gap-1.5 mt-1">
             <div className="flex items-center gap-0.5">
@@ -95,8 +104,24 @@ export default function CafeCard({ cafe }: { cafe: Cafe }) {
           </div>
         )}
 
+        {/* Instagram handle */}
+        {igHandle && (
+          <div className="flex items-center gap-1 mt-1.5">
+            <Instagram size={12} className="text-pink-400" />
+            <span className="text-[12px] text-pink-400 font-medium truncate">{igHandle}</span>
+          </div>
+        )}
+
+        {/* Description snippet */}
+        {cafe.description && (
+          <p className="text-[12px] text-[var(--muted2)] leading-relaxed mt-1.5 line-clamp-2">
+            {cafe.description}
+          </p>
+        )}
+
+        {/* Tags */}
         {tags.length > 0 && (
-          <div className="flex gap-1.5 mt-2">
+          <div className="flex gap-1.5 mt-2 flex-wrap">
             {tags.map(t => (
               <span key={t} className="text-[11px] px-2 py-0.5 rounded-md bg-[var(--surface)] text-[var(--muted)] font-medium">
                 {formatTag(t)}
