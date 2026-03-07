@@ -563,7 +563,7 @@ export default function CafeDetail() {
               {similar.length > 0 && (
                 <>
                   <div className="h-px bg-gray-100 mt-8 mb-7" />
-                  <h3 className="text-[13px] font-bold text-[var(--foreground)] uppercase tracking-wider mb-5">Simili a questo</h3>
+                  <h3 className="text-[13px] font-bold text-[var(--foreground)] uppercase tracking-wider mb-5">Serupa</h3>
                   <div className="grid grid-cols-2 gap-3">
                     {similar.map(s => (
                       <Link
