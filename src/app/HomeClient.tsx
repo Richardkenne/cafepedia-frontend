@@ -526,7 +526,14 @@ export default function HomeClient() {
                   <span className="font-bold text-[14px] sm:text-[15px] text-white leading-snug block">{item.label}</span>
                   <p className="text-[11px] text-white/60 mt-0.5">{item.desc}</p>
                 </div>
-                <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 group-hover:scale-105 transition-transform duration-500" />
+                <Image
+                  src={item.photo}
+                  alt={item.label}
+                  fill
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  sizes="(max-width: 640px) 50vw, 33vw"
+                  loading="lazy"
+                />
               </Link>
             </motion.div>
           ))}
