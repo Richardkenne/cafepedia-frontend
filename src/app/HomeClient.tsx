@@ -501,86 +501,35 @@ export default function HomeClient() {
         </div>
       </AnimatedSection>
 
-      {/* ━━━ PICK FOR ME ━━━ */}
-      <AnimatedSection className="w-full max-w-5xl mx-auto px-5 py-8">
-        <div className="rounded-2xl border border-gray-100 bg-gray-50/50 px-6 py-8 sm:px-10 sm:py-10">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-6">
-            <div className="flex-1">
-              <h2 className="text-xl sm:text-2xl font-black tracking-tight">
-                Not sure where to go?
-              </h2>
-              <p className="text-sm sm:text-base text-[var(--muted)] mt-1.5 leading-relaxed">
-                Describe what you&apos;re looking for and we&apos;ll find the best matches.
-              </p>
-            </div>
-            <div className="sm:w-[320px] flex-shrink-0">
-              <div className={`flex gap-2 ${shake ? "animate-shake" : ""}`} ref={aiRef}>
-                <div className="flex-1">
-                  <SearchBar
-                    value={aiQuery}
-                    onChange={setAiQuery}
-                    onSubmit={(q) => goAI(q)}
-                    placeholder="quiet cafe to work near dago"
-                  />
-                </div>
-              </div>
-              <button
-                onClick={() => goAI(aiQuery)}
-                className="mt-3 w-full px-6 py-3 rounded-xl bg-[var(--foreground)] text-white text-sm font-semibold
-                  hover:opacity-90 active:scale-[0.97] transition-all duration-200
-                  flex items-center justify-center gap-2"
-              >
-                <Sparkles size={14} />
-                Pick for me
-              </button>
-            </div>
-          </div>
+      {/* ━━━ DISCOVERY COLLECTIONS (with photos) ━━━ */}
+      <AnimatedSection className="w-full max-w-5xl mx-auto px-5 py-10">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl sm:text-2xl font-black tracking-tight">Explore Collections</h2>
         </div>
-      </AnimatedSection>
-
-      {/* ━━━ DISCOVERY COLLECTIONS ━━━ */}
-      <AnimatedSection className="w-full max-w-5xl mx-auto px-5 py-8">
-        <h2 className="text-xl sm:text-2xl font-black tracking-tight mb-4">Explore Collections</h2>
         <motion.div
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
-          className="grid grid-cols-1 sm:grid-cols-2 gap-3"
+          className="grid grid-cols-2 sm:grid-cols-3 gap-3"
         >
           {DISCOVERY_LISTS.map(item => (
             <motion.div key={item.href} variants={staggerItem}>
               <Link
                 href={item.href}
-                className="flex items-center justify-between px-5 py-4 rounded-xl border border-gray-100 bg-gray-50/50
-                  hover:bg-white hover:border-gray-200 hover:shadow-sm
-                  active:scale-[0.98] transition-all duration-200 group"
+                className="group block relative aspect-[3/2] rounded-2xl overflow-hidden"
               >
-                <div>
-                  <span className="font-bold text-[15px] text-[var(--foreground)]">{item.label}</span>
-                  <p className="text-xs text-[var(--muted2)] mt-0.5">{item.desc}</p>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent z-10" />
+                <div className="absolute inset-0 bg-[var(--accent)] opacity-[0.08]" />
+                <div className="absolute bottom-0 left-0 right-0 p-4 z-20">
+                  <span className="font-bold text-[14px] sm:text-[15px] text-white leading-snug block">{item.label}</span>
+                  <p className="text-[11px] text-white/60 mt-0.5">{item.desc}</p>
                 </div>
-                <ChevronRight size={18} className="text-[var(--muted2)] group-hover:text-[var(--accent)] group-hover:translate-x-0.5 transition-all" />
+                <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 group-hover:scale-105 transition-transform duration-500" />
               </Link>
             </motion.div>
           ))}
         </motion.div>
-      </AnimatedSection>
-
-      {/* ━━━ STATS BAR ━━━ */}
-      <AnimatedSection className="w-full max-w-5xl mx-auto px-5 py-8">
-        <div className="grid grid-cols-3 gap-4 text-center">
-          {[
-            { value: "2,800+", label: "Places" },
-            { value: "9", label: "Categories" },
-            { value: "10+", label: "Areas" },
-          ].map(stat => (
-            <div key={stat.label} className="py-4">
-              <div className="text-3xl sm:text-4xl font-black tracking-tight text-[var(--foreground)]">{stat.value}</div>
-              <div className="text-xs font-bold text-[var(--muted2)] uppercase tracking-wider mt-1">{stat.label}</div>
-            </div>
-          ))}
-        </div>
       </AnimatedSection>
 
       {/* ━━━ FOOTER ━━━ */}
