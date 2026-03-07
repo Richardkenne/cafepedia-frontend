@@ -27,6 +27,7 @@ export interface Cafe {
   rank?: number;
   total_in_city?: number;
   city?: string;
+  status?: string;
 }
 
 export interface SearchResponse {
