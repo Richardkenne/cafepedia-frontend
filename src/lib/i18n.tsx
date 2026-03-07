@@ -11,8 +11,8 @@ const translations = {
     id: "Temukan cafe di Bandung",
   },
   "home.description": {
-    en: "600+ cafes with photos, hours & directions",
-    id: "600+ cafe dengan foto, jam buka & petunjuk arah",
+    en: "4,000+ places with photos, hours & directions",
+    id: "4.000+ tempat dengan foto, jam buka & petunjuk arah",
   },
   "home.search_placeholder": {
     en: "Search cafes, areas, vibes...",
