@@ -99,6 +99,16 @@ export default function CafeDetail() {
     }).catch(() => setLoading(false));
   }, [id]);
 
+  // Fetch similar places
+  useEffect(() => {
+    if (!cafe) return;
+    const vibeTags = (cafe.tags || []).filter(t => !AMENITY_TAGS.has(t) && DISPLAY_TAGS.has(t)).slice(0, 2);
+    const q = vibeTags.length > 0 ? vibeTags.join(" ") : (cafe.area || "popular");
+    searchCafes({ q }).then(data => {
+      setSimilar((data.results || []).filter(c => c.id !== cafe.id && c.hero_photo).slice(0, 4));
+    }).catch(() => {});
+  }, [cafe]);
+
   const vibeSummary = cafe ? getVibeSummary(cafe.tags || []) : null;
   const price = cafe ? formatPrice(cafe.price_range as string) : null;
   const hours = cafe?.hours ? formatHoursCompact(cafe.hours) : null;
