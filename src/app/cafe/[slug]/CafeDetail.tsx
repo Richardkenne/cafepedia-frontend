@@ -55,7 +55,7 @@ export default function CafeDetail() {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [similar, setSimilar] = useState<Cafe[]>([]);
 
-  const allPhotos = cafe?.photos || [];
+  const allPhotos = useMemo(() => (cafe?.photos || []).slice(0, 5), [cafe?.photos]);
   const closeLightbox = useCallback(() => setLightboxIndex(null), []);
   const prevPhoto = useCallback(() => setLightboxIndex(i => i !== null ? (i - 1 + allPhotos.length) % allPhotos.length : null), [allPhotos.length]);
   const nextPhoto = useCallback(() => setLightboxIndex(i => i !== null ? (i + 1) % allPhotos.length : null), [allPhotos.length]);
@@ -273,13 +273,16 @@ export default function CafeDetail() {
                     </button>
                   </>
                 )}
-                <div className="relative w-full h-full max-w-5xl max-h-[85vh] mx-12" onClick={(e) => e.stopPropagation()}>
+                <div
+                  className="relative w-[calc(100vw-2rem)] h-[calc(100vh-6rem)] sm:w-[calc(100vw-8rem)] sm:h-[calc(100vh-6rem)] max-w-[1400px]"
+                  onClick={(e) => e.stopPropagation()}
+                >
                   <Image
                     key={allPhotos[lightboxIndex]}
                     src={allPhotos[lightboxIndex]}
                     alt={`${cafe.name} photo ${lightboxIndex + 1}`}
                     fill
-                    className="object-contain"
+                    className="object-contain select-none"
                     sizes="100vw"
                     priority
                   />
