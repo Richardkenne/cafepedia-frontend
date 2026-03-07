@@ -547,7 +547,7 @@ export default function CafeDetail() {
               {cafe.address && (
                 <>
                   <div className="h-px bg-gray-100 mt-8 mb-7" />
-                  <h3 className="text-[13px] font-bold text-[var(--foreground)] uppercase tracking-wider mb-5">Location</h3>
+                  <h3 className="text-[13px] font-bold text-[var(--foreground)] uppercase tracking-wider mb-5">Lokasi</h3>
                   <div className="flex gap-4 p-5 rounded-2xl border border-gray-100">
                     <div className="w-10 h-10 rounded-xl bg-teal-50 flex items-center justify-center flex-shrink-0">
                       <MapPin size={18} className="text-[var(--accent)]" />
