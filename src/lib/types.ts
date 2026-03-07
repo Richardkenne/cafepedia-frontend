@@ -24,6 +24,9 @@ export interface Cafe {
   photos?: string[];
   distance_km?: number;
   reason?: string;
+  rank?: number;
+  total_in_city?: number;
+  city?: string;
 }
 
 export interface SearchResponse {
