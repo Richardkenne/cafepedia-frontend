@@ -49,12 +49,13 @@ const POPULAR_AREAS = [
   "Cihampelas", "Riau", "Dipatiukur", "Ciumbuleuit", "Lembang",
 ];
 
+const PHOTO_BASE = "https://fkpxolnsqjfgcbkiqbld.supabase.co/storage/v1/object/public/cafe-photos";
 const DISCOVERY_LISTS = [
-  { label: "Best Cafes in Bandung", desc: "Top-rated spots locals love", href: "/best-cafes-bandung" },
-  { label: "Best Cafes to Work From", desc: "WiFi, outlets, quiet vibes", href: "/best-cafes-to-work-bandung" },
-  { label: "Most Aesthetic Cafes", desc: "Instagram-worthy interiors", href: "/aesthetic-cafes-bandung" },
-  { label: "Best Cheap Coffee", desc: "Great coffee under 25K IDR", href: "/cheap-cafes-bandung" },
-  { label: "Best Date Cafes", desc: "Romantic & intimate settings", href: "/date-cafes-bandung" },
+  { label: "Best Cafes in Bandung", desc: "Top-rated spots locals love", href: "/best-cafes-bandung", photo: `${PHOTO_BASE}/637_kalpa_tree/02.jpg` },
+  { label: "Best Cafes to Work", desc: "WiFi, outlets, quiet vibes", href: "/best-cafes-to-work-bandung", photo: `${PHOTO_BASE}/100_warung-kopi-purnama/hero.jpg` },
+  { label: "Most Aesthetic Cafes", desc: "Instagram-worthy interiors", href: "/aesthetic-cafes-bandung", photo: `${PHOTO_BASE}/3042_sadrasa-kitchen-bar/hero.jpg` },
+  { label: "Best Cheap Coffee", desc: "Great coffee under 25K IDR", href: "/cheap-cafes-bandung", photo: `${PHOTO_BASE}/3015_t-box-tea-coffee-bakery-bandung/hero.jpg` },
+  { label: "Best Date Cafes", desc: "Romantic & intimate spots", href: "/date-cafes-bandung", photo: `${PHOTO_BASE}/637_kalpa_tree/hero.jpg` },
 ];
 
 /* ─── Animation variants ─── */
