@@ -113,7 +113,9 @@ export default function CafeDetail() {
   const price = cafe ? formatPrice(cafe.price_range as string) : null;
   const hours = cafe?.hours ? formatHoursCompact(cafe.hours) : null;
   const igHandle = cafe ? extractIgHandle(cafe.instagram) : null;
-  const displayTags = (cafe?.tags || []).filter(t => DISPLAY_TAGS.has(t));
+  const allTags = (cafe?.tags || []).filter(t => DISPLAY_TAGS.has(t));
+  const vibeTags = allTags.filter(t => !AMENITY_TAGS.has(t));
+  const amenityTags = allTags.filter(t => AMENITY_TAGS.has(t));
 
   async function handleShare() {
     const url = window.location.href;
