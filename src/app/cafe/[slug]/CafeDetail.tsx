@@ -312,6 +312,11 @@ export default function CafeDetail() {
                       <span className="text-[13px] font-semibold text-[var(--muted2)]">{price}</span>
                     )}
                   </div>
+                  {cafe.rank && cafe.total_in_city && (
+                    <p className="text-[12px] text-[var(--muted2)] mt-2 font-medium">
+                      #{cafe.rank} di {cafe.total_in_city.toLocaleString()} a {(cafe.city || "Bandung").charAt(0).toUpperCase() + (cafe.city || "bandung").slice(1)}
+                    </p>
+                  )}
                 </div>
               </div>
 
