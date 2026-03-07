@@ -71,26 +71,51 @@ export default async function BlogPostPage({ params }: Props) {
 
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "Article",
-    headline: post.title,
-    description: post.excerpt,
-    datePublished: post.date,
-    dateModified: post.date,
-    image: post.heroImage,
-    author: {
-      "@type": "Organization",
-      name: "Cafepedia",
-      url: SITE_URL,
-    },
-    publisher: {
-      "@type": "Organization",
-      name: "Cafepedia",
-      url: SITE_URL,
-    },
-    mainEntityOfPage: {
-      "@type": "WebPage",
-      "@id": `${SITE_URL}/blog/${post.slug}`,
-    },
+    "@graph": [
+      {
+        "@type": "Article",
+        "@id": `${SITE_URL}/blog/${post.slug}#article`,
+        "headline": post.title,
+        "description": post.excerpt,
+        "datePublished": post.date,
+        "dateModified": post.date,
+        "image": post.heroImage,
+        "author": { "@id": `${SITE_URL}#organization` },
+        "publisher": { "@id": `${SITE_URL}#organization` },
+        "mainEntityOfPage": { "@id": `${SITE_URL}/blog/${post.slug}#webpage` },
+      },
+      {
+        "@type": "WebPage",
+        "@id": `${SITE_URL}/blog/${post.slug}#webpage`,
+        "url": `${SITE_URL}/blog/${post.slug}`,
+        "name": `${post.title} — Cafepedia`,
+        "isPartOf": { "@id": `${SITE_URL}#website` },
+        "breadcrumb": { "@id": `${SITE_URL}/blog/${post.slug}#breadcrumb` },
+      },
+      {
+        "@type": "Organization",
+        "@id": `${SITE_URL}#organization`,
+        "name": "Cafepedia",
+        "url": SITE_URL,
+        "logo": `${SITE_URL}/logo-icon.svg`,
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${SITE_URL}#website`,
+        "url": SITE_URL,
+        "name": "Cafepedia",
+        "publisher": { "@id": `${SITE_URL}#organization` },
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${SITE_URL}/blog/${post.slug}#breadcrumb`,
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Home", "item": SITE_URL },
+          { "@type": "ListItem", "position": 2, "name": "Blog", "item": `${SITE_URL}/blog` },
+          { "@type": "ListItem", "position": 3, "name": post.title },
+        ],
+      },
+    ],
   }
 
   return (

@@ -50,7 +50,7 @@ export default function CafeCard({ cafe }: { cafe: Cafe }) {
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-teal-50 to-amber-50">
+          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[var(--accent-light)] to-amber-50">
             <svg viewBox="0 0 32 32" className="w-10 h-10 text-[var(--accent)] opacity-40">
               <path fill="currentColor" d="M6 10h14v12a4 4 0 0 1-4 4H10a4 4 0 0 1-4-4V10z"/>
               <path fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" d="M20 13h2a3 3 0 0 1 0 6h-2"/>

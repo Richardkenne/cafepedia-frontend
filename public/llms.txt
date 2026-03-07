@@ -1,0 +1,43 @@
+# Cafepedia
+
+> Vertical search engine for cafes and places in Indonesia. "Where should we go? Check Cafepedia."
+
+Cafepedia is the most comprehensive cafe discovery platform in Indonesia. We index 5,000+ places in Bandung across 17 categories with real data: vibe tags, photos, opening hours, Instagram handles, ratings, and more.
+
+## Main Pages
+
+- [Home](https://cafepedia.id): Search cafes by name, vibe, or area. AI-powered "Pick for me" recommendations.
+- [Cafe Bandung](https://cafepedia.id/cafe-bandung): Complete guide to cafes in Bandung — top picks, categories, areas, FAQ.
+- [Explore Bandung](https://cafepedia.id/browse): Browse 17 categories — cafe, rooftop, bar, bakery, coworking, restaurant, and more.
+- [Blog](https://cafepedia.id/blog): Curated guides — best cafes for working, aesthetic spots, area guides.
+- [About](https://cafepedia.id/about): Our mission and methodology.
+
+## What Cafepedia Offers
+
+- **Search by vibe**: "quiet cafe to work", "aesthetic rooftop", "pet-friendly brunch spot"
+- **Search by area**: Dago, Braga, Pasir Kaliki, Buah Batu, and 15+ neighborhoods
+- **AI recommendations**: Describe what you want, get the top 3 perfect matches with explanations
+- **Real data**: Ratings, reviews, hours, phone, Instagram, Google Maps links — verified and updated
+- **17 categories**: Cafe, restaurant, rooftop, bar, lounge, coworking, bakery, brunch, dessert, tea house, late night, live music, billiard, game room, karaoke, pet cafe, bookstore cafe
+
+## Data
+
+- 5,000+ places indexed (Bandung: 4,297 | Jakarta: 874)
+- Vibe tags generated from real reviews and place attributes
+- Photos sourced from Google Places (HD, up to 4000px)
+- Data refreshed automatically via weekly sync
+
+## Languages
+
+- **Default**: Bahasa Indonesia
+- **Also available**: English (toggle on site)
+
+## API
+
+- Search endpoint: `https://api.cafepedia.id/search?q={query}`
+- Single place: `https://api.cafepedia.id/cafe/{id}`
+
+## Contact
+
+- Website: https://cafepedia.id
+- Email: hello@cafepedia.id

@@ -71,11 +71,24 @@ function AICard({ cafe, featured }: { cafe: Cafe; featured?: boolean }) {
   );
 }
 
+const QUICK_PICKS = [
+  { label: "Cozy", q: "cozy cafe" },
+  { label: "Work-friendly", q: "tempat kerja wifi" },
+  { label: "Rooftop", q: "rooftop view" },
+  { label: "Date Night", q: "romantic date spot" },
+  { label: "Coffee", q: "specialty coffee" },
+  { label: "Hidden Gem", q: "hidden gem unik" },
+  { label: "Budget", q: "cafe murah" },
+  { label: "Aesthetic", q: "aesthetic instagrammable" },
+  { label: "Late Night", q: "late night cafe" },
+  { label: "Family", q: "family friendly kids" },
+];
+
 function PickContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const query = searchParams.get("q") || "";
-  const { t } = useTranslation();
+  const { t, lang } = useTranslation();
 
   const [top3, setTop3] = useState<Cafe[]>([]);
   const [more, setMore] = useState<Cafe[]>([]);
@@ -86,7 +99,6 @@ function PickContent() {
     if (!query) return;
     setLoading(true);
 
-    // Try to get location
     const doFetch = async () => {
       let lat: number | undefined;
       let lng: number | undefined;
@@ -98,13 +110,13 @@ function PickContent() {
         lng = pos.coords.longitude;
       } catch {}
 
-      const data = await decideCafe(query, lat, lng);
+      const data = await decideCafe(query, lat, lng, lang);
       setTop3(data.top3 || []);
       setMore(data.more || []);
       setLoading(false);
     };
     doFetch().catch(() => { setApiError(true); setLoading(false); });
-  }, [query]);
+  }, [query, lang]);
 
   return (
     <div className="min-h-dvh">
@@ -122,6 +134,21 @@ function PickContent() {
       </header>
 
       <main className="max-w-2xl mx-auto px-4 pb-8">
+        {/* Quick pick chips */}
+        {!loading && (
+          <div className="flex gap-2 flex-wrap mt-4 mb-2">
+            {QUICK_PICKS.map(chip => (
+              <button
+                key={chip.q}
+                onClick={() => router.push(`/pick?q=${encodeURIComponent(chip.q)}`)}
+                className="text-[12px] px-3 py-1.5 rounded-full border border-[var(--border)] text-[var(--muted)] hover:text-[var(--foreground)] hover:border-[var(--foreground)] transition-colors"
+              >
+                {chip.label}
+              </button>
+            ))}
+          </div>
+        )}
+
         {loading && (
           <div className="text-center py-20 text-[var(--muted2)]">
             <div className="text-4xl mb-4 animate-pulse">☕</div>

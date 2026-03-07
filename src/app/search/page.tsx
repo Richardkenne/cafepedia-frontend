@@ -150,9 +150,9 @@ function SearchContent() {
   }
 
   return (
-    <div className="min-h-dvh bg-white">
+    <div className="min-h-dvh bg-[var(--background)]">
       {/* Sticky header */}
-      <header className="sticky top-0 z-20 bg-white/95 backdrop-blur-xl border-b border-gray-100 shadow-sm">
+      <header className="sticky top-0 z-20 bg-[var(--background)]/95 backdrop-blur-xl border-b border-[var(--border)] shadow-sm">
         <div className="max-w-3xl mx-auto px-4 py-3 flex items-center gap-2">
           {/* Logo brand — top left */}
           <div className="flex-shrink-0 mr-1">
@@ -327,7 +327,7 @@ function SearchContent() {
 export default function SearchPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-dvh bg-white">
+      <div className="min-h-dvh bg-[var(--background)]">
         <div className="max-w-3xl mx-auto px-4 pt-6">
           {Array.from({ length: 6 }).map((_, i) => (
             <CardSkeleton key={i} />

@@ -11,9 +11,9 @@ interface LogoProps {
  * Cafepedia logo — single source of truth.
  * To update: replace /public/logo.svg (or logo.png) with the final logo.
  */
-export default function Logo({ size = 32, textClassName = "text-xl font-extrabold tracking-tight text-[var(--foreground)]", showText = true }: LogoProps) {
+export default function Logo({ size = 22, textClassName = "text-xl font-extrabold tracking-tight text-[var(--foreground)]", showText = true }: LogoProps) {
   return (
-    <Link href="/" className="flex items-center gap-2.5 flex-shrink-0">
+    <Link href="/" className="flex items-center gap-2 flex-shrink-0">
       <Image
         src="/logo.svg"
         alt="Cafepedia"

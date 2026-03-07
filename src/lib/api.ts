@@ -90,8 +90,8 @@ export async function getTrendingCafes(): Promise<Cafe[]> {
   return (data.results || []).filter(c => c.hero_photo);
 }
 
-export async function decideCafe(query: string, lat?: number, lng?: number): Promise<DecideResponse> {
-  const body: Record<string, unknown> = { query };
+export async function decideCafe(query: string, lat?: number, lng?: number, lang?: string): Promise<DecideResponse> {
+  const body: Record<string, unknown> = { query, lang: lang || "id" };
   if (lat && lng) { body.lat = lat; body.lng = lng; }
   const r = await apiFetch(`${API_BASE}/decide`, {
     method: "POST",

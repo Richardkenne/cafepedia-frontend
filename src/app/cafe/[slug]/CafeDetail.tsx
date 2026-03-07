@@ -39,6 +39,25 @@ function formatPrice(price?: string) {
 
 const AMENITY_TAGS = new Set(["work_friendly","outdoor","indoor","ac","parking","smoking_area","halal","pet_friendly","kid_friendly","live_music","coworking","rooftop_view","garden","hillside","city_view","mountain_view","lake_view","pool","playground","board_games","ev_charging","prayer_room","meeting_room","private_room","reservation_needed","24h"]);
 
+// Tag → SEO page mapping for internal linking ("Muncul di")
+const TAG_TO_SEO_PAGES: { tags: string[]; slug: string; label: string }[] = [
+  { tags: ["top_rated", "popular"], slug: "best-cafes-bandung", label: "Cafe Terbaik di Bandung" },
+  { tags: ["work_friendly", "coworking"], slug: "best-cafes-to-work-bandung", label: "Cafe untuk Kerja di Bandung" },
+  { tags: ["aesthetic", "instagrammable", "modern"], slug: "aesthetic-cafes-bandung", label: "Cafe Aesthetic di Bandung" },
+  { tags: ["budget"], slug: "cheap-cafes-bandung", label: "Cafe Murah di Bandung" },
+  { tags: ["outdoor", "garden"], slug: "outdoor-cafes-bandung", label: "Cafe Outdoor di Bandung" },
+  { tags: ["rooftop_view"], slug: "rooftop-cafes-bandung", label: "Cafe Rooftop di Bandung" },
+  { tags: ["cozy", "rustic"], slug: "cozy-cafes-bandung", label: "Cafe Cozy di Bandung" },
+  { tags: ["quiet"], slug: "quiet-cafes-bandung", label: "Cafe Tenang di Bandung" },
+  { tags: ["late_night"], slug: "late-night-cafes-bandung", label: "Cafe Buka Malam di Bandung" },
+  { tags: ["brunch", "breakfast", "weekend_brunch"], slug: "brunch-cafes-bandung", label: "Cafe Brunch di Bandung" },
+  { tags: ["date_spot", "romantic"], slug: "date-cafes-bandung", label: "Cafe untuk Kencan di Bandung" },
+  { tags: ["hidden_gem"], slug: "hidden-gem-cafes-bandung", label: "Hidden Gem Cafe di Bandung" },
+  { tags: ["premium", "upscale", "elegant"], slug: "premium-cafes-bandung", label: "Cafe Premium di Bandung" },
+  { tags: ["specialty_coffee", "roastery"], slug: "specialty-coffee-bandung", label: "Specialty Coffee di Bandung" },
+  { tags: ["pet_friendly"], slug: "pet-friendly-cafes-bandung", label: "Cafe Pet-Friendly di Bandung" },
+];
+
 function extractIgHandle(ig?: string): string | null {
   if (!ig) return null;
   const clean = ig.replace(/https?:\/\/(www\.)?instagram\.com\//i, "").replace(/\/$/, "").trim();
@@ -133,7 +152,7 @@ export default function CafeDetail({ initialData }: CafeDetailProps = {}) {
   }
 
   return (
-    <div className="min-h-dvh bg-white">
+    <div className="min-h-dvh bg-[var(--background)]">
       {/* Back button — floating over photo */}
       <div className="fixed top-4 left-4 z-30 flex gap-2">
         <button
@@ -247,7 +266,7 @@ export default function CafeDetail({ initialData }: CafeDetailProps = {}) {
                 </div>
               </div>
             ) : (
-              <div className="w-full h-56 sm:h-72 flex items-center justify-center bg-gradient-to-br from-teal-50 to-amber-50 sm:mx-6 sm:mt-6 sm:rounded-2xl">
+              <div className="w-full h-56 sm:h-72 flex items-center justify-center bg-gradient-to-br from-[var(--accent-light)] to-amber-50 sm:mx-6 sm:mt-6 sm:rounded-2xl">
                 <svg viewBox="0 0 32 32" className="w-14 h-14 text-[var(--accent)] opacity-30">
                   <path fill="currentColor" d="M6 10h14v12a4 4 0 0 1-4 4H10a4 4 0 0 1-4-4V10z"/>
                   <path fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" d="M20 13h2a3 3 0 0 1 0 6h-2"/>
@@ -498,6 +517,33 @@ export default function CafeDetail({ initialData }: CafeDetailProps = {}) {
                 </>
               )}
 
+              {/* ═══════════════ Muncul di (internal links to SEO pages) ═══════════════ */}
+              {(() => {
+                const cafeTags = cafe.tags || [];
+                const matchedPages = TAG_TO_SEO_PAGES.filter(p =>
+                  p.tags.some(t => cafeTags.includes(t))
+                );
+                if (matchedPages.length === 0) return null;
+                return (
+                  <>
+                    <div className="h-px bg-gray-100 mt-8 mb-7" />
+                    <h3 className="text-[13px] font-bold text-[var(--foreground)] uppercase tracking-wider mb-4">Muncul di</h3>
+                    <div className="flex gap-2 flex-wrap">
+                      {matchedPages.map(p => (
+                        <Link
+                          key={p.slug}
+                          href={`/${p.slug}`}
+                          className="text-[12px] px-3 py-1.5 rounded-full border border-gray-200 text-[var(--accent)] font-medium
+                            hover:bg-[var(--accent-light)] hover:border-[var(--accent)] transition-colors"
+                        >
+                          {p.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </>
+                );
+              })()}
+
               {/* ═══════════════ Hours & Contact ═══════════════ */}
               <div className="h-px bg-gray-100 mt-8 mb-7" />
               <h3 className="text-[13px] font-bold text-[var(--foreground)] uppercase tracking-wider mb-5">Jam & Kontak</h3>
@@ -506,7 +552,7 @@ export default function CafeDetail({ initialData }: CafeDetailProps = {}) {
                 {/* Hours */}
                 {hours && (
                   <div className="flex gap-4 p-5 border-b border-gray-100 last:border-b-0">
-                    <div className="w-10 h-10 rounded-xl bg-teal-50 flex items-center justify-center flex-shrink-0">
+                    <div className="w-10 h-10 rounded-xl bg-[var(--accent-light)] flex items-center justify-center flex-shrink-0">
                       <Clock size={18} className="text-[var(--accent)]" />
                     </div>
                     <div className="min-w-0 flex-1">
@@ -582,7 +628,7 @@ export default function CafeDetail({ initialData }: CafeDetailProps = {}) {
                   <div className="h-px bg-gray-100 mt-8 mb-7" />
                   <h3 className="text-[13px] font-bold text-[var(--foreground)] uppercase tracking-wider mb-5">Lokasi</h3>
                   <div className="flex gap-4 p-5 rounded-2xl border border-gray-100">
-                    <div className="w-10 h-10 rounded-xl bg-teal-50 flex items-center justify-center flex-shrink-0">
+                    <div className="w-10 h-10 rounded-xl bg-[var(--accent-light)] flex items-center justify-center flex-shrink-0">
                       <MapPin size={18} className="text-[var(--accent)]" />
                     </div>
                     <div className="min-w-0 flex-1">

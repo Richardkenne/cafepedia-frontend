@@ -4,8 +4,8 @@
   "description": "Discover 600+ cafes in Bandung. Search by vibe, area, or let AI pick for you.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#1a1a1a",
+  "background_color": "#FAF7F2",
+  "theme_color": "#115E59",
   "icons": [
     {
       "src": "/icon-192.png",

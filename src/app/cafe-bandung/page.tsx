@@ -113,8 +113,8 @@ export default async function CafeBandungPage() {
   const cafes = await getTopCafes();
 
   return (
-    <div className="min-h-dvh bg-white">
-      <header className="sticky top-0 z-20 bg-white/95 backdrop-blur-xl border-b border-gray-100">
+    <div className="min-h-dvh bg-[var(--background)]">
+      <header className="sticky top-0 z-20 bg-[var(--background)]/95 backdrop-blur-xl border-b border-[var(--border)]">
         <div className="max-w-3xl mx-auto px-5 py-4 flex items-center gap-3">
           <Link href="/" className="text-[var(--muted)] text-sm font-medium p-2 -ml-2">
             &larr; Cafepedia
@@ -329,48 +329,54 @@ export default async function CafeBandungPage() {
         </div>
       </main>
 
-      {/* Schema.org FAQPage */}
+      {/* Schema.org @graph */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",
-            "@type": "FAQPage",
-            mainEntity: FAQ.map((item) => ({
-              "@type": "Question",
-              name: item.q,
-              acceptedAnswer: { "@type": "Answer", text: item.a },
-            })),
-          }),
-        }}
-      />
-
-      {/* Schema.org BreadcrumbList */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            itemListElement: [
-              { "@type": "ListItem", position: 1, name: "Cafepedia", item: "https://cafepedia.id" },
-              { "@type": "ListItem", position: 2, name: "Cafe Bandung", item: "https://cafepedia.id/cafe-bandung" },
+            "@graph": [
+              {
+                "@type": "CollectionPage",
+                "@id": "https://cafepedia.id/cafe-bandung#webpage",
+                "url": "https://cafepedia.id/cafe-bandung",
+                "name": "Cafe Bandung",
+                "description": "Daftar lengkap 4.000+ cafe, bar, rooftop di Bandung",
+                "isPartOf": { "@id": "https://cafepedia.id#website" },
+                "breadcrumb": { "@id": "https://cafepedia.id/cafe-bandung#breadcrumb" },
+              },
+              {
+                "@type": "Organization",
+                "@id": "https://cafepedia.id#organization",
+                "name": "Cafepedia",
+                "url": "https://cafepedia.id",
+                "logo": "https://cafepedia.id/logo-icon.svg",
+              },
+              {
+                "@type": "WebSite",
+                "@id": "https://cafepedia.id#website",
+                "url": "https://cafepedia.id",
+                "name": "Cafepedia",
+                "publisher": { "@id": "https://cafepedia.id#organization" },
+              },
+              {
+                "@type": "BreadcrumbList",
+                "@id": "https://cafepedia.id/cafe-bandung#breadcrumb",
+                "itemListElement": [
+                  { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://cafepedia.id" },
+                  { "@type": "ListItem", "position": 2, "name": "Cafe Bandung" },
+                ],
+              },
+              {
+                "@type": "FAQPage",
+                "@id": "https://cafepedia.id/cafe-bandung#faq",
+                "mainEntity": FAQ.map((item) => ({
+                  "@type": "Question",
+                  "name": item.q,
+                  "acceptedAnswer": { "@type": "Answer", "text": item.a },
+                })),
+              },
             ],
-          }),
-        }}
-      />
-
-      {/* Schema.org WebPage */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "CollectionPage",
-            name: "Cafe Bandung",
-            description: "Daftar lengkap 4.000+ cafe, bar, rooftop di Bandung",
-            url: "https://cafepedia.id/cafe-bandung",
-            isPartOf: { "@type": "WebSite", name: "Cafepedia", url: "https://cafepedia.id" },
           }),
         }}
       />

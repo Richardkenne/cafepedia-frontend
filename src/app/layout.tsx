@@ -42,6 +42,10 @@ export const metadata: Metadata = {
     description: "Discover the best cafes in Bandung. Search by vibe, area, or let AI pick for you.",
   },
   icons: {
+    icon: [
+      { url: "/icon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+    ],
     apple: "/icon-192.png",
   },
   robots: {
@@ -58,7 +62,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
-  themeColor: "#FFFFFF",
+  themeColor: "#115E59",
 };
 
 export default function RootLayout({

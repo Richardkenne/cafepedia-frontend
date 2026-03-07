@@ -82,9 +82,13 @@ function priceRangeToSymbol(pr?: string): string | undefined {
 
 function buildJsonLd(cafe: Record<string, unknown>) {
   const area = (cafe.area || cafe.neighborhood || "Bandung") as string;
-  const ld: Record<string, unknown> = {
-    "@context": "https://schema.org",
+  const cafeSlug = `${(cafe as { id: number }).id}-${((cafe.name as string) || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`;
+  const cafeUrl = `https://cafepedia.id/cafe/${cafeSlug}`;
+
+  // Build CafeOrCoffeeShop entity
+  const place: Record<string, unknown> = {
     "@type": "CafeOrCoffeeShop",
+    "@id": `${cafeUrl}#place`,
     "name": cafe.name,
     "address": {
       "@type": "PostalAddress",
@@ -93,13 +97,14 @@ function buildJsonLd(cafe: Record<string, unknown>) {
       "addressCountry": "ID",
       ...(cafe.address ? { "streetAddress": cafe.address as string } : {}),
     },
-    "url": `https://cafepedia.id/cafe/${(cafe as { id: number; name: string }).id}-${((cafe.name as string) || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}`,
+    "url": cafeUrl,
+    "publisher": { "@id": "https://cafepedia.id#organization" },
   };
   if (cafe.lat && cafe.lng) {
-    ld.geo = { "@type": "GeoCoordinates", latitude: cafe.lat, longitude: cafe.lng };
+    place.geo = { "@type": "GeoCoordinates", latitude: cafe.lat, longitude: cafe.lng };
   }
   if (cafe.rating) {
-    ld.aggregateRating = {
+    place.aggregateRating = {
       "@type": "AggregateRating",
       ratingValue: cafe.rating,
       bestRating: 5,
@@ -107,15 +112,56 @@ function buildJsonLd(cafe: Record<string, unknown>) {
     };
   }
   const price = priceRangeToSymbol(cafe.price_range as string);
-  if (price) ld.priceRange = price;
-  if (cafe.phone) ld.telephone = cafe.phone;
-  if (cafe.website) ld.url = cafe.website;
-  if (cafe.instagram) ld.sameAs = [cafe.instagram];
-  const photo = (cafe.photos as string[])?.[0] || cafe.hero_photo;
-  if (photo) ld.image = photo;
-  if (cafe.google_maps_link) ld.hasMap = cafe.google_maps_link;
-  if (cafe.description) ld.description = (cafe.description as string).slice(0, 300);
-  return ld;
+  if (price) place.priceRange = price;
+  if (cafe.phone) place.telephone = cafe.phone;
+  if (cafe.website) place.url = cafe.website;
+  if (cafe.instagram) place.sameAs = [cafe.instagram];
+  const photos = (cafe.photos as string[]) || [];
+  const heroPhoto = cafe.hero_photo as string | undefined;
+  if (photos.length > 0) {
+    place.image = photos;
+  } else if (heroPhoto) {
+    place.image = [heroPhoto];
+  }
+  if (cafe.google_maps_link) place.hasMap = cafe.google_maps_link;
+  if (cafe.description) place.description = (cafe.description as string).slice(0, 300);
+
+  const graph = [
+    place,
+    {
+      "@type": "Organization",
+      "@id": "https://cafepedia.id#organization",
+      "name": "Cafepedia",
+      "url": "https://cafepedia.id",
+      "logo": "https://cafepedia.id/logo-icon.svg",
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": `${cafeUrl}#breadcrumb`,
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://cafepedia.id" },
+        { "@type": "ListItem", "position": 2, "name": "Bandung", "item": "https://cafepedia.id/cafe-bandung" },
+        { "@type": "ListItem", "position": 3, "name": cafe.name as string },
+      ],
+    },
+    {
+      "@type": "WebPage",
+      "@id": `${cafeUrl}#webpage`,
+      "url": cafeUrl,
+      "name": `${cafe.name} — Cafepedia`,
+      "isPartOf": { "@id": "https://cafepedia.id#website" },
+      "breadcrumb": { "@id": `${cafeUrl}#breadcrumb` },
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://cafepedia.id#website",
+      "url": "https://cafepedia.id",
+      "name": "Cafepedia",
+      "publisher": { "@id": "https://cafepedia.id#organization" },
+    },
+  ];
+
+  return { "@context": "https://schema.org", "@graph": graph };
 }
 
 export default async function CafePage({ params }: Props) {
