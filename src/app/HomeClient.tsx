@@ -383,6 +383,30 @@ export default function HomeClient() {
               <MapPin size={20} />
             </button>
           </div>
+
+          {/* AI Pick — compact, right below search */}
+          <div className="w-full max-w-lg mt-3">
+            <div className={`flex gap-2 ${shake ? "animate-shake" : ""}`} ref={aiRef}>
+              <div className="flex-1 relative">
+                <SearchBar
+                  value={aiQuery}
+                  onChange={setAiQuery}
+                  onSubmit={(q) => goAI(q)}
+                  placeholder="✨ quiet cafe to work near dago..."
+                />
+              </div>
+              <button
+                onClick={() => goAI(aiQuery)}
+                className="px-4 rounded-2xl bg-white/20 backdrop-blur-md text-white border border-white/15
+                  hover:bg-white/30 active:scale-95 transition-all flex items-center justify-center gap-1.5 min-w-[52px] min-h-[44px]"
+              >
+                <Sparkles size={16} />
+              </button>
+            </div>
+            <p className="text-white/40 text-[11px] mt-1.5 text-center font-medium">
+              AI-powered — describe what you want, we find it
+            </p>
+          </div>
         </motion.div>
       </section>
 
