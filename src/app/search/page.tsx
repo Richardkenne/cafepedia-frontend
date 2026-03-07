@@ -46,6 +46,7 @@ function SearchContent() {
   const [activeCategory, setActiveCategory] = useState(categoryParam);
   const [showFilters, setShowFilters] = useState(false);
   const [apiError, setApiError] = useState(false);
+  const [staleData, setStaleData] = useState(false);
 
   useEffect(() => {
     if (nearParam) {
@@ -81,8 +82,9 @@ function SearchContent() {
       const data = await searchCafes(params);
       setResults(data.results || []);
       setFound(data.found || 0);
+      setStaleData(!!data._stale);
       setVisible(PAGE_SIZE);
-      logSearch(q || filters?.join(",") || "", data.found || 0);
+      if (!data._stale) logSearch(q || filters?.join(",") || "", data.found || 0);
     } catch {
       setResults([]);
       setFound(0);
@@ -253,6 +255,13 @@ function SearchContent() {
               {found > 0 ? `${found >= 100 ? "100+" : found >= 50 ? "50+" : found >= 10 ? `${Math.floor(found / 10) * 10}+` : found} ${t("search.cafes_found")}` : ""}
               {nearActive && found > 0 && ` · ${t("search.sorted_by_distance")}`}
             </p>
+          </div>
+        )}
+
+        {/* Stale data banner */}
+        {staleData && (
+          <div className="mb-3 px-3 py-2 rounded-lg bg-amber-50 border border-amber-200 text-xs text-amber-700">
+            Data mungkin tidak terbaru — server sedang maintenance
           </div>
         )}
 

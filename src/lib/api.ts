@@ -3,15 +3,20 @@ import { SearchResponse, Cafe, DecideResponse } from "./types";
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "";
 
 async function apiFetch(url: string, options?: RequestInit): Promise<Response> {
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 8000);
-  try {
-    const r = await fetch(url, { ...options, signal: controller.signal });
-    if (!r.ok) throw new Error(`API ${r.status}`);
-    return r;
-  } finally {
-    clearTimeout(timeout);
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000);
+    try {
+      const r = await fetch(url, { ...options, signal: controller.signal });
+      if (!r.ok) throw new Error(`API ${r.status}`);
+      return r;
+    } catch (e) {
+      clearTimeout(timeout);
+      if (attempt === 1) throw e;
+      await new Promise(res => setTimeout(res, 2000));
+    }
   }
+  throw new Error("API unreachable");
 }
 
 export function makeSlug(id: number | string, name: string): string {
@@ -21,6 +26,20 @@ export function makeSlug(id: number | string, name: string): string {
 
 export function parseSlug(slug: string): number {
   return parseInt(slug.split("-")[0], 10);
+}
+
+function cacheGet(key: string): SearchResponse | null {
+  try {
+    const raw = sessionStorage.getItem(`cafe_cache_${key}`);
+    if (!raw) return null;
+    const { data, ts } = JSON.parse(raw);
+    if (Date.now() - ts > 5 * 60 * 1000) return null;
+    return data;
+  } catch { return null; }
+}
+
+function cacheSet(key: string, data: SearchResponse) {
+  try { sessionStorage.setItem(`cafe_cache_${key}`, JSON.stringify({ data, ts: Date.now() })); } catch {}
 }
 
 export async function searchCafes(params: {
@@ -38,8 +57,17 @@ export async function searchCafes(params: {
     p.set("near", `${params.near.lat},${params.near.lng}`);
     if (params.radius_km) p.set("radius_km", String(params.radius_km));
   }
-  const r = await apiFetch(`${API_BASE}/search?${p}`);
-  return r.json();
+  const cacheKey = p.toString();
+  try {
+    const r = await apiFetch(`${API_BASE}/search?${p}`);
+    const data: SearchResponse = await r.json();
+    cacheSet(cacheKey, data);
+    return data;
+  } catch (e) {
+    const cached = cacheGet(cacheKey);
+    if (cached) return { ...cached, _stale: true } as SearchResponse;
+    throw e;
+  }
 }
 
 export async function getCafe(id: number): Promise<Cafe> {

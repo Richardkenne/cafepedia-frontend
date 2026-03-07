@@ -32,6 +32,7 @@ export interface Cafe {
 export interface SearchResponse {
   found: number;
   results: Cafe[];
+  _stale?: boolean;
 }
 
 export interface DecideResponse {
