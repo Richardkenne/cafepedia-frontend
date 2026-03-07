@@ -10,6 +10,13 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  redirects: async () => [
+    {
+      source: "/explore",
+      destination: "/browse",
+      permanent: true,
+    },
+  ],
   headers: async () => [
     {
       source: "/(.*)",

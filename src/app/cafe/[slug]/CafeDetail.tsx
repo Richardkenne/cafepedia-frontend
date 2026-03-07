@@ -45,13 +45,17 @@ function extractIgHandle(ig?: string): string | null {
   return clean ? `@${clean.replace(/^@/, "")}` : null;
 }
 
-export default function CafeDetail() {
+interface CafeDetailProps {
+  initialData?: Record<string, unknown> | null;
+}
+
+export default function CafeDetail({ initialData }: CafeDetailProps = {}) {
   const router = useRouter();
   const params = useParams();
   const id = parseSlug(params.slug as string);
 
-  const [cafe, setCafe] = useState<Cafe | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [cafe, setCafe] = useState<Cafe | null>(initialData as Cafe | null);
+  const [loading, setLoading] = useState(!initialData);
   const [apiError, setApiError] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [similar, setSimilar] = useState<Cafe[]>([]);
@@ -93,12 +97,13 @@ export default function CafeDetail() {
 
   useEffect(() => {
     if (!id) return;
+    if (initialData) { setLoading(false); return; }
     setLoading(true);
     getCafe(id).then(c => {
       setCafe(c);
       setLoading(false);
     }).catch(() => { setApiError(true); setLoading(false); });
-  }, [id]);
+  }, [id, initialData]);
 
   // Fetch similar places
   useEffect(() => {

@@ -131,7 +131,18 @@ export default async function CafePage({ params }: Props) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(buildJsonLd(cafe)) }}
         />
       )}
-      <CafeDetail />
+      {/* SSR content for SEO — hidden visually, visible to crawlers */}
+      {cafe && (
+        <div className="sr-only" aria-hidden="false">
+          <h1>{cafe.name}</h1>
+          {cafe.description && <p>{cafe.description}</p>}
+          {cafe.area && <p>Area: {cafe.area}</p>}
+          {cafe.rating && <p>Rating: {cafe.rating}/5</p>}
+          {cafe.tags && <p>Tags: {(cafe.tags as string[]).join(", ")}</p>}
+          {cafe.address && <p>Address: {cafe.address}</p>}
+        </div>
+      )}
+      <CafeDetail initialData={cafe} />
     </>
   );
 }
