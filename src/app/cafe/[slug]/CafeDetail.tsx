@@ -37,6 +37,8 @@ function formatPrice(price?: string) {
   return count > 0 ? "$".repeat(count) : price;
 }
 
+const AMENITY_TAGS = new Set(["work_friendly","outdoor","indoor","ac","parking","smoking_area","halal","pet_friendly","kid_friendly","live_music","coworking","rooftop_view","garden","hillside","city_view","mountain_view","lake_view","pool","playground","board_games","ev_charging","prayer_room","meeting_room","private_room","reservation_needed","24h"]);
+
 function extractIgHandle(ig?: string): string | null {
   if (!ig) return null;
   const clean = ig.replace(/https?:\/\/(www\.)?instagram\.com\//i, "").replace(/\/$/, "").trim();
