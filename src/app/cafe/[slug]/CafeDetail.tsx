@@ -321,7 +321,7 @@ export default function CafeDetail() {
               {cafe.description && (
                 <div className="mt-6">
                   <h3 className="text-[13px] font-semibold text-[var(--foreground)] uppercase tracking-wider mb-2">Tentang</h3>
-                  <p className="text-[15px] leading-relaxed text-[var(--muted)]">
+                  <p className="text-[15px] leading-[1.8] text-[var(--muted)] break-words">
                     {cafe.description}
                   </p>
                 </div>
