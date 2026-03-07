@@ -413,7 +413,7 @@ export default function CafeDetail() {
                     hover:bg-gray-50 active:scale-[0.97] transition-all flex-shrink-0"
                 >
                   <Share2 size={15} />
-                  Share
+                  Bagikan
                 </button>
               </div>
 
