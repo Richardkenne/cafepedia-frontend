@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     default: "Cafepedia — Bandung Cafe Guide",
     template: "%s",
   },
-  description: "Discover the best cafes in Bandung. Search by vibe, area, or let AI pick for you. 600+ cafes with photos, hours, and directions.",
+  description: "Discover the best cafes in Bandung. Search by vibe, area, or let AI pick for you. 4,000+ places with photos, hours, and directions.",
   metadataBase: new URL(SITE_URL),
   manifest: "/manifest.json",
   appleWebApp: {
