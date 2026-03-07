@@ -596,7 +596,14 @@ export default function CafeDetail({ initialData }: CafeDetailProps = {}) {
               {similar.length > 0 && (
                 <>
                   <div className="h-px bg-gray-100 mt-8 mb-7" />
-                  <h3 className="text-[13px] font-bold text-[var(--foreground)] uppercase tracking-wider mb-5">Serupa</h3>
+                  {cafe.status === "closed" || cafe.status === "temporarily_closed" ? (
+                    <div className="mb-5">
+                      <h3 className="text-[15px] font-bold text-[var(--foreground)]">Tempat serupa di sekitar</h3>
+                      <p className="text-[12px] text-[var(--muted)] mt-1">Tempat lain yang masih buka di area yang sama</p>
+                    </div>
+                  ) : (
+                    <h3 className="text-[13px] font-bold text-[var(--foreground)] uppercase tracking-wider mb-5">Serupa</h3>
+                  )}
                   <div className="grid grid-cols-2 gap-3">
                     {similar.map(s => (
                       <Link
