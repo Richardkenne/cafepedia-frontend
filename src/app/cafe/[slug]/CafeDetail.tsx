@@ -426,16 +426,34 @@ export default function CafeDetail() {
               )}
 
               {/* ═══════════════ Vibe ═══════════════ */}
-              {displayTags.length > 0 && (
+              {vibeTags.length > 0 && (
                 <>
                   <div className="h-px bg-gray-100 mt-8 mb-7" />
                   <h3 className="text-[13px] font-bold text-[var(--foreground)] uppercase tracking-wider mb-4">Vibe</h3>
                   <div className="flex gap-2 flex-wrap">
-                    {displayTags.map(t => (
+                    {vibeTags.map(t => (
                       <span
                         key={t}
                         className="text-[12px] px-3 py-1.5 rounded-full border border-gray-200 text-[var(--muted)] font-medium
                           hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors cursor-default"
+                      >
+                        {formatTag(t)}
+                      </span>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {/* ═══════════════ Amenities ═══════════════ */}
+              {amenityTags.length > 0 && (
+                <>
+                  <div className="h-px bg-gray-100 mt-8 mb-7" />
+                  <h3 className="text-[13px] font-bold text-[var(--foreground)] uppercase tracking-wider mb-4">Amenities</h3>
+                  <div className="flex gap-2 flex-wrap">
+                    {amenityTags.map(t => (
+                      <span
+                        key={t}
+                        className="text-[12px] px-3 py-1.5 rounded-full bg-gray-50 border border-gray-100 text-[var(--muted)] font-medium"
                       >
                         {formatTag(t)}
                       </span>
