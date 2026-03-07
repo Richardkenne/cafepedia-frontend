@@ -558,6 +558,7 @@ export default function HomeClient() {
             <div className="flex gap-16 text-[13px]">
               <div className="flex flex-col gap-3">
                 <span className="font-bold text-[11px] uppercase tracking-widest text-[var(--muted2)]">Jelajahi</span>
+                <a href="/cafe-bandung" className="text-[var(--muted)] hover:text-[var(--foreground)] transition-colors">Cafe Bandung</a>
                 <a href="/search?q=*" className="text-[var(--muted)] hover:text-[var(--foreground)] transition-colors">Semua tempat</a>
                 <a href="/browse" className="text-[var(--muted)] hover:text-[var(--foreground)] transition-colors">Explore Bandung</a>
                 <a href="/blog" className="text-[var(--muted)] hover:text-[var(--foreground)] transition-colors">Blog</a>
