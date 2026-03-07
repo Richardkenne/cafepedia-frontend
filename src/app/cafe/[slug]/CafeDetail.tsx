@@ -556,6 +556,56 @@ export default function CafeDetail() {
                 </>
               )}
 
+              {/* ═══════════════ Similar places ═══════════════ */}
+              {similar.length > 0 && (
+                <>
+                  <div className="h-px bg-gray-100 mt-8 mb-7" />
+                  <h3 className="text-[13px] font-bold text-[var(--foreground)] uppercase tracking-wider mb-5">Simili a questo</h3>
+                  <div className="grid grid-cols-2 gap-3">
+                    {similar.map(s => (
+                      <Link
+                        key={s.id}
+                        href={`/cafe/${makeSlug(s.id, s.name)}`}
+                        className="group block"
+                      >
+                        <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden bg-[var(--surface)]">
+                          {s.hero_photo && (
+                            <Image
+                              src={s.hero_photo}
+                              alt={s.name}
+                              fill
+                              className="object-cover group-hover:scale-105 transition-transform duration-500"
+                              sizes="(max-width: 640px) 50vw, 200px"
+                              loading="lazy"
+                            />
+                          )}
+                        </div>
+                        <div className="mt-2 px-0.5">
+                          <p className="text-[13px] font-bold line-clamp-1 group-hover:text-[var(--accent)] transition-colors">{s.name}</p>
+                          {s.rating && (
+                            <div className="flex items-center gap-1 mt-0.5">
+                              <Star size={11} className="fill-[var(--accent)] text-[var(--accent)]" />
+                              <span className="text-[12px] font-semibold">{s.rating}</span>
+                              {s.rating_count && <span className="text-[11px] text-[var(--muted2)]">({s.rating_count.toLocaleString()})</span>}
+                            </div>
+                          )}
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {/* ═══════════════ Suggest an edit ═══════════════ */}
+              <div className="mt-10 mb-4 text-center">
+                <Link
+                  href="/suggest"
+                  className="text-[12px] text-[var(--muted2)] hover:text-[var(--accent)] transition-colors font-medium"
+                >
+                  Informasi salah? Sarankan perubahan
+                </Link>
+              </div>
+
               {/* Bottom spacer for sticky bar */}
               <div className="h-8" />
             </div>
