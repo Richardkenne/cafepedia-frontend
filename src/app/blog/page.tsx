@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Image from "next/image"
 import Link from "next/link"
 import { blogPosts } from "@/lib/blog"
 
@@ -32,7 +33,7 @@ export default function BlogPage() {
     <main className="min-h-dvh">
       {/* Header */}
       <header className="border-b border-[var(--border)]">
-        <div className="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link href="/" className="text-lg font-bold tracking-tight hover:opacity-70 transition-opacity">
             Cafepedia
           </Link>
@@ -45,7 +46,7 @@ export default function BlogPage() {
       </header>
 
       {/* Content */}
-      <div className="max-w-3xl mx-auto px-6 py-12">
+      <div className="max-w-4xl mx-auto px-6 py-12">
         <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-2">
           Blog
         </h1>
@@ -53,10 +54,20 @@ export default function BlogPage() {
           Guides and recommendations for Bandung&apos;s cafe scene
         </p>
 
-        <div className="space-y-10">
-          {blogPosts.map(post => (
+        <div className="space-y-12">
+          {blogPosts.map((post, i) => (
             <article key={post.slug} className="group">
               <Link href={`/blog/${post.slug}`} className="block">
+                <div className="relative aspect-[2/1] sm:aspect-[5/2] rounded-xl overflow-hidden mb-5 bg-[var(--border)]">
+                  <Image
+                    src={post.heroImage}
+                    alt={post.heroAlt}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 896px"
+                    className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                    priority={i === 0}
+                  />
+                </div>
                 <div className="flex items-center gap-3 text-sm text-[var(--muted2)] mb-2">
                   <time dateTime={post.date}>{formatDate(post.date)}</time>
                   <span>·</span>
@@ -76,7 +87,7 @@ export default function BlogPage() {
 
       {/* Footer */}
       <footer className="border-t border-[var(--border)] mt-16">
-        <div className="max-w-3xl mx-auto px-6 py-8 text-center text-[11px] text-[var(--muted2)]">
+        <div className="max-w-4xl mx-auto px-6 py-8 text-center text-[11px] text-[var(--muted2)]">
           <Link href="/" className="hover:text-[var(--foreground)] transition-colors">
             cafepedia.id
           </Link>

@@ -111,3 +111,19 @@ input[type="text"] {
 .prose-cafepedia strong {
   font-weight: 600;
 }
+.prose-cafepedia figure {
+  margin: 2em 0;
+}
+.prose-cafepedia figure img {
+  width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+  object-fit: cover;
+  aspect-ratio: 3/2;
+}
+.prose-cafepedia figcaption {
+  margin-top: 0.5em;
+  font-size: 0.85em;
+  color: var(--muted);
+  text-align: center;
+}

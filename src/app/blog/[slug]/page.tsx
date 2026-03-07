@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { getBlogPost, getAllBlogSlugs } from "@/lib/blog"
@@ -34,11 +35,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       siteName: "Cafepedia",
       type: "article",
       publishedTime: post.date,
+      images: [
+        {
+          url: post.heroImage,
+          width: 1200,
+          height: 800,
+          alt: post.heroAlt,
+        },
+      ],
     },
     twitter: {
-      card: "summary",
+      card: "summary_large_image",
       title: post.title,
       description: post.excerpt,
+      images: [post.heroImage],
     },
   }
 }
@@ -66,6 +76,7 @@ export default async function BlogPostPage({ params }: Props) {
     description: post.excerpt,
     datePublished: post.date,
     dateModified: post.date,
+    image: post.heroImage,
     author: {
       "@type": "Organization",
       name: "Cafepedia",
@@ -92,7 +103,7 @@ export default async function BlogPostPage({ params }: Props) {
 
       {/* Header */}
       <header className="border-b border-[var(--border)]">
-        <div className="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link href="/" className="text-lg font-bold tracking-tight hover:opacity-70 transition-opacity">
             Cafepedia
           </Link>
@@ -107,8 +118,22 @@ export default async function BlogPostPage({ params }: Props) {
         </div>
       </header>
 
+      {/* Hero image */}
+      <div className="max-w-4xl mx-auto px-6 pt-8">
+        <div className="relative aspect-[2/1] sm:aspect-[5/2] rounded-xl overflow-hidden bg-[var(--border)]">
+          <Image
+            src={post.heroImage}
+            alt={post.heroAlt}
+            fill
+            sizes="(max-width: 768px) 100vw, 896px"
+            className="object-cover"
+            priority
+          />
+        </div>
+      </div>
+
       {/* Article */}
-      <article className="max-w-3xl mx-auto px-6 py-12">
+      <article className="max-w-3xl mx-auto px-6 py-10">
         <div className="flex items-center gap-3 text-sm text-[var(--muted2)] mb-4">
           <time dateTime={post.date}>{formatDate(post.date)}</time>
           <span>·</span>
@@ -140,7 +165,7 @@ export default async function BlogPostPage({ params }: Props) {
 
       {/* Footer */}
       <footer className="border-t border-[var(--border)] mt-4">
-        <div className="max-w-3xl mx-auto px-6 py-8 text-center text-[11px] text-[var(--muted2)]">
+        <div className="max-w-4xl mx-auto px-6 py-8 text-center text-[11px] text-[var(--muted2)]">
           <Link href="/" className="hover:text-[var(--foreground)] transition-colors">
             cafepedia.id
           </Link>

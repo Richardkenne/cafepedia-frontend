@@ -1,9 +1,13 @@
+const PHOTO_BASE = "https://fkpxolnsqjfgcbkiqbld.supabase.co/storage/v1/object/public/cafe-photos"
+
 export type BlogPost = {
   slug: string
   title: string
   excerpt: string
   date: string
   readTime: string
+  heroImage: string
+  heroAlt: string
   content: string
 }
 
@@ -14,12 +18,19 @@ export const blogPosts: BlogPost[] = [
     excerpt: "Our hand-picked selection of the best cafes in Bandung for 2026, from hidden gems to iconic rooftops. Work spots, aesthetic interiors, mountain views, and specialty coffee — all in one guide.",
     date: "2026-03-01",
     readTime: "12 min read",
+    heroImage: `${PHOTO_BASE}/652_rumamenak/hero.jpg`,
+    heroAlt: "Rumamenak — panoramic mountain view rooftop cafe in North Bandung",
     content: `
 <p>Bandung has quietly become one of Southeast Asia's most exciting cafe cities. With nearly 600 cafes spread across the city — from the misty hills of North Bandung to the heritage streets of Braga — there's a spot for every mood, budget, and vibe.</p>
 
 <p>We spent months visiting, reviewing, and cataloging every notable cafe in Bandung. Here are our top picks for 2026, organized by what you're actually looking for.</p>
 
 <h2>Best for Work & Productivity</h2>
+
+<figure>
+  <img src="${PHOTO_BASE}/604_the-copy-room/hero.jpg" alt="The Copy Room — coworking cafe in Bandung with minimalist interior" width="1200" height="800" loading="lazy" />
+  <figcaption>The Copy Room — Bandung's gold standard for working from a cafe</figcaption>
+</figure>
 
 <p>Bandung's cafe-and-laptop culture is thriving. These spots offer reliable WiFi, power outlets, and an atmosphere that actually lets you focus.</p>
 
@@ -34,6 +45,11 @@ export const blogPosts: BlogPost[] = [
 
 <h2>Best Aesthetic & Instagrammable Cafes</h2>
 
+<figure>
+  <img src="${PHOTO_BASE}/570_afterstory/hero.jpg" alt="Afterstory — modern minimalist aesthetic cafe in Bandung" width="1200" height="800" loading="lazy" />
+  <figcaption>Afterstory — one of Bandung's most talked-about aesthetic cafes</figcaption>
+</figure>
+
 <p>Bandung's cafe designers don't hold back. These spots are as photogenic as the coffee is good.</p>
 
 <h3><a href="/cafe/570-afterstory">Afterstory</a></h3>
@@ -46,6 +62,11 @@ export const blogPosts: BlogPost[] = [
 <p>Not a traditional cafe, but Latteria Gelato's minimalist design and artisanal gelato make it one of Bandung's most aesthetic dessert spots. Their matcha offerings are particularly popular. A must-visit for anyone who appreciates both design and dessert.</p>
 
 <h2>Best Mountain View & Hillside Cafes</h2>
+
+<figure>
+  <img src="${PHOTO_BASE}/652_rumamenak/hero.jpg" alt="Rumamenak — hillside rooftop cafe overlooking Bandung mountains" width="1200" height="800" loading="lazy" />
+  <figcaption>Rumamenak — our top pick for mountain views in Bandung</figcaption>
+</figure>
 
 <p>Bandung's geography is its superpower. Surrounded by volcanic mountains and tea plantations, the northern parts of the city offer cafe views that rival anything in Bali.</p>
 
@@ -63,6 +84,11 @@ export const blogPosts: BlogPost[] = [
 
 <h2>Best Hidden Gems</h2>
 
+<figure>
+  <img src="${PHOTO_BASE}/683_skorz/hero.jpg" alt="Skorz — hidden gem cafe in Bandung with cozy minimalist interior" width="1200" height="800" loading="lazy" />
+  <figcaption>Skorz — a quiet, cozy hidden gem that deserves more attention</figcaption>
+</figure>
+
 <p>These are the cafes that don't show up on every tourist list — but probably should.</p>
 
 <h3><a href="/cafe/683-skorz">Skorz</a></h3>
@@ -76,6 +102,11 @@ export const blogPosts: BlogPost[] = [
 
 <h2>Best Premium & Fine Dining Cafes</h2>
 
+<figure>
+  <img src="${PHOTO_BASE}/612_braga-permai/hero.jpg" alt="Braga Permai — heritage fine dining restaurant on Jalan Braga, Bandung" width="1200" height="800" loading="lazy" />
+  <figcaption>Braga Permai — a piece of Bandung history you can sit in</figcaption>
+</figure>
+
 <p>When you want to treat yourself or impress someone, these are Bandung's top-tier options.</p>
 
 <h3><a href="/cafe/641-miss-bee-providore">Miss Bee Providore</a></h3>
@@ -88,6 +119,11 @@ export const blogPosts: BlogPost[] = [
 <p>Fine dining with a rooftop view. The 18th offers one of Bandung's most sophisticated dining experiences, with panoramic city views, an extensive wine list, and a menu that matches the setting. Dress up for this one — it's worth it.</p>
 
 <h2>Best for Groups & Families</h2>
+
+<figure>
+  <img src="${PHOTO_BASE}/404_bloemen-kedai-rumah/hero.jpg" alt="Bloemen Kedai Rumah — garden cafe in Bandung for families and groups" width="1200" height="800" loading="lazy" />
+  <figcaption>Bloemen Kedai Rumah — charming garden setting, perfect for families</figcaption>
+</figure>
 
 <h3><a href="/cafe/404-bloemen-kedai-rumah">Bloemen Kedai Rumah</a></h3>
 <p>A charming cafe-restaurant with a garden setting and kid-friendly atmosphere. Bloemen Kedai Rumah combines modern aesthetics with vintage warmth, and the menu has something for everyone. Great for family outings or group gatherings.</p>
@@ -117,12 +153,19 @@ export const blogPosts: BlogPost[] = [
     excerpt: "The definitive guide to remote work cafes in Bandung. Fast WiFi, power outlets, quiet atmosphere, and specialty coffee — everything a digital nomad or freelancer needs.",
     date: "2026-03-03",
     readTime: "9 min read",
+    heroImage: `${PHOTO_BASE}/362_two-hands-full/hero.jpg`,
+    heroAlt: "Two Hands Full — minimalist specialty coffee shop and work cafe in Bandung",
     content: `
 <p>Whether you're a digital nomad passing through, a freelancer based in Bandung, or a student looking for a change of scenery, finding the right work cafe matters. You need reliable WiFi, accessible power outlets, a quiet enough atmosphere, and — ideally — good coffee to keep you going.</p>
 
 <p>Bandung has dozens of work-friendly cafes, but not all are created equal. We tested WiFi speeds, checked outlet availability, and spent full work days at each of these spots. Here are the ones that actually deliver.</p>
 
 <h2>Best Overall: Coworking-Cafe Hybrids</h2>
+
+<figure>
+  <img src="${PHOTO_BASE}/604_the-copy-room/hero.jpg" alt="The Copy Room — best coworking cafe in Bandung" width="1200" height="800" loading="lazy" />
+  <figcaption>The Copy Room — the gold standard for working from a cafe in Bandung</figcaption>
+</figure>
 
 <p>These cafes are designed for work. They understand that you're not just here for a latte — you're here to get things done.</p>
 
@@ -137,6 +180,11 @@ export const blogPosts: BlogPost[] = [
 
 <h2>Best for Quiet, Focused Work</h2>
 
+<figure>
+  <img src="${PHOTO_BASE}/362_two-hands-full/hero.jpg" alt="Two Hands Full — quiet specialty coffee shop in Bandung" width="1200" height="800" loading="lazy" />
+  <figcaption>Two Hands Full — calm, quiet, and one of Bandung's best pour-overs</figcaption>
+</figure>
+
 <p>Sometimes you need silence more than speed. These cafes keep the noise down and let you concentrate.</p>
 
 <h3><a href="/cafe/362-two-hands-full">Two Hands Full</a></h3>
@@ -150,6 +198,11 @@ export const blogPosts: BlogPost[] = [
 
 <h2>Best for Students & Budget Workers</h2>
 
+<figure>
+  <img src="${PHOTO_BASE}/345_kopi-poka/hero.jpg" alt="Kopi Poka — budget-friendly student cafe in Bandung" width="1200" height="800" loading="lazy" />
+  <figcaption>Kopi Poka — reliable WiFi and great coffee at student-friendly prices</figcaption>
+</figure>
+
 <p>Not everyone can afford to spend Rp 50k+ on coffee every day. These spots are wallet-friendly without cutting corners on the work environment.</p>
 
 <h3><a href="/cafe/345-kopi-poka">Kopi Poka</a></h3>
@@ -162,6 +215,11 @@ export const blogPosts: BlogPost[] = [
 <p>Self-described as an "Engineers Hub," FINZ is a coworking-cafe that caters specifically to students and tech workers. Budget-friendly prices, late-night hours, and a community of like-minded people make it feel more like a shared office than a cafe. The specialty coffee is solid for the price.</p>
 
 <h2>Best Views While You Work</h2>
+
+<figure>
+  <img src="${PHOTO_BASE}/436_coffee-90/hero.jpg" alt="Coffee 90 — hillside work cafe with mountain views in Bandung" width="1200" height="800" loading="lazy" />
+  <figcaption>Coffee 90 — mountain views, reliable WiFi, and solid specialty coffee</figcaption>
+</figure>
 
 <p>Why stare at a wall when you can stare at mountains? These hillside cafes prove that productivity and scenery aren't mutually exclusive.</p>
 
@@ -202,10 +260,17 @@ export const blogPosts: BlogPost[] = [
     excerpt: "A neighborhood-by-neighborhood guide to Bandung's cafe scene. From the heritage streets of Braga to the mountain views of North Bandung, find the best cafes in every area.",
     date: "2026-03-05",
     readTime: "10 min read",
+    heroImage: `${PHOTO_BASE}/272_kopi-toko-djawa/hero.jpg`,
+    heroAlt: "Kopi Toko Djawa — heritage coffee shop on Jalan Braga, Bandung",
     content: `
 <p>Bandung's cafe scene isn't concentrated in one area — it's spread across distinct neighborhoods, each with its own character. Understanding the geography helps you find the right cafe without driving across town. Here's your area-by-area guide.</p>
 
 <h2>Dago — The University & Lifestyle Hub</h2>
+
+<figure>
+  <img src="${PHOTO_BASE}/372_dago-coffee/hero.jpg" alt="DAGO COFFEE — hillside cafe with mountain views on Jalan Dago, Bandung" width="1200" height="800" loading="lazy" />
+  <figcaption>DAGO COFFEE — quintessential upper Dago vibes with mountain views</figcaption>
+</figure>
 
 <p>Dago is Bandung's most popular cafe strip, running from the flatlands near ITB (Bandung Institute of Technology) up into the hills. The lower part is buzzing with student energy; the upper part offers hillside views and cooler temperatures. This is where you'll find the highest concentration of cafes in the city.</p>
 
@@ -227,6 +292,11 @@ export const blogPosts: BlogPost[] = [
 
 <h2>Braga — The Heritage District</h2>
 
+<figure>
+  <img src="${PHOTO_BASE}/272_kopi-toko-djawa/hero.jpg" alt="Kopi Toko Djawa — rustic heritage coffee shop on Jalan Braga" width="1200" height="800" loading="lazy" />
+  <figcaption>Kopi Toko Djawa — timeless Indonesian coffee traditions on Braga</figcaption>
+</figure>
+
 <p>Jalan Braga is Bandung's most historic street, lined with Art Deco buildings from the colonial era. The cafe scene here reflects that heritage — expect vintage interiors, rustic charm, and a sense of history. Walking Braga on a weekend evening, hopping between cafes, is one of Bandung's best experiences.</p>
 
 <h3>Best Picks in Braga</h3>
@@ -246,6 +316,11 @@ export const blogPosts: BlogPost[] = [
 <p><strong>Braga tip:</strong> Visit on a weekend evening when the street becomes partially pedestrianized. The atmosphere is magical — live music spills from doorways, and the Art Deco buildings are lit up. Start at one end and walk the full strip.</p>
 
 <h2>North Bandung — Mountain Views & Fresh Air</h2>
+
+<figure>
+  <img src="${PHOTO_BASE}/652_rumamenak/hero.jpg" alt="Rumamenak — premium rooftop dining with panoramic mountain views" width="1200" height="800" loading="lazy" />
+  <figcaption>Rumamenak — 180-degree mountain views from North Bandung's best rooftop</figcaption>
+</figure>
 
 <p>North Bandung (Bandung Utara) climbs into the mountains toward Lembang and Dago Atas. This is where you come for views, fresh air, and an escape from the city heat. Cafes here tend to have gardens, terraces, and panoramic vistas. The tradeoff: it's a 20-40 minute drive from central Bandung.</p>
 
@@ -267,6 +342,11 @@ export const blogPosts: BlogPost[] = [
 
 <h2>Pasir Kaliki & Central West</h2>
 
+<figure>
+  <img src="${PHOTO_BASE}/295_ruckerpark-coffee-and-culture/hero.jpg" alt="Ruckerpark Coffee and Culture — community cafe in Pasir Kaliki, Bandung" width="1200" height="800" loading="lazy" />
+  <figcaption>Ruckerpark Coffee and Culture — a community hub in Pasir Kaliki</figcaption>
+</figure>
+
 <p>The Pasir Kaliki area, west of the train station, has a growing cafe scene that's less touristy than Dago or Braga. You'll find local favorites and some genuine hidden gems here, often at lower prices.</p>
 
 <h3>Best Picks in Pasir Kaliki</h3>
@@ -283,6 +363,11 @@ export const blogPosts: BlogPost[] = [
 <p><strong>Pasir Kaliki tip:</strong> This area is close to Bandung Station (Stasiun Bandung), making it convenient if you're arriving by train from Jakarta. Walk from the station to explore the local cafe scene before heading to your hotel.</p>
 
 <h2>Buah Batu & South Bandung</h2>
+
+<figure>
+  <img src="${PHOTO_BASE}/203_tri-tangtu-kopi-roasters/hero.jpg" alt="Tri Tangtu Kopi Roasters — specialty coffee roaster in Buah Batu, Bandung" width="1200" height="800" loading="lazy" />
+  <figcaption>Tri Tangtu Kopi Roasters — serious coffee craft in south Bandung</figcaption>
+</figure>
 
 <p>South Bandung is primarily residential, with cafes that cater to locals rather than tourists. The prices tend to be lower, and you'll find a more authentic, everyday Bandung cafe experience.</p>
 
