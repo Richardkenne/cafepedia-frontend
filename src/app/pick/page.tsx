@@ -80,6 +80,7 @@ function PickContent() {
   const [top3, setTop3] = useState<Cafe[]>([]);
   const [more, setMore] = useState<Cafe[]>([]);
   const [loading, setLoading] = useState(true);
+  const [apiError, setApiError] = useState(false);
 
   useEffect(() => {
     if (!query) return;
@@ -102,7 +103,7 @@ function PickContent() {
       setMore(data.more || []);
       setLoading(false);
     };
-    doFetch().catch(() => setLoading(false));
+    doFetch().catch(() => { setApiError(true); setLoading(false); });
   }, [query]);
 
   return (
@@ -125,6 +126,19 @@ function PickContent() {
           <div className="text-center py-20 text-[var(--muted2)]">
             <div className="text-4xl mb-4 animate-pulse">☕</div>
             <p className="text-sm">{t("pick.finding")}</p>
+          </div>
+        )}
+
+        {!loading && apiError && (
+          <div className="text-center py-20 text-sm">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-red-50 flex items-center justify-center">
+              <svg viewBox="0 0 24 24" className="w-7 h-7 fill-none stroke-current stroke-1.5 text-red-400">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 8v4m0 4h.01" strokeLinecap="round" />
+              </svg>
+            </div>
+            <p className="font-medium text-[var(--muted)]">Layanan sedang tidak tersedia</p>
+            <p className="mt-1 text-[var(--muted2)]">Coba lagi dalam beberapa saat</p>
           </div>
         )}
 
