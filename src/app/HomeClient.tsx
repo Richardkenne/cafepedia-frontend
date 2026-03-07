@@ -573,8 +573,32 @@ export default function HomeClient() {
             </div>
           </div>
 
+          {/* Newsletter / Contact */}
+          <div className="mt-10 pt-8 border-t border-gray-200">
+            <p className="text-[13px] font-bold text-[var(--foreground)]">Stay in the loop</p>
+            <p className="text-[12px] text-[var(--muted)] mt-1">New cafes, hidden gems & guides — straight to your inbox.</p>
+            <form
+              onSubmit={(e) => { e.preventDefault(); }}
+              className="flex gap-2 mt-3 max-w-sm"
+            >
+              <input
+                type="email"
+                placeholder="your@email.com"
+                className="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 text-[13px] bg-white
+                  focus:outline-none focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)] transition-all"
+              />
+              <button
+                type="submit"
+                className="px-5 py-2.5 rounded-xl bg-[var(--foreground)] text-white text-[13px] font-semibold
+                  hover:opacity-90 active:scale-[0.97] transition-all"
+              >
+                Subscribe
+              </button>
+            </form>
+          </div>
+
           {/* Bottom bar */}
-          <div className="flex flex-wrap items-center justify-between gap-4 text-[11px] text-[var(--muted2)] mt-10 pt-6 border-t border-gray-200">
+          <div className="flex flex-wrap items-center justify-between gap-4 text-[11px] text-[var(--muted2)] mt-8 pt-6 border-t border-gray-200">
             <span>&copy; {new Date().getFullYear()} Cafepedia. Bandung, Indonesia.</span>
             <div className="flex gap-4">
               <a href="/privacy" className="hover:text-[var(--foreground)] transition-colors">Privacy</a>
