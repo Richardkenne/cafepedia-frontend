@@ -53,6 +53,7 @@ export default function CafeDetail() {
   const [cafe, setCafe] = useState<Cafe | null>(null);
   const [loading, setLoading] = useState(true);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [similar, setSimilar] = useState<Cafe[]>([]);
 
   const allPhotos = cafe?.photos || [];
   const closeLightbox = useCallback(() => setLightboxIndex(null), []);
