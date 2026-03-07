@@ -368,7 +368,7 @@ export default function CafeDetail() {
                       hover:bg-gray-50 active:scale-[0.97] transition-all flex-shrink-0"
                   >
                     <Navigation size={15} className="text-[var(--accent)]" />
-                    Directions
+                    Rute
                   </a>
                 )}
                 {cafe.phone && (
