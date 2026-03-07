@@ -272,7 +272,7 @@ export default function CafeDetail() {
             )}
 
             {/* ─── Content ─── */}
-            <div className="px-5 sm:px-6 pt-6">
+            <div className="px-5 sm:px-6 pt-8">
 
               {/* ── Header: Name + Type badge ── */}
               <div className="flex items-start justify-between gap-3">
@@ -280,7 +280,7 @@ export default function CafeDetail() {
                   <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight leading-tight text-[var(--foreground)]">
                     {cafe.name}
                   </h1>
-                  <div className="flex items-center gap-2 mt-1.5 flex-wrap">
+                  <div className="flex items-center gap-2 mt-2 flex-wrap">
                     {cafe.type && (
                       <span className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-[var(--accent-light)] text-[var(--accent)]">
                         {cafe.type}
@@ -299,12 +299,12 @@ export default function CafeDetail() {
                 </div>
               </div>
 
-              {/* ── Rating + Vibe row ── */}
+              {/* ── Rating + Vibe ── */}
               {cafe.rating && (
-                <div className="mt-5 flex items-stretch gap-4 p-4 rounded-2xl bg-[var(--surface)]">
+                <div className="mt-6 flex items-stretch gap-4 p-5 rounded-2xl bg-[var(--surface)]">
                   <div className="flex flex-col items-center justify-center px-3">
                     <span className="text-3xl font-extrabold text-[var(--foreground)]">{cafe.rating}</span>
-                    <div className="flex gap-0.5 mt-1">
+                    <div className="flex gap-0.5 mt-1.5">
                       {Array.from({ length: 5 }).map((_, i) => (
                         <Star
                           key={i}
@@ -327,14 +327,14 @@ export default function CafeDetail() {
                     </span>
                     <span className="text-[13px] text-[var(--muted)]">ulasan Google</span>
                     {vibeSummary && (
-                      <p className="text-[12px] text-[var(--accent)] font-medium mt-1">{vibeSummary}</p>
+                      <p className="text-[12px] text-[var(--accent)] font-medium mt-1.5">{vibeSummary}</p>
                     )}
                   </div>
                 </div>
               )}
 
               {/* ── Quick actions row ── */}
-              <div className="mt-5 flex gap-2 overflow-x-auto scrollbar-hide">
+              <div className="mt-6 flex gap-2.5 overflow-x-auto scrollbar-hide pb-1">
                 {cafe.google_maps_link && (
                   <a
                     href={cafe.google_maps_link}
@@ -393,62 +393,63 @@ export default function CafeDetail() {
                 </button>
               </div>
 
-              {/* ── Divider ── */}
-              <div className="h-px bg-gray-100 my-6" />
-
-              {/* ── Description ── */}
+              {/* ═══════════════ About ═══════════════ */}
               {cafe.description && (
-                <div>
-                  <p className="text-[15px] leading-[1.8] text-[var(--foreground)]/80">
+                <>
+                  <div className="h-px bg-gray-100 mt-8 mb-7" />
+                  <h3 className="text-[13px] font-bold text-[var(--foreground)] uppercase tracking-wider mb-3">About</h3>
+                  <p className="text-[15px] leading-[1.85] text-[var(--foreground)]/80">
                     {cafe.description}
                   </p>
-                </div>
+                </>
               )}
 
-              {/* ── Tags ── */}
+              {/* ═══════════════ Vibe ═══════════════ */}
               {displayTags.length > 0 && (
-                <div className="flex gap-2 mt-5 flex-wrap">
-                  {displayTags.map(t => (
-                    <span
-                      key={t}
-                      className="text-[12px] px-3 py-1.5 rounded-full border border-gray-200 text-[var(--muted)] font-medium
-                        hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors cursor-default"
-                    >
-                      {formatTag(t)}
-                    </span>
-                  ))}
-                </div>
+                <>
+                  <div className="h-px bg-gray-100 mt-8 mb-7" />
+                  <h3 className="text-[13px] font-bold text-[var(--foreground)] uppercase tracking-wider mb-4">Vibe</h3>
+                  <div className="flex gap-2 flex-wrap">
+                    {displayTags.map(t => (
+                      <span
+                        key={t}
+                        className="text-[12px] px-3 py-1.5 rounded-full border border-gray-200 text-[var(--muted)] font-medium
+                          hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors cursor-default"
+                      >
+                        {formatTag(t)}
+                      </span>
+                    ))}
+                  </div>
+                </>
               )}
 
-              {/* ── Divider ── */}
-              <div className="h-px bg-gray-100 my-6" />
-
-              {/* ── Details section ── */}
-              <h3 className="text-[13px] font-bold text-[var(--foreground)] uppercase tracking-wider mb-4">Detail</h3>
+              {/* ═══════════════ Hours & Contact ═══════════════ */}
+              <div className="h-px bg-gray-100 mt-8 mb-7" />
+              <h3 className="text-[13px] font-bold text-[var(--foreground)] uppercase tracking-wider mb-5">Hours & Contact</h3>
 
               <div className="space-y-0 rounded-2xl border border-gray-100 overflow-hidden">
                 {/* Hours */}
                 {hours && (
-                  <div className="flex gap-3 p-4 border-b border-gray-100 last:border-b-0">
-                    <div className="w-9 h-9 rounded-xl bg-teal-50 flex items-center justify-center flex-shrink-0">
+                  <div className="flex gap-4 p-5 border-b border-gray-100 last:border-b-0">
+                    <div className="w-10 h-10 rounded-xl bg-teal-50 flex items-center justify-center flex-shrink-0">
                       <Clock size={18} className="text-[var(--accent)]" />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-[11px] font-bold text-[var(--muted2)] uppercase tracking-wider">Jam Buka</p>
-                      <div className="text-[14px] leading-relaxed mt-0.5 whitespace-pre-line">{hours}</div>
+                      <p className="text-[11px] font-bold text-[var(--muted2)] uppercase tracking-wider mb-1">Jam Buka</p>
+                      <div className="text-[14px] leading-relaxed whitespace-pre-line">{hours}</div>
                     </div>
                   </div>
                 )}
 
                 {/* Phone */}
                 {cafe.phone && (
-                  <div className="flex gap-3 p-4 border-b border-gray-100 last:border-b-0">
-                    <div className="w-9 h-9 rounded-xl bg-green-50 flex items-center justify-center flex-shrink-0">
+                  <div className="flex gap-4 p-5 border-b border-gray-100 last:border-b-0">
+                    <div className="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center flex-shrink-0">
                       <Phone size={18} className="text-green-500" />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-[11px] font-bold text-[var(--muted2)] uppercase tracking-wider">Telepon</p>
-                      <div className="flex items-center gap-3 mt-0.5">
+                      <p className="text-[11px] font-bold text-[var(--muted2)] uppercase tracking-wider mb-1">Telepon</p>
+                      <div className="flex items-center gap-3">
                         <a href={`tel:${cafe.phone}`} className="text-[14px] text-[var(--foreground)] font-medium">
                           {cafe.phone}
                         </a>
@@ -467,14 +468,14 @@ export default function CafeDetail() {
 
                 {/* Instagram */}
                 {cafe.instagram && (
-                  <div className="flex gap-3 p-4 border-b border-gray-100 last:border-b-0">
-                    <div className="w-9 h-9 rounded-xl bg-pink-50 flex items-center justify-center flex-shrink-0">
+                  <div className="flex gap-4 p-5 border-b border-gray-100 last:border-b-0">
+                    <div className="w-10 h-10 rounded-xl bg-pink-50 flex items-center justify-center flex-shrink-0">
                       <Instagram size={18} className="text-pink-500" />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-[11px] font-bold text-[var(--muted2)] uppercase tracking-wider">Instagram</p>
+                      <p className="text-[11px] font-bold text-[var(--muted2)] uppercase tracking-wider mb-1">Instagram</p>
                       <a href={cafe.instagram} target="_blank" rel="noopener"
-                        className="text-[14px] text-pink-500 font-semibold mt-0.5 flex items-center gap-1.5 group/ig">
+                        className="text-[14px] text-pink-500 font-semibold flex items-center gap-1.5 group/ig">
                         <span>{igHandle}</span>
                         <ExternalLink size={12} className="opacity-0 group-hover/ig:opacity-100 transition-opacity" />
                       </a>
@@ -484,34 +485,40 @@ export default function CafeDetail() {
 
                 {/* Website */}
                 {cafe.website && (
-                  <div className="flex gap-3 p-4 border-b border-gray-100 last:border-b-0">
-                    <div className="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
+                  <div className="flex gap-4 p-5 border-b border-gray-100 last:border-b-0">
+                    <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
                       <Globe size={18} className="text-blue-500" />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-[11px] font-bold text-[var(--muted2)] uppercase tracking-wider">Situs Web</p>
+                      <p className="text-[11px] font-bold text-[var(--muted2)] uppercase tracking-wider mb-1">Situs Web</p>
                       <a href={cafe.website} target="_blank" rel="noopener"
-                        className="text-[14px] text-blue-500 font-medium mt-0.5 flex items-center gap-1.5 truncate group/web">
+                        className="text-[14px] text-blue-500 font-medium flex items-center gap-1.5 truncate group/web">
                         <span className="truncate">{(() => { try { return new URL(cafe.website).hostname; } catch { return cafe.website; } })()}</span>
                         <ExternalLink size={12} className="opacity-0 group-hover/web:opacity-100 transition-opacity flex-shrink-0" />
                       </a>
                     </div>
                   </div>
                 )}
+              </div>
 
-                {/* Address */}
-                {cafe.address && (
-                  <div className="flex gap-3 p-4">
-                    <div className="w-9 h-9 rounded-xl bg-teal-50 flex items-center justify-center flex-shrink-0">
+              {/* ═══════════════ Location ═══════════════ */}
+              {cafe.address && (
+                <>
+                  <div className="h-px bg-gray-100 mt-8 mb-7" />
+                  <h3 className="text-[13px] font-bold text-[var(--foreground)] uppercase tracking-wider mb-5">Location</h3>
+                  <div className="flex gap-4 p-5 rounded-2xl border border-gray-100">
+                    <div className="w-10 h-10 rounded-xl bg-teal-50 flex items-center justify-center flex-shrink-0">
                       <MapPin size={18} className="text-[var(--accent)]" />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-[11px] font-bold text-[var(--muted2)] uppercase tracking-wider">Alamat</p>
-                      <p className="text-[14px] leading-relaxed mt-0.5">{cafe.address}</p>
+                      <p className="text-[14px] leading-relaxed">{cafe.address}</p>
                     </div>
                   </div>
-                )}
-              </div>
+                </>
+              )}
+
+              {/* Bottom spacer for sticky bar */}
+              <div className="h-8" />
             </div>
 
             {/* ─── Sticky bottom action bar ─── */}
