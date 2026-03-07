@@ -2,8 +2,9 @@
 
 import { useEffect, useMemo, useState, useCallback } from "react";
 import { useRouter, useParams } from "next/navigation";
-import { getCafe, parseSlug } from "@/lib/api";
+import { getCafe, parseSlug, searchCafes, makeSlug } from "@/lib/api";
 import { Cafe } from "@/lib/types";
+import Link from "next/link";
 import { formatHoursCompact } from "@/lib/formatHours";
 import { DetailSkeleton } from "@/components/Skeleton";
 import Image from "next/image";
