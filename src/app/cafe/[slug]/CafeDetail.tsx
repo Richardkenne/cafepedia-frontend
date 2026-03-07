@@ -467,7 +467,7 @@ export default function CafeDetail() {
 
               {/* ═══════════════ Hours & Contact ═══════════════ */}
               <div className="h-px bg-gray-100 mt-8 mb-7" />
-              <h3 className="text-[13px] font-bold text-[var(--foreground)] uppercase tracking-wider mb-5">Hours & Contact</h3>
+              <h3 className="text-[13px] font-bold text-[var(--foreground)] uppercase tracking-wider mb-5">Jam & Kontak</h3>
 
               <div className="space-y-0 rounded-2xl border border-gray-100 overflow-hidden">
                 {/* Hours */}
